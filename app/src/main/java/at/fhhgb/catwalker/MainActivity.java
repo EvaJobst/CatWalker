@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Open -New Entry- Activity", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "TODO: Open -New Entry- Activity", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch(id) {
             case R.id.action_settings : {
-                Toast.makeText(MainActivity.this, "Needs to be adapted; Will be moved to Navigation Drawer later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "TODO: Move to Navigation Drawer", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
             } break;
