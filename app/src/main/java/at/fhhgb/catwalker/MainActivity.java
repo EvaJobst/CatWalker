@@ -1,6 +1,8 @@
 package at.fhhgb.catwalker;
 
 import android.app.ListActivity;
+import android.content.Intent;
+import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -57,6 +59,15 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        switch(id) {
+            case R.id.action_settings : {
+                Toast.makeText(MainActivity.this, "Needs to be adapted; Will be moved to Navigation Drawer later", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
+            } break;
+            default : {Toast.makeText(MainActivity.this, "Unknown ActionBar ID selected", Toast.LENGTH_SHORT).show();}
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
