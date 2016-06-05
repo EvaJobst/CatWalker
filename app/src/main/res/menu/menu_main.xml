@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="at.fhhgb.catwalker.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/nav_settings"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/str_nav_settings"
         app:showAsAction="never" />
 </menu>

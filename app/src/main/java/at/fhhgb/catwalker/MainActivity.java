@@ -1,8 +1,6 @@
 package at.fhhgb.catwalker;
 
-import android.app.ListActivity;
 import android.content.Intent;
-import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,8 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
@@ -43,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         // Navigation Drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.str_nav_drawer_open, R.string.str_nav_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -90,7 +86,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch(id) {
-            case R.id.action_settings : {
+            case R.id.nav_settings: {
                 Toast.makeText(MainActivity.this, "TODO: Move to Navigation Drawer", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
@@ -113,28 +109,25 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch(id) {
-            case R.id.nav_camera : {
-                Toast.makeText(MainActivity.this, "Selected option Camera", Toast.LENGTH_SHORT).show();
+            case R.id.nav_new_entry : {
+                Toast.makeText(MainActivity.this, "TODO: - New Entry - Activity", Toast.LENGTH_SHORT).show();
             } break;
 
             case R.id.nav_gallery : {
-                Toast.makeText(MainActivity.this, "Selected option Gallery", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "TODO: - Gallery - Activity", Toast.LENGTH_SHORT).show();
             } break;
 
-            case R.id.nav_slideshow : {
-                Toast.makeText(MainActivity.this, "Selected option Slideshow", Toast.LENGTH_SHORT).show();
+            case R.id.nav_map : {
+                Toast.makeText(MainActivity.this, "TODO: - Map - Activity", Toast.LENGTH_SHORT).show();
             } break;
 
-            case R.id.nav_share : {
-                Toast.makeText(MainActivity.this, "Selected option Share", Toast.LENGTH_SHORT).show();
+            case R.id.nav_settings : {
+                Intent i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
             } break;
 
-            case R.id.nav_send : {
-                Toast.makeText(MainActivity.this, "Selected option Send", Toast.LENGTH_SHORT).show();
-            } break;
-
-            case R.id.nav_manage : {
-                Toast.makeText(MainActivity.this, "Selected option Manage", Toast.LENGTH_SHORT).show();
+            case R.id.nav_help : {
+                Toast.makeText(MainActivity.this, "TODO: - Help - Activity", Toast.LENGTH_SHORT).show();
             } break;
 
             default : {
