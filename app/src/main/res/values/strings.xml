@@ -1,5 +1,7 @@
 <resources>
+    <!-- General information -->
     <string name="app_name" translatable="false">CatWalker</string>
+    <string name="str_username" translatable="false">Username</string>
 
     <!-- Strings related to Navigation Drawer -->
     <string name="str_nav_new_entry">New Entry</string>
@@ -11,10 +13,11 @@
     <string name="str_nav_drawer_open" translatable="false">Navigation Drawer opened</string>
     <string name="str_nav_drawer_close" translatable="false">Navigation Drawer closed</string>
 
+    <string name="str_nav_supplementary_info" translatable="false">Possible Supplementary Information</string>
+
     <!-- Strings related to Settings -->
     <string name="str_settings_group_general">General</string>
     <string name="str_settings_username" translatable="false">Username</string>
-    <string name="str_username" translatable="false">Plus Plus</string>
 
     <string name="str_settings_group_notifications">Notifications</string>
     <string name="str_settings_push">Push Notifications</string>

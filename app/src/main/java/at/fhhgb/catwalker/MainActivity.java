@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity
             } break;
 
             case R.id.nav_map : {
-                //Toast.makeText(MainActivity.this, "TODO: - Map - Activity", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(this, SightingsActivity.class);
                 startActivity(i);
             } break;

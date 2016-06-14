@@ -40,20 +40,18 @@ public class SightingsActivity extends FragmentActivity implements OnMapReadyCal
                     .addApi(LocationServices.API)
                     .build();
         }
-
-        // Get Location
-        mGoogleApiClient.connect();
     }
 
     @Override
-    protected void onPause() {
+    protected void onStop() {
+        super.onStop();
         mGoogleApiClient.disconnect();
-        super.onPause();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        mGoogleApiClient.connect();
     }
 
     /**
@@ -80,7 +78,7 @@ public class SightingsActivity extends FragmentActivity implements OnMapReadyCal
             defaultLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         }
 
-        mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Marker in HGB"));
+        mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Last Position"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 18));
     }
 
