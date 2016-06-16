@@ -17,6 +17,7 @@ public class Post {
     private Date dateTime;
     public String userId;
     public String universityId;
+    private static DateFormat dateFormat = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.ENGLISH);
 
     public Post() {
         this.title = "";
@@ -47,12 +48,15 @@ public class Post {
     }
 
     public String getDateTime(){
-        DateFormat format = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);
-        return format.format(dateTime);
+        return dateFormat.format(dateTime);
+    }
+    public static DateFormat getDateFormat(){
+        return dateFormat;
     }
 
     @Override
     public String toString() {
-        return title+", "+content+", "+userId+", "+universityId+", "+getDateTime()+";";
+        return title+", "+content+","+getDateTime();
     }
+
 }

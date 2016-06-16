@@ -5,10 +5,13 @@ import android.widget.ListView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Date;
 
 import at.fhhgb.catwalker.MainActivity;
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.data.LocalData;
+import at.fhhgb.catwalker.data.Post;
+import at.fhhgb.catwalker.data.TimelineData;
 import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
@@ -32,12 +35,13 @@ public class MainViewController implements PropertyChangeListener{
     public void init(){
         model.addUserChangeListener("1");
         model.addUniversityTimelineInitializationListeners( "1" );
+        updateListview(null);
     }
 
-    public void updateListview(){
-        String[] listViewItems = new String[0];
-        if(data.getTimelineData()!=null)
-            listViewItems = data.getTimelineData().toStringArray();
+    public void updateListview(TimelineData timelineData){
+        String[] listViewItems = new String[]{"Timeline is loading..."};
+        if(timelineData!=null)
+            listViewItems = timelineData.toStringArray();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(view,
                 android.R.layout.simple_list_item_1, listViewItems);
@@ -49,7 +53,7 @@ public class MainViewController implements PropertyChangeListener{
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()){
             case "timeline":
-                updateListview();
+                updateListview((TimelineData)event.getNewValue());
                 break;
         }
     }

@@ -19,6 +19,7 @@ public class TimelineData {
             //p.setDateTime((String)d.child("dateTime").getValue());
             posts.add(p);
         }
+
     }
 
     @Override
@@ -32,12 +33,12 @@ public class TimelineData {
     }
 
     public String[] toStringArray() {
-        List<String> s = new ArrayList<String>();
+        String[] s = new String[posts.size()];
 
         for(int i=0; i<posts.size() ;i++)
-            s.add(posts.get(i).toString()+" ");
+            s[i] = posts.get(i).toString()+" ";
 
-        return (String[]) s.toArray();
+        return s;
     }
 
 }

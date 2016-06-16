@@ -86,7 +86,7 @@ public class LocalData {
     }
 
     public void setTimelineData(TimelineData timelineData) {
-        this.timelineData = timelineData;
         propertyChangeSupport.firePropertyChange("timeline", getTimelineData(), timelineData);
+        this.timelineData = timelineData;
     }
 }
