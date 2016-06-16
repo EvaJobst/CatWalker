@@ -10,6 +10,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
+
 import at.fhhgb.catwalker.data.*;
 
 /**
@@ -141,7 +143,8 @@ public class DataModel {
                 TimelineData timelineData = new TimelineData(dataSnapshot.getChildren());
                 data.setTimelineData(timelineData);
                 Log.d(TAG, "Value is: " + timelineData.toString());
-                //Todo: updateTimeline function
+
+                addPost(data.getUserId(), new Post("Hello","Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",Post.getDateFormat().format(new Date()), data.getUserId(), "1"));
             }
 
             @Override
@@ -159,9 +162,8 @@ public class DataModel {
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-              //  Post p = dataSnapshot.getValue(Post.class);
-
-                //Todo: addToTimeline
+                Post p = dataSnapshot.getValue(Post.class);
+                data.addPost(p);
             }
 
             @Override
@@ -171,7 +173,8 @@ public class DataModel {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                //Todo: removeTimelineElement
+                Post p = dataSnapshot.getValue(Post.class);
+                data.removePost(p);
             }
 
             @Override

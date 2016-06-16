@@ -89,4 +89,16 @@ public class LocalData {
         propertyChangeSupport.firePropertyChange("timeline", getTimelineData(), timelineData);
         this.timelineData = timelineData;
     }
+
+    public void addPost(Post p) {
+        propertyChangeSupport.firePropertyChange("timeline.add", null, p);
+        if(timelineData!=null)
+            this.timelineData.add(p);
+    }
+
+    public void removePost(Post p) {
+        if(timelineData!=null)
+            this.timelineData.remove(p);
+        propertyChangeSupport.firePropertyChange("timeline.remove", p, null);
+    }
 }

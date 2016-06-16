@@ -17,6 +17,9 @@ public class Post {
     private Date dateTime;
     public String userId;
     public String universityId;
+
+    public String catId;
+
     private static DateFormat dateFormat = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.ENGLISH);
 
     public Post() {
@@ -56,7 +59,14 @@ public class Post {
 
     @Override
     public String toString() {
-        return title+", "+content+","+getDateTime();
+        return title+" - "+getDateTime()+"\n\n"+content+"\n";
+    }
+
+    //todo: Better isEqual function
+    public boolean isEqual(Post p){
+        if ( this.toString().equals(p.toString()) && userId.equals(p.userId) && universityId.equals(p.universityId))
+            return true;
+        return false;
     }
 
 }
