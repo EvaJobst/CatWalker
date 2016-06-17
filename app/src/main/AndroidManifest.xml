@@ -50,13 +50,6 @@
                 android:value="at.fhhgb.catwalker.MainActivity" />
         </activity>
 
-        <activity
-            android:name=".NewEntryActivity"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgb.catwalker.MainActivity" />
-        </activity>
     </application>
 
 </manifest>
