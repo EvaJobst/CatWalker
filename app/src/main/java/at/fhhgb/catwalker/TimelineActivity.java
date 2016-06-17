@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import at.fhhgb.catwalker.controller.TimelineController;
@@ -26,7 +28,7 @@ public class TimelineActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        controller = new TimelineController(this);
+        controller = new MainViewController(this);
 
         // Action Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -61,20 +63,6 @@ public class TimelineActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
-        //TimelineArray timeline = new TimelineArray(this);
-        //timeline.add(new TimelineEntry("New Image", "Campuskater gesichtet!", R.drawable.pusheen));
-        //timeline.add(new TimelineEntry("New Image", "Campuskater derzeit im Studentenwohnheim", R.drawable.pusheen));
-        //timeline.add(new TimelineEntry("New Image", "Derzeit schläft der Kater im Labor", R.drawable.pusheen));
-        //this.setListAdapter(timeline);
-
-
-    //@Override
-    //protected void onListItemClick(ListView l, View v, int pos, long id) {
-    //    ListAdapter data = l.getAdapter();
-    //    TimelineEntry element = (TimelineEntry) data.getItem(pos);
-    //    Toast.makeText(this, "selected element " + element, Toast.LENGTH_SHORT).show();
-    //}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
