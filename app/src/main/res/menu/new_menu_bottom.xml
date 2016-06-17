@@ -5,7 +5,9 @@
             android:id="@+id/new_tab_info"
             android:icon="@drawable/ic_tab_preview"
             android:title="Information"
-            app:showAsAction="always"/>
+            android:state_selected="true"
+            app:showAsAction="always">
+        </item>
 
         <item
             android:id="@+id/new_tab_location"

@@ -8,18 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 public class NewEntryActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
 
-        Toolbar toolbarBottom = (Toolbar) findViewById(R.id.new_toolbar_bottom);
+        final Toolbar toolbarBottom = (Toolbar) findViewById(R.id.new_toolbar_left);
 
         toolbarBottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -49,7 +44,7 @@ public class NewEntryActivity extends AppCompatActivity {
         // Inflate a menu to be displayed in the toolbar
         toolbarBottom.inflateMenu(R.menu.new_menu_bottom);
 
-        Toolbar send = (Toolbar) findViewById(R.id.new_toolbar_send);
+        Toolbar send = (Toolbar) findViewById(R.id.new_toolbar_right);
         send.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 
             @Override
