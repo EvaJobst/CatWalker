@@ -10,6 +10,7 @@ import java.net.URL;
  */
 public class AsyncLoadImage extends AsyncTask<URL,Integer, Image> {
 
+    //Todo: Load image from firebase
     @Override
     protected Image doInBackground(URL... params) {
         return null;
