@@ -18,6 +18,10 @@ public class Post {
     public String userId;
     public String universityId;
 
+    //Todo: implement remaining
+    public String longitude;
+    public String lattitude;
+    public String image;
     public String catId;
 
     private static DateFormat dateFormat = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.ENGLISH);

@@ -2,7 +2,6 @@ package at.fhhgb.catwalker.data;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
 
 import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
@@ -13,6 +12,7 @@ import at.fhhgb.catwalker.firebase.ServiceLocator;
  */
 public class LocalData {
     private String userId;
+    private String universityId;
     private User userData;
     private University university;
     private TimelineData timelineData;
@@ -20,13 +20,16 @@ public class LocalData {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     public LocalData(String userId){
-        this(userId, ServiceLocator.getDataHandler());
+        this(userId, ServiceLocator.getDataModel());
+    }
+
+    public LocalData(){
+        this("", ServiceLocator.getDataModel());
     }
 
     //registers all needed Listeners
     public LocalData(String userId, DataModel model){
         this.userId = userId;
-        model.addUserChangeListener(userId);
     }
 
     public String getUserId() {
@@ -100,5 +103,17 @@ public class LocalData {
         if(timelineData!=null)
             this.timelineData.remove(p);
         propertyChangeSupport.firePropertyChange("timeline.remove", p, null);
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUniversityId() {
+        return universityId;
+    }
+
+    public void setUniversityId(String universityId) {
+        this.universityId = universityId;
     }
 }

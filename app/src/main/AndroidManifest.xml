@@ -12,22 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".TimelineActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/str_nav_settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".TimelineActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgb.catwalker.MainActivity" />
+                android:value=".TimelineActivity" />
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -44,10 +40,16 @@
         <activity
             android:name=".SightingsActivity"
             android:label="@string/title_activity_sightings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".TimelineActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="at.fhhgb.catwalker.MainActivity" />
+                android:value=".TimelineActivity" />
+        </activity>
+        <activity android:name=".RegisterActivity" android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

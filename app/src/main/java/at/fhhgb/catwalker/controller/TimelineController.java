@@ -7,10 +7,9 @@ import android.widget.ListView;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import at.fhhgb.catwalker.MainActivity;
+import at.fhhgb.catwalker.TimelineActivity;
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
@@ -21,15 +20,15 @@ import at.fhhgb.catwalker.firebase.ServiceLocator;
 /**
  * Created by Lisa on 16.06.2016.
  */
-public class MainViewController implements PropertyChangeListener{
-    MainActivity view;
+public class TimelineController implements PropertyChangeListener{
+    TimelineActivity view;
     DataModel model;
     LocalData data;
     ArrayAdapter<String> listViewAdapter;
 
-    public MainViewController(MainActivity main){
+    public TimelineController(TimelineActivity main){
         view = main;
-        model = ServiceLocator.getDataHandler();
+        model = ServiceLocator.getDataModel();
         data = model.getLocalData();
 
         data.addPropertyChangeListener(this);
@@ -39,8 +38,8 @@ public class MainViewController implements PropertyChangeListener{
 
     public void init(){
         //Todo: Add Preferences for User and UniversityId
-        model.addUserChangeListener("1");
-        model.addUniversityTimelineInitializationListeners( "1" );
+        model.addUserChangeListener(data.getUserId());
+        model.addUniversityTimelineInitializationListeners(data.getUniversityId());
         initListview(null);
     }
 

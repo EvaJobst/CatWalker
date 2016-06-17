@@ -24,7 +24,7 @@ public class SettingsController implements PropertyChangeListener{
         //ServiceLocator.register(DataModel.class);
 
         //model = ServiceLocator.getInstance(DataModel.class);
-        model = ServiceLocator.getDataHandler();
+        model = ServiceLocator.getDataModel();
         data = model.getLocalData();
         data.addPropertyChangeListener(this);
         init();

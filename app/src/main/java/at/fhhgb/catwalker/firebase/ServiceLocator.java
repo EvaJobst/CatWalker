@@ -1,13 +1,5 @@
 package at.fhhgb.catwalker.firebase;
 
-import android.util.Log;
-
-import java.io.Console;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.ServiceLoader;
-
 /**
  * Created by Lisa on 14.06.2016.
  */
@@ -17,10 +9,11 @@ public class ServiceLocator {
     private static final String TAG = "ServiceLocator";
 
 
-    private static DataModel dataHandler = new DataModel();
-    public static DataModel getDataHandler(){
-        return dataHandler;
+    private static DataModel dataModel = new DataModel();
+    public static DataModel getDataModel(){
+        return dataModel;
     }
+
 
 /*
     //register parameterless class, only creates a new instance if there is none until now

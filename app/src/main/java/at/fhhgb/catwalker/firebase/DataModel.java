@@ -35,14 +35,19 @@ public class DataModel {
     public LocalData getLocalData() {
         return data;
     }
-
-    public DataModel() {
-        database = FirebaseDatabase.getInstance();
-        data = new LocalData("1", this);
+    public void setLocalData(LocalData localData) {
+        data = localData;
     }
+
 
     private DatabaseReference getRef(String section, String id) {
         return database.getReference(section).child(id);
+    }
+
+
+    public DataModel() {
+        database = FirebaseDatabase.getInstance();
+        data = new LocalData();
     }
 
     //stores any value in any place in the database
@@ -144,7 +149,7 @@ public class DataModel {
                 data.setTimelineData(timelineData);
                 Log.d(TAG, "Value is: " + timelineData.toString());
 
-                addPost(data.getUserId(), new Post("Hello","Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",Post.getDateFormat().format(new Date()), data.getUserId(), "1"));
+                //addPost(data.getUserId(), new Post("Hello","Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",Post.getDateFormat().format(new Date()), data.getUserId(), data.getUniversityId()));
             }
 
             @Override

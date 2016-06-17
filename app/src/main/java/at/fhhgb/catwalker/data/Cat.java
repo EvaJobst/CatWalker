@@ -6,5 +6,5 @@ package at.fhhgb.catwalker.data;
 public class Cat {
     String name;
     String status;
-    String image;
+    //String image;
 }
