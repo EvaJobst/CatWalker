@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "TODO: Open -New Entry- Activity", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(MainActivity.this, NewEntryActivity.class);
+                startActivity(i);
             }
         });
 
@@ -117,7 +118,8 @@ public class MainActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_new_entry : {
-                Toast.makeText(MainActivity.this, "TODO: - New Entry - Activity", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(MainActivity.this, NewEntryActivity.class);
+                startActivity(i);
             } break;
 
             case R.id.nav_gallery : {
