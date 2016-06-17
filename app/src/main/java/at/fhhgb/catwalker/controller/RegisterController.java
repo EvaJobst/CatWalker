@@ -28,7 +28,9 @@ public class RegisterController{
 
     public boolean storePreferences(){
         String universityId = registerUniversity();
-        String userId = registerUser();
+        String userId = null;
+        if(universityId!=null)
+            userId = registerUser();
         if(userId!= null && universityId != null) {
             SharedPreferences.Editor editor = view.getPreferences(Context.MODE_PRIVATE).edit();
             data.setUserId(userId);
@@ -55,9 +57,10 @@ public class RegisterController{
 
     private String registerUniversity() {
         String universityId = null;
-        EditText userName = (EditText) view.findViewById(R.id.registerUniversityText);
-        String name = userName.getText().toString();
-        if(name != "") {
+        EditText userName = (EditText) view.findViewById(R.id.registerNameText);
+        EditText universityName = (EditText) view.findViewById(R.id.registerUniversityText);
+        String name = universityName.getText().toString();
+        if(!name.equals("") && !userName.getText().toString().equals("")) {
             universityId = model.addUniversity(name);
         }
         return universityId;
@@ -68,7 +71,7 @@ public class RegisterController{
         String userId = null;
         EditText userName = (EditText) view.findViewById(R.id.registerNameText);
         String name = userName.getText().toString();
-        if(name != "") {
+        if(!name.equals("")) {
             userId = model.addUser(new User(name));
         }
         return userId;

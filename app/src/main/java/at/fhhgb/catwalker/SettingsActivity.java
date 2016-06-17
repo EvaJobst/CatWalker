@@ -18,6 +18,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
+import at.fhhgb.catwalker.controller.SettingsController;
+
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
@@ -33,13 +35,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     /**
      * Inner class that opens xml-file that contains implementation for setting details
      */
+    public static SettingsController controller =new SettingsController();
+
     public static class SettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            controller.setView((SettingsActivity) this.getActivity());
 
             addPreferencesFromResource(R.xml.pref_settings);
             bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+            controller.bindUsernameToValue(findPreference("settings_username"));
+            controller.bindUniversityListToValue((ListPreference) findPreference("settings_university"));
         }
     }
 

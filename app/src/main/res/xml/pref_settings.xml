@@ -6,11 +6,18 @@
        android:capitalize="words"
        android:defaultValue="@string/str_username"
        android:inputType="textCapWords"
-       android:key="@string/str_username"
+       android:key="settings_username"
        android:maxLines="1"
        android:selectAllOnFocus="true"
        android:singleLine="true"
        android:title="@string/str_settings_username" />
+
+   <ListPreference
+      android:key="settings_university"
+      android:title="@string/str_settings_university"
+      android:summary="@string/str_settings_choose_university"
+       />
+
 
    <PreferenceCategory
        android:title = "@string/str_settings_group_notifications" />

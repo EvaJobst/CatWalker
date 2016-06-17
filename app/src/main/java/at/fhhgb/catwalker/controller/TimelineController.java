@@ -7,6 +7,7 @@ import android.widget.ListView;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import at.fhhgb.catwalker.TimelineActivity;
@@ -39,7 +40,8 @@ public class TimelineController implements PropertyChangeListener{
     public void init(){
         //Todo: Add Preferences for User and UniversityId
         model.addUserChangeListener(data.getUserId());
-        model.addUniversityTimelineInitializationListeners(data.getUniversityId());
+
+        model.addTimelinePostChangeListener(data.getUniversityId());
         initListview(null);
     }
 
@@ -60,6 +62,9 @@ public class TimelineController implements PropertyChangeListener{
     }
 
     public void updateListview(Post p, boolean add){
+        if(listViewAdapter.getCount()==1){
+            listViewAdapter.remove("Timeline is loading...");
+        }
         if(p!=null && add)
             listViewAdapter.add(p.toString());
         else if(p!=null)
