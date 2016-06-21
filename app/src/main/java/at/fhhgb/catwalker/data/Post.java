@@ -20,7 +20,7 @@ public class Post {
 
     //Todo: implement remaining
     public String longitude;
-    public String lattitude;
+    public String latitude;
     public String image;
     public String catId;
 
