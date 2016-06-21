@@ -24,6 +24,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_register);
 
+        controller.initUniversityList();
+
         Button register  = (Button) findViewById(R.id.registerUser);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
 

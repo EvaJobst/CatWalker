@@ -34,4 +34,7 @@
     <string name="str_register_add_university">or add a new one</string>
     <string name="str_settings_choose_university">Choose University</string>
     <string name="str_settings_university">University</string>
+    <string name="str_register_title">Register</string>
+    <string name="str_register_cat">And Cat</string>
+    <string name="str_register_university">Your University</string>
 </resources>

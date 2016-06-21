@@ -15,53 +15,63 @@
         android:id="@+id/registerNameText"
         android:hint="@string/str_register_choose_name"
         android:textAlignment="center"
-        android:layout_above="@+id/textView2"
+        android:singleLine="true"
+        android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="10dp"
+        android:imeOptions="actionNext"/>
+
+    <AutoCompleteTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/registerUniverstiyAutoComplete"
+        android:hint="@string/str_register_university"
+        android:textAlignment="center"
+        android:singleLine="true"
+        android:layout_below="@+id/registerNameText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:imeOptions="actionNext"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:id="@+id/registerCat"
+        android:layout_below="@+id/registerUniverstiyAutoComplete"
+        android:layout_alignRight="@+id/registerUniverstiyAutoComplete"
+        android:layout_alignEnd="@+id/registerUniverstiyAutoComplete"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="@string/str_register_cat"
+        android:textAlignment="center"
+        android:singleLine="true"
+        android:layout_marginBottom="20dp"
+        android:imeOptions="actionDone"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/str_register_submit"
         android:id="@+id/registerUser"
-        android:layout_marginTop="80dp"
-        android:layout_below="@+id/registerUniversitySpinner"
-        android:layout_centerHorizontal="true" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/registerUniversitySpinner"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/registerCat"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_alignEnd="@+id/textView2"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Choose your University"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/str_register_title"
         android:id="@+id/textView2"
-        android:layout_above="@+id/registerUniversitySpinner"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/registerUniversityText"
-        android:layout_below="@+id/registerUniversitySpinner"
-        android:hint="@string/str_register_add_university"
-        android:textAlignment="center"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginBottom="20dp"
+        android:layout_margin="20dp" />
 
 </RelativeLayout>

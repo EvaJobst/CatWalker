@@ -13,15 +13,14 @@ public class LocalData {
     //User specific Data
     private String userId;
     private String universityId;
+    private String universityCat;
     private User user;
-    private University university;
 
     //General Data
     private HashMap<String, String> userList;               //key, userName
-    private HashMap<String, String> universityList;         //key, universityName
+    private HashMap<String, String> universityList;         //universityName, Cat
 
-    //University specific Data
-    private HashMap<String, String> catList;
+    //Timeline
     private TimelineData timelineData;
 
     //PropertyChangeSupport for raising propertyChange Events in case that some data has changed.
@@ -30,7 +29,6 @@ public class LocalData {
     public LocalData(){
         userList = new HashMap<String, String>();
         universityList = new HashMap<String, String>();
-        university = new University();
     }
 
     //----------------------------- PropertyChangeListener ------------------------------------//
@@ -95,13 +93,9 @@ public class LocalData {
         this.universityId = universityId;
     }
 
-    public void setUniversityName(String name) {
-        propertyChangeSupport.firePropertyChange("university.name", university.getName(), name);
-        university.setName(name);
-    }
-
-    public String getUniversityName(){
-        return university.getName();
+    public void setUniversityCat(String cat) {
+        propertyChangeSupport.firePropertyChange("university.cat", universityCat, cat);
+        universityCat=cat;
     }
 
     public void setUniversityList(HashMap<String,String> universityList) {
@@ -115,7 +109,7 @@ public class LocalData {
     public void updateUniversityList(String key, String value, boolean add) {
         if(add){
             universityList.put(key,value);
-            propertyChangeSupport.firePropertyChange("university.add", null, value);
+            propertyChangeSupport.firePropertyChange("university.add", null, key);
         }else{
             universityList.remove(key);
             propertyChangeSupport.firePropertyChange("university.remove", key, null);

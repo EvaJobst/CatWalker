@@ -108,14 +108,14 @@ public class SettingsController implements PropertyChangeListener{
 
     private void updateUniversityListView(){
         keys = data.getUniversityList().keySet().toArray(new String[0]);
-        values = data.getUniversityList().values().toArray(new String[0]);
+        //values = data.getUniversityList().values().toArray(new String[0]);
 
         if(keys.length>0)
             universityPreference.setEntryValues(keys);
         else
             universityPreference.setEntryValues(new CharSequence[]{"1"});
-        if(values.length>0)
-            universityPreference.setEntries(values);
+        if(keys.length>0)
+            universityPreference.setEntries(keys);
         else
             universityPreference.setEntries(new CharSequence[]{"Loading..."});
 
@@ -133,9 +133,9 @@ public class SettingsController implements PropertyChangeListener{
             case "university.remove":
                 updateUniversityListView();
                 break;
-            case "university.name":
+            case "university.change":
                 if(universityPreference!=null)
-                    universityPreference.setSummary(data.getUniversityName());
+                    universityPreference.setSummary((String)event.getNewValue());
                 break;
         }
     }

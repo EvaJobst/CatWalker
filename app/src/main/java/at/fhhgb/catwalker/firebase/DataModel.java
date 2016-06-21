@@ -10,9 +10,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
-import java.util.HashMap;
-
 import at.fhhgb.catwalker.data.*;
 
 /**
@@ -82,7 +79,7 @@ public class DataModel {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue(String.class);
                 Log.d(TAG, "Value is: " + name.toString());
-                data.setUniversityName(name);
+                data.setUniversityCat(name);
             }
 
             @Override
@@ -276,15 +273,17 @@ public class DataModel {
 
     //-------------------------------University Functions------------------------------------//
 
-    public String addUniversity(String name) {
-        DatabaseReference dataRef = database.getReference(universitySection);
-        dataRef = dataRef.push();
-        dataRef.setValue(name);
+    public String addUniversity(String name, String cat) {
+        if(cat=="")
+            cat = "cat";
+        DatabaseReference dataRef = getRef(universitySection,name);
+        //dataRef = dataRef.push();
+        dataRef.setValue(cat);
         return dataRef.getKey();
     }
 
-    public void updateUniversity(String universityId, String name) {
-        getRef(universitySection, universityId).setValue(name);
+    public void updateUniversity(String universityId, String cat) {
+        getRef(universitySection, universityId).setValue(cat);
     }
 
     public void removeUniversity(String universityId) {
