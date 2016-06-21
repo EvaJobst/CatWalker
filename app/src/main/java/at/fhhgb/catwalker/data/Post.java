@@ -63,7 +63,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return title+" - "+getDateTime()+"\n\n"+content+"\n";
+        return title+" - "+getDateTime()+" ( "+universityId+" )\n\n"+content+"\n";
     }
 
     //todo: Better isEqual function

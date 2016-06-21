@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class TimelineData {
     List<Post> posts;
+    String universityName;
+
     public TimelineData(){}
 
     public TimelineData(Iterable<DataSnapshot> ds){

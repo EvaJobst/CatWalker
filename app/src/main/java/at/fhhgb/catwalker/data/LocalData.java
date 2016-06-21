@@ -2,68 +2,34 @@ package at.fhhgb.catwalker.data;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-
-import at.fhhgb.catwalker.firebase.DataModel;
-import at.fhhgb.catwalker.firebase.ServiceLocator;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Lisa on 08.06.2016.
  * Contains the locally stored Data.
  */
 public class LocalData {
+    //User specific Data
     private String userId;
     private String universityId;
-    private User userData;
-    private University university;
+    private String universityCat;
+    private User user;
+
+    //General Data
+    private HashMap<String, String> userList;               //key, userName
+    private HashMap<String, String> universityList;         //universityName, Cat
+
+    //Timeline
     private TimelineData timelineData;
 
+    //PropertyChangeSupport for raising propertyChange Events in case that some data has changed.
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    public LocalData(String userId){
-        this(userId, ServiceLocator.getDataModel());
-    }
-
     public LocalData(){
-        this("", ServiceLocator.getDataModel());
+        userList = new HashMap<String, String>();
+        universityList = new HashMap<String, String>();
     }
-
-    //registers all needed Listeners
-    public LocalData(String userId, DataModel model){
-        this.userId = userId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public User getUser(){
-        return userData;
-    }
-
-    public void updateUserData(String name){
-        String old = "";
-        if(userData==null)
-            userData=new User(name);
-        else{
-            old = userData.name;
-            userData.name=name;
-        }
-        propertyChangeSupport.firePropertyChange("user.name", old, name);
-    }
-
-    public void updateUserData(User user) {
-        if(user == null)
-            return;
-
-        if(userData == null){
-            userData = user;
-            return;
-        }
-        if(user.name.compareTo(userData.name)!=0){
-            updateUserData(user.name);
-        }
-    }
-
 
     //----------------------------- PropertyChangeListener ------------------------------------//
 
@@ -77,12 +43,80 @@ public class LocalData {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    //------------------------------- University ----------------------------------------------//
+    //------------------------------------- User -----------------------------------------------//
 
-    public void setUniversityName(String name) {
-        propertyChangeSupport.firePropertyChange("university.name", university.getName(), name);
-        university.setName(name);
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public User getUser(){
+        return user;
+    }
+
+    public void setUser(User user) {
+        if(user == null)
+            return;
+
+        if(this.user == null){
+            this.user = user;
+            return;
+        }
+        if(user.name.compareTo(this.user.name)!=0){
+            updateUser(user.name);
+        }
+    }
+
+    public void updateUser(String name){
+        String old = "";
+        if(user == null)
+            user = new User(name);
+        else{
+            old = user.name;
+            user.name=name;
+        }
+        propertyChangeSupport.firePropertyChange("user.name", old, name);
+    }
+
+
+    //--------------------------------- University --------------------------------------------//
+
+    public String getUniversityId() {
+        return universityId;
+    }
+
+    public void setUniversityId(String universityId) {
+        propertyChangeSupport.firePropertyChange("university.change", this.universityId, universityId);
+        this.universityId = universityId;
+    }
+
+    public void setUniversityCat(String cat) {
+        propertyChangeSupport.firePropertyChange("university.cat", universityCat, cat);
+        universityCat=cat;
+    }
+
+    public void setUniversityList(HashMap<String,String> universityList) {
+        this.universityList = universityList;
+    }
+
+    public HashMap<String,String> getUniversityList() {
+        return universityList;
+    }
+
+    public void updateUniversityList(String key, String value, boolean add) {
+        if(add){
+            universityList.put(key,value);
+            propertyChangeSupport.firePropertyChange("university.add", null, key);
+        }else{
+            universityList.remove(key);
+            propertyChangeSupport.firePropertyChange("university.remove", key, null);
+        }
+    }
+
+    //---------------------------------- Timeline --------------------------------------------//
 
     public TimelineData getTimelineData() {
         return timelineData;
@@ -105,15 +139,5 @@ public class LocalData {
         propertyChangeSupport.firePropertyChange("timeline.remove", p, null);
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
-    public String getUniversityId() {
-        return universityId;
-    }
-
-    public void setUniversityId(String universityId) {
-        this.universityId = universityId;
-    }
 }

@@ -17,4 +17,12 @@ public class University {
     public void setName(String name) {
         this.name = name;
     }
+
+    public HashMap<String, Cat> getCats() {
+        return cats;
+    }
+
+    public void setCats(HashMap<String, Cat> cats) {
+        this.cats = cats;
+    }
 }

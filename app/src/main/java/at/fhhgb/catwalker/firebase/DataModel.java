@@ -10,8 +10,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
-
 import at.fhhgb.catwalker.data.*;
 
 /**
@@ -29,8 +27,8 @@ public class DataModel {
     private LocalData data;
 
     private FirebaseDatabase database;
-    private ValueEventListener userListener, universityListener, catListener;
-    private ChildEventListener timelineChildListener;
+    private ValueEventListener userListener, universityNameListener, catListener;
+    private ChildEventListener timelineChildListener, universityChildListener;
 
     public LocalData getLocalData() {
         return data;
@@ -48,75 +46,16 @@ public class DataModel {
     public DataModel() {
         database = FirebaseDatabase.getInstance();
         data = new LocalData();
+        initListeners();
     }
 
-    //stores any value in any place in the database
-    public void saveToDatabase(String section, String[] keys, String val) {
-        DatabaseReference dataRef = database.getReference(section);
-        for (String key : keys) {
-            dataRef = dataRef.child(key);
-        }
-        dataRef.setValue(val);
-    }
+    //----------------------------------------------------------------------------------------//
+    //                            Read from Database Functions                                //
+    //----------------------------------------------------------------------------------------//
 
-    //-----------------------------------User Functions---------------------------------------//
-
-    //returns the key of the newly inserted user
-    public String addUser(User user) {
-        DatabaseReference dataRef = database.getReference(userSection);
-        dataRef = dataRef.push();
-        dataRef.setValue(user);
-        return dataRef.getKey();
-    }
-
-    public void updateUser(String userId, User user) {
-        getRef(userSection, userId).setValue(user);
-    }
-
-    public void updateUser(String userId, String key, String value) {
-        getRef(userSection, userId).child(key).setValue(value);
-    }
-
-    public void removeUser(String userId) {
-        getRef(userSection, userId).removeValue();
-    }
-
-    //-------------------------------University Functions------------------------------------//
-
-    public String addUniversity(String name) {
-        DatabaseReference dataRef = database.getReference(universitySection);
-        dataRef = dataRef.push();
-        dataRef.setValue(name);
-        return dataRef.getKey();
-    }
-
-    public void updateUniversity(String universityId, String name) {
-        getRef(universitySection, universityId).setValue(name);
-    }
-
-    public void removeUniversity(String universityId) {
-        getRef(universitySection, universityId).removeValue();
-    }
-
-    //----------------------------------Post Functions---------------------------------------//
-
-    public String addPost(String userId, Post post) {
-        DatabaseReference dataRef = database.getReference(postSection);
-        dataRef = dataRef.push();
-        dataRef.setValue(post);
-        return dataRef.getKey();
-    }
-
-    //public void updatePost(String postId, Post post){}
-    public void removePost(String userId, String postId) {
-        getRef(postSection, postId).removeValue();
-    }
-
-    //-------------------------------- ValueChangeListener ---------------------------------//
-
-    public void addUserChangeListener(String userId) {
-        DatabaseReference userRef = getRef(userSection, userId);
-
+    //----------------------------- Listener Initialization ----------------------------------//
+    public void initListeners(){
+        //--------------------------- User -------------------------------//
         userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -124,7 +63,7 @@ public class DataModel {
                 String name = dataSnapshot.child("name").getValue(String.class);
 
                 Log.d(TAG, "Value is: " + name.toString());
-                data.updateUserData(name);
+                data.updateUser(name);
             }
 
             @Override
@@ -134,22 +73,13 @@ public class DataModel {
             }
         };
 
-        userRef.addValueEventListener(userListener);
-    }
-
-    public void addUniversityTimelineInitializationListeners(String universityId) {
-        DatabaseReference postRef = database.getReference(postSection);
-
-        Query postByUniversity = postRef.orderByChild("universityId").equalTo(universityId);
-        //for the initialization
-        postByUniversity.addListenerForSingleValueEvent(new ValueEventListener() {
+        //------------------------ University ----------------------------//
+        universityNameListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                TimelineData timelineData = new TimelineData(dataSnapshot.getChildren());
-                data.setTimelineData(timelineData);
-                Log.d(TAG, "Value is: " + timelineData.toString());
-
-                //addPost(data.getUserId(), new Post("Hello","Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",Post.getDateFormat().format(new Date()), data.getUserId(), data.getUniversityId()));
+                String name = dataSnapshot.getValue(String.class);
+                Log.d(TAG, "Value is: " + name.toString());
+                data.setUniversityCat(name);
             }
 
             @Override
@@ -157,14 +87,38 @@ public class DataModel {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
-        });
+        };
 
-        //for updates
-        addTimelinePostChangeListener(postByUniversity);
-    }
+        //---------------------- UniversitySection ------------------------------//
+        universityChildListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                data.updateUniversityList(dataSnapshot.getKey(), dataSnapshot.getValue(String.class), true);
+            }
 
-    public void addTimelinePostChangeListener(Query databaseReference){
-        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                //Todo: updateTimelineElement
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                data.updateUniversityList(dataSnapshot.getKey(), dataSnapshot.getValue(String.class), false);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+            }
+        };
+
+        //------------------------- Timeline ------------------------------//
+        timelineChildListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Post p = dataSnapshot.getValue(Post.class);
@@ -191,6 +145,53 @@ public class DataModel {
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
+        };
+    }
+
+    //---------------------------------- Add Change Listener ---------------------------------//
+
+    public void addUserChangeListener(String userId) {
+        DatabaseReference userRef = getRef(userSection, userId);
+        userRef.addValueEventListener(userListener);
+    }
+
+    public void addTimelinePostChangeListener(String universityId){
+        DatabaseReference postRef = database.getReference(postSection);
+        Query postByUniversity = postRef.orderByChild("universityId").equalTo(universityId);
+        postByUniversity.addChildEventListener(timelineChildListener);
+    }
+
+    public void addUniversityNameChangeListener(String universityId) {
+        DatabaseReference userRef = getRef(universitySection, universityId);
+        userRef.addValueEventListener(universityNameListener);
+    }
+
+    public void addUniversityChangeListener() {
+        DatabaseReference universityRef = database.getReference(universitySection);
+        universityRef.addChildEventListener(universityChildListener);
+    }
+
+    //--------------------------------- Fetch Data Once -------------------------------------//
+
+    public void fetchTimelineByUniversityOnce(String universityId) {
+        DatabaseReference postRef = database.getReference(postSection);
+
+        Query postByUniversity = postRef.orderByChild("universityId").equalTo(universityId);
+        //for the initialization
+        postByUniversity.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TimelineData timelineData = new TimelineData(dataSnapshot.getChildren());
+                data.setTimelineData(timelineData);
+                Log.d(TAG, "Value is: " + timelineData.toString());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
         });
     }
 
@@ -210,24 +211,6 @@ public class DataModel {
         });
     }
 
-    public void universityNameChangeListener(String universityId) {
-        DatabaseReference userRef = getRef(universitySection, universityId);
-
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Value is: " + name.toString());
-                data.setUniversityName(name);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
 
     //--------------------------------- Remove Listener ------------------------------------//
 
@@ -236,14 +219,90 @@ public class DataModel {
         dataRef.removeEventListener(userListener);
     }
 
-    public void removeUniversityListener(String userId) {
-        DatabaseReference dataRef = getRef(userSection,userId);
-        dataRef.removeEventListener(userListener);
+    public void removeUniversityListener(String universityId) {
+        DatabaseReference dataRef = getRef(userSection,universityId);
+        dataRef.removeEventListener(universityNameListener);
     }
 
-    public void removeTimelineChildListener() {
+    public void removeTimelineChildListener(String universityId) {
+        DatabaseReference postRef = database.getReference(postSection);
+        Query postByUniversity = postRef.orderByChild("universityId").equalTo(universityId);
+        postByUniversity.removeEventListener(timelineChildListener);
+    }
+
+    public void removeAllListeners(String userId, String universityId){
+        removeUserListener(userId);
+        removeUniversityListener(universityId);
+        removeTimelineChildListener(universityId);
+    }
+    //----------------------------------------------------------------------------------------//
+    //                             Write to Database Functions                                //
+    //----------------------------------------------------------------------------------------//
+
+    //stores any value in any place in the database
+    public void saveToDatabase(String section, String[] keys, String val) {
+        DatabaseReference dataRef = database.getReference(section);
+        for (String key : keys) {
+            dataRef = dataRef.child(key);
+        }
+        dataRef.setValue(val);
+    }
+
+
+    //-----------------------------------User Functions---------------------------------------//
+
+    //returns the key of the newly inserted user
+    public String addUser(User user) {
+        DatabaseReference dataRef = database.getReference(userSection);
+        dataRef = dataRef.push();
+        dataRef.setValue(user);
+        return dataRef.getKey();
+    }
+
+    public void updateUser(String userId, User user) {
+        getRef(userSection, userId).setValue(user);
+    }
+
+    public void updateUser(String userId, String key, String value) {
+        getRef(userSection, userId).child(key).setValue(value);
+    }
+
+    public void removeUser(String userId) {
+        getRef(userSection, userId).removeValue();
+    }
+
+    //-------------------------------University Functions------------------------------------//
+
+    public String addUniversity(String name, String cat) {
+        if(cat=="")
+            cat = "cat";
+        DatabaseReference dataRef = getRef(universitySection,name);
+        //dataRef = dataRef.push();
+        dataRef.setValue(cat);
+        return dataRef.getKey();
+    }
+
+    public void updateUniversity(String universityId, String cat) {
+        getRef(universitySection, universityId).setValue(cat);
+    }
+
+    public void removeUniversity(String universityId) {
+        getRef(universitySection, universityId).removeValue();
+    }
+
+    //----------------------------------Post Functions---------------------------------------//
+
+    public String addPost(String userId, Post post) {
         DatabaseReference dataRef = database.getReference(postSection);
-        dataRef.removeEventListener(timelineChildListener);
+        dataRef = dataRef.push();
+        dataRef.setValue(post);
+        return dataRef.getKey();
+    }
+
+    //todo: public void updatePost(String postId, Post post){}
+
+    public void removePost(String userId, String postId) {
+        getRef(postSection, postId).removeValue();
     }
 
 }
