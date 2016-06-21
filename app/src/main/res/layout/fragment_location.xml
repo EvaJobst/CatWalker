@@ -10,17 +10,48 @@
         android:layout_height="match_parent"
         android:id="@+id/new_mapView" />
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/new_textBar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="left|bottom">
+        android:layout_height="95dp"
+        android:layout_gravity="left|bottom"
+        android:background="@color/colorAccent"
+        android:visibility="invisible">
 
-        <Spinner
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner"
-            android:layout_gravity="left|center_vertical" />
-    </FrameLayout>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Building"
+            android:id="@+id/location_txt_building"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="60dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Floor"
+            android:id="@+id/location_txt_floor"
+            android:layout_gravity="left|bottom"
+            android:layout_below="@+id/location_txt_building"
+            android:layout_alignLeft="@+id/location_txt_building"
+            android:layout_alignStart="@+id/location_txt_building" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Room"
+            android:id="@+id/location_txt_room"
+            android:layout_below="@+id/location_txt_floor"
+            android:layout_alignLeft="@+id/location_txt_floor"
+            android:layout_alignStart="@+id/location_txt_floor" />
+    </RelativeLayout>
 
 </FrameLayout>

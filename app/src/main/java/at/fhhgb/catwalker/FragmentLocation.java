@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,10 +25,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
 public class FragmentLocation extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
+    ImageButton b;
     MapView mView;
     GoogleMap mMap;
     LocationRequest mLocationRequest;
-    boolean zoom;
     GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -39,6 +40,8 @@ public class FragmentLocation extends Fragment implements OnMapReadyCallback, Go
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate and return the layout
         View v = inflater.inflate(R.layout.fragment_location, container, false);
+
+        // Set up Map
         mView = (MapView) v.findViewById(R.id.new_mapView);
 
         // Create an instance of GoogleAPIClient.
@@ -50,7 +53,6 @@ public class FragmentLocation extends Fragment implements OnMapReadyCallback, Go
         .build();
         }
 
-        //mLocationRequest = new LocationRequest().setInterval(1000).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mView.onCreate(savedInstanceState);
         mView.getMapAsync(this);
         return v;
@@ -64,33 +66,32 @@ public void onStop() {
 
 @Override
 public void onStart() {
-        super.onStart();
-        }
+    super.onStart();
+}
 
 @Override
 public void onResume() {
-        super.onResume();
-        mView.onResume();
-        }
+    super.onResume();
+    mView.onResume();
+}
 
 @Override
 public void onPause() {
-        super.onPause();
-        mView.onPause();
-        }
+    super.onPause();
+    mView.onPause();
+}
 
 @Override
 public void onDestroy() {
-        super.onDestroy();
-        mView.onDestroy();
-        }
+    super.onDestroy();
+    mView.onDestroy();
+}
 
 @Override
 public void onLowMemory() {
-        super.onLowMemory();
-        mView.onLowMemory();
-
-        }
+    super.onLowMemory();
+    mView.onLowMemory();
+}
 
 public void onMapReady(GoogleMap googleMap) {
     mMap = googleMap;
@@ -106,23 +107,17 @@ public void onConnected(@Nullable Bundle bundle) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(loc.getLatitude(), loc.getLongitude()), 18));
         Toast.makeText(this.getActivity(), "Permission granted", Toast.LENGTH_SHORT).show();
     }
-
-        }
-
+}
 
 
-@Override
-public void onConnectionSuspended(int i) {
-
-        }
 
 @Override
-public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-        }
+public void onConnectionSuspended(int i) {}
 
 @Override
-public void onLocationChanged(Location location) {
+public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
-        }
-        }
+@Override
+public void onLocationChanged(Location location) {}
+
+}
