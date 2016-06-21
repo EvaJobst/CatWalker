@@ -25,4 +25,14 @@
     <string name="str_settings_silent">Silent</string>
     <string name="str_settings_vibrate">Vibrate</string>
     <string name="title_activity_sightings">SightingsActivity</string>
+    <string name="str_settings_old_name">Old Name</string>
+    <string name="str_settings_new_name">New Name</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_test">Test</string>
+    <string name="str_register_choose_name">Choose Name</string>
+    <string name="str_register_submit">Continue</string>
+    <string name="str_register_add_university">or add a new one</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

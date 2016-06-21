@@ -12,15 +12,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
+import at.fhhgb.catwalker.controller.TimelineController;
+
+public class TimelineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    TimelineController controller;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_timeline);
+
+        controller = new TimelineController(this);
 
         // Action Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -31,7 +39,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "TODO: Open -New Entry- Activity", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(TimelineActivity.this, NewEntryActivity.class);
+                startActivity(i);
             }
         });
 
@@ -56,20 +65,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-        //TimelineArray timeline = new TimelineArray(this);
-        //timeline.add(new TimelineEntry("New Image", "Campuskater gesichtet!", R.drawable.pusheen));
-        //timeline.add(new TimelineEntry("New Image", "Campuskater derzeit im Studentenwohnheim", R.drawable.pusheen));
-        //timeline.add(new TimelineEntry("New Image", "Derzeit schläft der Kater im Labor", R.drawable.pusheen));
-        //this.setListAdapter(timeline);
-
-
-    //@Override
-    //protected void onListItemClick(ListView l, View v, int pos, long id) {
-    //    ListAdapter data = l.getAdapter();
-    //    TimelineEntry element = (TimelineEntry) data.getItem(pos);
-    //    Toast.makeText(this, "selected element " + element, Toast.LENGTH_SHORT).show();
-    //}
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -86,12 +81,12 @@ public class MainActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_settings: {
-                Toast.makeText(MainActivity.this, "TODO: Move to Navigation Drawer", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimelineActivity.this, "TODO: Move to Navigation Drawer", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 return true;
             } //break;
-            default : {Toast.makeText(MainActivity.this, "Unknown ActionBar ID selected", Toast.LENGTH_SHORT).show();}
+            default : {Toast.makeText(TimelineActivity.this, "Unknown ActionBar ID selected", Toast.LENGTH_SHORT).show();}
         }
 
         return super.onOptionsItemSelected(item);
@@ -109,11 +104,12 @@ public class MainActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_new_entry : {
-                Toast.makeText(MainActivity.this, "TODO: - New Entry - Activity", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(this, NewEntryActivity.class);
+                startActivity(i);
             } break;
 
             case R.id.nav_gallery : {
-                Toast.makeText(MainActivity.this, "TODO: - Gallery - Activity", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimelineActivity.this, "TODO: - Gallery - Activity", Toast.LENGTH_SHORT).show();
             } break;
 
             case R.id.nav_map : {
@@ -127,11 +123,11 @@ public class MainActivity extends AppCompatActivity
             } break;
 
             case R.id.nav_help : {
-                Toast.makeText(MainActivity.this, "TODO: - Help - Activity", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimelineActivity.this, "TODO: - Help - Activity", Toast.LENGTH_SHORT).show();
             } break;
 
             default : {
-                Toast.makeText(MainActivity.this, "Unknown Drawer ID selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimelineActivity.this, "Unknown Drawer ID selected", Toast.LENGTH_SHORT).show();
             }
         }
 
