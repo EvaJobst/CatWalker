@@ -1,63 +1,86 @@
 package at.fhhgb.catwalker;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class NewEntryActivity extends AppCompatActivity {
+public class NewEntryActivity extends AppCompatActivity implements ImageButton.OnClickListener {
+    Toolbar toolbarBottom;
+    Fragment info, location, picture;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        info = new FragmentInfo();
+        location = new FragmentLocation();
+        picture = new FragmentPicture();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
 
-        final Toolbar toolbarBottom = (Toolbar) findViewById(R.id.new_toolbar_left);
+        ImageButton b = null;
+        b = (ImageButton) findViewById(R.id.new_btn_info);
+        b.setOnClickListener(this);
 
-        toolbarBottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                FragmentManager mgr = getFragmentManager();
-                FragmentTransaction ft = mgr.beginTransaction();
+        b = (ImageButton) findViewById(R.id.new_btn_location);
+        b.setOnClickListener(this);
 
-                switch (item.getItemId()) {
-                    case R.id.new_tab_info: {
-                        ft.replace(R.id.new_fragment, new FragmentInfo());
-                    } break;
+        b = (ImageButton) findViewById(R.id.new_btn_picture);
+        b.setOnClickListener(this);
 
-                    case R.id.new_tab_location: {
-                        ft.replace(R.id.new_fragment, new FragmentLocation());
-                    } break;
+        b = (ImageButton) findViewById(R.id.new_btn_send);
+        b.setOnClickListener(this);
+    }
 
-                    case R.id.new_tab_picture: {
-                        ft.replace(R.id.new_fragment, new FragmentPicture());
-                    } break;
-                }
+    @Override
+    public void onClick(View v) {
+        setColor(v);
 
-                ft.commit();
-                return true;
-            }
-        });
+        FragmentManager mgr = getFragmentManager();
+        FragmentTransaction ft = mgr.beginTransaction();
 
-        // Inflate a menu to be displayed in the toolbar
-        toolbarBottom.inflateMenu(R.menu.new_menu_bottom);
+        switch(v.getId()) {
+            case R.id.new_btn_info : {
+                ft.replace(R.id.new_fragment, info, "fragmentInfo");
+            } break;
 
-        Toolbar send = (Toolbar) findViewById(R.id.new_toolbar_right);
-        send.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            case R.id.new_btn_location : {
+                ft.replace(R.id.new_fragment, location, "fragmentLocation");
+            } break;
 
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.new_tab_send) {
-                    Toast.makeText(NewEntryActivity.this, "SEND", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
+            case R.id.new_btn_picture : {
+                ft.replace(R.id.new_fragment, picture, "fragmentPicture");
+            } break;
 
-                return false;
-            }
-        });
+            case R.id.new_btn_send : {
+                Toast.makeText(this, "Send", Toast.LENGTH_SHORT).show();
+            } break;
 
-        send.inflateMenu(R.menu.new_menu_send);
+            default : {}
+        }
+
+        ft.commit();
+    }
+
+    public void setColor(View v) {
+        View info = findViewById(R.id.new_btn_info);
+        info.setBackgroundColor(0);
+
+        View location = findViewById(R.id.new_btn_location);
+        location.setBackgroundColor(0);
+
+        View picture = findViewById(R.id.new_btn_picture);
+        picture.setBackgroundColor(0);
+
+        v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
     }
 }
