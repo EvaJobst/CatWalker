@@ -15,20 +15,24 @@ public class NewEntryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_new_entry);
+
+        final FragmentManager mgr = getFragmentManager();
+        final FragmentTransaction ft = mgr.beginTransaction();
         info = new FragmentInfo();
         location = new FragmentLocation();
         picture = new FragmentPicture();
+        ImageButton b = (ImageButton) findViewById(R.id.new_btn_info);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_entry);
+        ft.replace(R.id.new_fragment, info, "fragmentInfo");
+        setColor(b);
+        ft.commit();
 
         entryListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setColor(v);
-
-                FragmentManager mgr = getFragmentManager();
-                FragmentTransaction ft = mgr.beginTransaction();
 
                 switch(v.getId()) {
                     case R.id.new_btn_info : {
@@ -54,7 +58,7 @@ public class NewEntryActivity extends AppCompatActivity {
             }
         };
 
-        ImageButton b = null;
+        b = null;
         b = (ImageButton) findViewById(R.id.new_btn_info);
         b.setOnClickListener(entryListener);
 
