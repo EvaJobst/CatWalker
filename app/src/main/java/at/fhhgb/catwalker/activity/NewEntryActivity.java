@@ -3,6 +3,8 @@ package at.fhhgb.catwalker.activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +21,6 @@ public class NewEntryActivity extends AppCompatActivity {
     public static ImageButton.OnClickListener entryListener;
     FragmentManager mgr = getFragmentManager();
     FragmentTransaction ft;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,18 @@ public class NewEntryActivity extends AppCompatActivity {
             } break;
 
             case R.id.new_btn_picture : {
-                ft.replace(R.id.new_fragment, picture, "fragmentPicture");
+                if(FragmentPicture.PICTURE) {
+                    ft.replace(R.id.new_fragment, picture, "fragmentPicture");
+                }
+
+                else {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, FragmentPicture.REQUEST_IMAGE_CAPTURE);
+                        FragmentPicture.PICTURE = true;
+                    }
+                }
+
             } break;
 
             case R.id.new_btn_send : {

@@ -4,9 +4,18 @@
     android:layout_height="match_parent"
     tools:context=".fragment.FragmentPicture">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Fragment Camera" />
+        android:id="@+id/new_picture_image"
+        android:layout_gravity="left|top" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/new_picture_fab"
+        android:src="@drawable/ic_fab_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"/>
 </FrameLayout>
