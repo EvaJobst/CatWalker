@@ -40,7 +40,6 @@ public class Post {
         this.setDateTime(dateTime);
         this.userId = userId;
         this.universityId = universityId;
-
     }
 
 
