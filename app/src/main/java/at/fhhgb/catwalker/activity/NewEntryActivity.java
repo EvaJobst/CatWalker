@@ -17,55 +17,31 @@ import at.fhhgb.catwalker.R;
 public class NewEntryActivity extends AppCompatActivity {
     Fragment info, location, picture;
     public static ImageButton.OnClickListener entryListener;
+    FragmentManager mgr = getFragmentManager();
+    FragmentTransaction ft;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
 
-        final FragmentManager mgr = getFragmentManager();
-        final FragmentTransaction ft = mgr.beginTransaction();
         info = new FragmentInfo();
         location = new FragmentLocation();
         picture = new FragmentPicture();
-        ImageButton b = (ImageButton) findViewById(R.id.new_btn_info);
 
-        ft.replace(R.id.new_fragment, info, "fragmentInfo");
-        setColor(b);
-        ft.commit();
-
-        entryListener = new View.OnClickListener() {
+        entryListener = new ImageButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setColor(v);
-
-                switch(v.getId()) {
-                    case R.id.new_btn_info : {
-                        ft.replace(R.id.new_fragment, info, "fragmentInfo");
-                    } break;
-
-                    case R.id.new_btn_location : {
-                        ft.replace(R.id.new_fragment, location, "fragmentLocation");
-                    } break;
-
-                    case R.id.new_btn_picture : {
-                        ft.replace(R.id.new_fragment, picture, "fragmentPicture");
-                    } break;
-
-                    case R.id.new_btn_send : {
-                        Toast.makeText(NewEntryActivity.this, "Send", Toast.LENGTH_SHORT).show();
-                    } break;
-
-                    default : {}
-                }
-
-                ft.commit();
+                setFragment(v);
             }
         };
 
-        b = null;
+        ImageButton b = null;
         b = (ImageButton) findViewById(R.id.new_btn_info);
         b.setOnClickListener(entryListener);
+
+        setFragment(b);
 
         b = (ImageButton) findViewById(R.id.new_btn_location);
         b.setOnClickListener(entryListener);
@@ -75,6 +51,37 @@ public class NewEntryActivity extends AppCompatActivity {
 
         b = (ImageButton) findViewById(R.id.new_btn_send);
         b.setOnClickListener(entryListener);
+
+
+    }
+
+    public void setFragment(View v) {
+        ft = mgr.beginTransaction();
+
+        switch(v.getId()) {
+            case R.id.new_btn_info : {
+                ft.replace(R.id.new_fragment, info, "fragmentInfo");
+            } break;
+
+            case R.id.new_btn_location : {
+                ft.replace(R.id.new_fragment, location, "fragmentLocation");
+            } break;
+
+            case R.id.new_btn_picture : {
+                ft.replace(R.id.new_fragment, picture, "fragmentPicture");
+            } break;
+
+            case R.id.new_btn_send : {
+                Toast.makeText(NewEntryActivity.this, "Send", Toast.LENGTH_SHORT).show();
+            } break;
+
+            default : {
+                ft.replace(R.id.new_fragment, info, "fragmentInfo");
+            }
+        }
+
+        ft.commit();
+        setColor(v);
     }
 
     public void setColor(View v) {

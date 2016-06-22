@@ -107,7 +107,6 @@ public void onConnected(@Nullable Bundle bundle) {
         mMap.setMyLocationEnabled(true);
         Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(loc.getLatitude(), loc.getLongitude()), 18));
-        Toast.makeText(this.getActivity(), "Permission granted", Toast.LENGTH_SHORT).show();
     }
 }
 
