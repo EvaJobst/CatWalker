@@ -27,7 +27,7 @@ public class DataModel {
     private LocalData data;
 
     private FirebaseDatabase database;
-    private ValueEventListener userListener, universityNameListener, catListener;
+    private ValueEventListener userListener;
     private ChildEventListener timelineChildListener, universityChildListener;
 
     public LocalData getLocalData() {
@@ -73,22 +73,6 @@ public class DataModel {
             }
         };
 
-        //------------------------ University ----------------------------//
-        universityNameListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Value is: " + name.toString());
-                data.setUniversityCat(name);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        };
-
         //---------------------- UniversitySection ------------------------------//
         universityChildListener = new ChildEventListener() {
             @Override
@@ -98,7 +82,6 @@ public class DataModel {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                //Todo: updateTimelineElement
             }
 
             @Override
@@ -122,18 +105,22 @@ public class DataModel {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Post p = dataSnapshot.getValue(Post.class);
-                data.addPost(p);
+                String key = dataSnapshot.getKey();
+                data.addPost(key, p);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                //Todo: updateTimelineElement
+                Post p = dataSnapshot.getValue(Post.class);
+                String key = dataSnapshot.getKey();
+                data.updatePost(key, p);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Post p = dataSnapshot.getValue(Post.class);
-                data.removePost(p);
+                String key = dataSnapshot.getKey();
+                data.removePost(key,p);
             }
 
             @Override
@@ -161,56 +148,10 @@ public class DataModel {
         postByUniversity.addChildEventListener(timelineChildListener);
     }
 
-    public void addUniversityNameChangeListener(String universityId) {
-        DatabaseReference userRef = getRef(universitySection, universityId);
-        userRef.addValueEventListener(universityNameListener);
-    }
-
     public void addUniversityChangeListener() {
         DatabaseReference universityRef = database.getReference(universitySection);
         universityRef.addChildEventListener(universityChildListener);
     }
-
-    //--------------------------------- Fetch Data Once -------------------------------------//
-
-    public void fetchTimelineByUniversityOnce(String universityId) {
-        DatabaseReference postRef = database.getReference(postSection);
-
-        Query postByUniversity = postRef.orderByChild("universityId").equalTo(universityId);
-        //for the initialization
-        postByUniversity.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                TimelineData timelineData = new TimelineData(dataSnapshot.getChildren());
-                data.setTimelineData(timelineData);
-                Log.d(TAG, "Value is: " + timelineData.toString());
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-    public void fetchPostDataOnce(String postId) {
-          /* TODO : implement posts query */
-        DatabaseReference postRef = getRef(postSection, postId);
-        postRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Post p = dataSnapshot.getValue(Post.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 
     //--------------------------------- Remove Listener ------------------------------------//
 
@@ -221,7 +162,7 @@ public class DataModel {
 
     public void removeUniversityListener(String universityId) {
         DatabaseReference dataRef = getRef(userSection,universityId);
-        dataRef.removeEventListener(universityNameListener);
+        dataRef.removeEventListener(universityChildListener);
     }
 
     public void removeTimelineChildListener(String universityId) {

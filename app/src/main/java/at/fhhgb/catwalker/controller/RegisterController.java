@@ -46,7 +46,6 @@ public class RegisterController implements PropertyChangeListener{
     public void initDependentListeners(){
         model.addTimelinePostChangeListener(data.getUniversityId());
         model.addUserChangeListener(data.getUserId());
-        model.addUniversityNameChangeListener(data.getUniversityId());
     }
 
     public boolean storePreferences(){
@@ -100,13 +99,9 @@ public class RegisterController implements PropertyChangeListener{
         EditText userName = (EditText) view.findViewById(R.id.registerNameText);
         AutoCompleteTextView universityName = (AutoCompleteTextView) view.findViewById(R.id.registerUniverstiyAutoComplete);
         EditText universityCat = (EditText) view.findViewById(R.id.registerCat);
-        if(!universityName.getText().toString().equals("") && !userName.getText().toString().equals("") && !universityCat.toString().equals("")){
-            return true;
-        }
-        return false;
+        return !universityName.getText().toString().equals("") && !userName.getText().toString().equals("") && !universityCat.toString().equals("");
     }
 
-    //todo: add/choose university function
     private String registerUser() {
         String userId = null;
         EditText userName = (EditText) view.findViewById(R.id.registerNameText);
@@ -129,12 +124,10 @@ public class RegisterController implements PropertyChangeListener{
         autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -143,7 +136,6 @@ public class RegisterController implements PropertyChangeListener{
                 updateUniversityCat(autoCompleteTextView.getText().toString());
             }
         });
-
     }
 
     public void updateUniversityList(String key, boolean add){
