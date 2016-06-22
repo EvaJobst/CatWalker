@@ -1,0 +1,57 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="at.fhhgb.catwalker.FragmentLocation">
+
+    <com.google.android.gms.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/new_mapView" />
+
+    <RelativeLayout
+        android:id="@+id/new_textBar"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:layout_gravity="left|bottom"
+        android:background="@color/colorAccent"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Building"
+            android:id="@+id/location_txt_building"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="60dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Floor"
+            android:id="@+id/location_txt_floor"
+            android:layout_gravity="left|bottom"
+            android:layout_below="@+id/location_txt_building"
+            android:layout_alignLeft="@+id/location_txt_building"
+            android:layout_alignStart="@+id/location_txt_building" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Room"
+            android:id="@+id/location_txt_room"
+            android:layout_below="@+id/location_txt_floor"
+            android:layout_alignLeft="@+id/location_txt_floor"
+            android:layout_alignStart="@+id/location_txt_floor" />
+    </RelativeLayout>
+
+</FrameLayout>

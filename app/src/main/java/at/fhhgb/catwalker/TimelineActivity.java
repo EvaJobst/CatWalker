@@ -28,7 +28,7 @@ public class TimelineActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        controller = new MainViewController(this);
+        controller = new TimelineController(this);
 
         // Action Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -39,7 +39,8 @@ public class TimelineActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(TimelineActivity.this, "TODO: Open -New Entry- Activity", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(TimelineActivity.this, NewEntryActivity.class);
+                startActivity(i);
             }
         });
 
@@ -103,7 +104,8 @@ public class TimelineActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_new_entry : {
-                Toast.makeText(TimelineActivity.this, "TODO: - New Entry - Activity", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(this, NewEntryActivity.class);
+                startActivity(i);
             } break;
 
             case R.id.nav_gallery : {
