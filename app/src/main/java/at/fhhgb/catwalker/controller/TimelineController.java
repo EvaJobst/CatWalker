@@ -1,5 +1,6 @@
 package at.fhhgb.catwalker.controller;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -33,32 +34,22 @@ public class TimelineController implements PropertyChangeListener{
         data = model.getLocalData();
 
         data.addPropertyChangeListener(this);
-
-        init();
+        initListview();
     }
 
-    public void init(){
-        //Todo: Add Preferences for User and UniversityId
-        model.addUserChangeListener(data.getUserId());
-
-        model.addTimelinePostChangeListener(data.getUniversityId());
-        initListview(null);
-    }
-
-    public void initListview(TimelineData timelineData){
+    public void initListview(){
         List<String> listViewItems = new ArrayList<String>();
 
-        if(timelineData!=null)
-            listViewItems = timelineData.toStringList();
-        else
-            listViewItems.add("Timeline is loading...");
+        Post p = new Post("Title", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.", Post.getDateFormat().format( new Date()), data.getUserId(), data.getUniversityId());
+       // model.addPost(data.getUserId(), p);
+
+        if(data.getTimelineData()!=null)
+            listViewItems = data.getTimelineData().toStringList();
 
         listViewAdapter = new ArrayAdapter<String>(view,
                 android.R.layout.simple_list_item_1, listViewItems);
         ListView listView = (ListView) view.findViewById(R.id.timelineListView);
         listView.setAdapter(listViewAdapter);
-
-
     }
 
     public void updateListview(Post p, boolean add){
@@ -71,19 +62,21 @@ public class TimelineController implements PropertyChangeListener{
             listViewAdapter.remove(p.toString());
     }
 
-
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()){
-            case "timeline":
-                initListview((TimelineData)event.getNewValue());
-                break;
             case "timeline.add":
                 updateListview((Post)event.getNewValue(), true);
                 break;
             case "timeline.remove":
                 updateListview((Post)event.getOldValue(), false);
                 Log.d("Remove Post", ""+((Post)event.getOldValue()));
+                break;
+            case "timeline.update":
+                initListview();
+                break;
+            case "timeline.clear":
+                initListview();
                 break;
         }
     }

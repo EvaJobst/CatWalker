@@ -13,7 +13,6 @@ public class LocalData {
     //User specific Data
     private String userId;
     private String universityId;
-    private String universityCat;
     private User user;
 
     //General Data
@@ -27,8 +26,9 @@ public class LocalData {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     public LocalData(){
-        userList = new HashMap<String, String>();
-        universityList = new HashMap<String, String>();
+        userList = new HashMap<>();
+        universityList = new HashMap<>();
+        timelineData = new TimelineData();
     }
 
     //----------------------------- PropertyChangeListener ------------------------------------//
@@ -94,8 +94,8 @@ public class LocalData {
     }
 
     public void setUniversityCat(String cat) {
-        propertyChangeSupport.firePropertyChange("university.cat", universityCat, cat);
-        universityCat=cat;
+        propertyChangeSupport.firePropertyChange("university.cat", getUniversityList().get(universityId), cat);
+        getUniversityList().put(universityId, cat);
     }
 
     public void setUniversityList(HashMap<String,String> universityList) {
@@ -122,22 +122,29 @@ public class LocalData {
         return timelineData;
     }
 
-    public void setTimelineData(TimelineData timelineData) {
-        propertyChangeSupport.firePropertyChange("timeline", getTimelineData(), timelineData);
-        this.timelineData = timelineData;
-    }
-
-    public void addPost(Post p) {
+    public void addPost(String key, Post p) {
         propertyChangeSupport.firePropertyChange("timeline.add", null, p);
         if(timelineData!=null)
-            this.timelineData.add(p);
+            this.timelineData.add(key, p);
     }
 
-    public void removePost(Post p) {
+    public void removePost(String key, Post p) {
         if(timelineData!=null)
-            this.timelineData.remove(p);
+            this.timelineData.remove(key);
         propertyChangeSupport.firePropertyChange("timeline.remove", p, null);
     }
 
+    public void resetTimeline(){
+        timelineData = new TimelineData();
+        propertyChangeSupport.firePropertyChange("timeline.clear", null, null);
+    }
+
+    public void updatePost(String key, Post p) {
+        if(timelineData!=null){
+            Post old = this.timelineData.posts.get(key);
+            this.timelineData.add(key, p);
+            propertyChangeSupport.firePropertyChange("timeline.update", old , p);
+        }
+    }
 
 }

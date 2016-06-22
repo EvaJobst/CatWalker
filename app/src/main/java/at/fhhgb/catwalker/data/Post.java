@@ -1,5 +1,6 @@
 package at.fhhgb.catwalker.data;
 
+import android.media.Image;
 import android.util.Log;
 
 import java.text.DateFormat;
@@ -21,7 +22,7 @@ public class Post {
     //Todo: implement remaining
     public String longitude;
     public String lattitude;
-    public String image;
+    private Image image;
     public String catId;
 
     private static DateFormat dateFormat = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.ENGLISH);
@@ -42,7 +43,6 @@ public class Post {
         this.universityId = universityId;
 
     }
-
 
     public void setDateTime(String DateTime){
         DateFormat format = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.ENGLISH);

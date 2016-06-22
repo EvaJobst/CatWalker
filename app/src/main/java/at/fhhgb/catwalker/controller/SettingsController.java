@@ -34,7 +34,6 @@ public class SettingsController implements PropertyChangeListener{
         data = model.getLocalData();
         data.addPropertyChangeListener(this);
         model.addUniversityChangeListener();
-        model.addUniversityNameChangeListener(data.getUniversityId());
     }
 
     public void setView(SettingsActivity view){
@@ -87,12 +86,23 @@ public class SettingsController implements PropertyChangeListener{
                 updateUserData(newValue.toString());
                 isHandled=true;
             }else if (preference.getKey().equals("settings_university")){
-                int i= 1;
-                data.setUniversityId((String) newValue);
+
+                String newID = (String) newValue;
+
+                //update TimelineChildListener
+                model.removeTimelineChildListener(data.getUniversityId());
+                model.addTimelinePostChangeListener(newID);
+                data.resetTimeline();
+
+                //update data
+                data.setUniversityId(newID);
+
+                //store preference
                 SharedPreferences.Editor pref = view.getPreferences(Context.MODE_PRIVATE).edit();
                 pref.putString("universityId", data.getUniversityId());
                 pref.commit();
-                model.fetchTimelineByUniversityOnce(data.getUniversityId());
+
+
                 isHandled = true;
             }
             return isHandled;
