@@ -2,12 +2,8 @@ package at.fhhgb.catwalker.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.DataSetObserver;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.CompletionInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -18,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.fhhgb.catwalker.R;
-import at.fhhgb.catwalker.RegisterActivity;
+import at.fhhgb.catwalker.activity.RegisterActivity;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.User;
 import at.fhhgb.catwalker.firebase.DataModel;

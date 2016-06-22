@@ -12,18 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".TimelineActivity"
+            android:name=".activity.TimelineActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:label="@string/str_nav_settings"
-            android:parentActivityName=".TimelineActivity">
+            android:parentActivityName=".activity.TimelineActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".TimelineActivity" />
+                android:value=".activity.TimelineActivity" />
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -38,20 +38,20 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".SightingsActivity"
+            android:name=".activity.SightingsActivity"
             android:label="@string/title_activity_sightings"
-            android:parentActivityName=".TimelineActivity">
+            android:parentActivityName=".activity.TimelineActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".TimelineActivity" />
+                android:value=".activity.TimelineActivity" />
         </activity>
-        <activity android:name=".RegisterActivity" android:noHistory="true">
+        <activity android:name=".activity.RegisterActivity" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewEntryActivity"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+        <activity android:name=".activity.NewEntryActivity"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data
             android:name="com.google.android.gms.version"

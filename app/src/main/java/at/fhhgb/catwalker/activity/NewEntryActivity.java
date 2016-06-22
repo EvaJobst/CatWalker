@@ -1,4 +1,4 @@
-package at.fhhgb.catwalker;
+package at.fhhgb.catwalker.activity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import at.fhhgb.catwalker.fragment.FragmentInfo;
+import at.fhhgb.catwalker.fragment.FragmentLocation;
+import at.fhhgb.catwalker.fragment.FragmentPicture;
+import at.fhhgb.catwalker.R;
 
 public class NewEntryActivity extends AppCompatActivity {
     Fragment info, location, picture;

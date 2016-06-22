@@ -1,20 +1,15 @@
 package at.fhhgb.catwalker.controller;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.util.Log;
-import android.widget.EditText;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Map;
-import java.util.Objects;
 
-import at.fhhgb.catwalker.*;
+import at.fhhgb.catwalker.activity.SettingsActivity;
 import at.fhhgb.catwalker.data.*;
 import at.fhhgb.catwalker.firebase.*;
 

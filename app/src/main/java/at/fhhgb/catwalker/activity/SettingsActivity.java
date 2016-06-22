@@ -1,4 +1,4 @@
-package at.fhhgb.catwalker;
+package at.fhhgb.catwalker.activity;
 
 
 import android.content.Context;
@@ -18,6 +18,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
+import at.fhhgb.catwalker.AppCompatPreferenceActivity;
+import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.controller.SettingsController;
 
 /**

@@ -1,4 +1,4 @@
-package at.fhhgb.catwalker;
+package at.fhhgb.catwalker.fragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -23,6 +23,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+
+import at.fhhgb.catwalker.R;
 
 public class FragmentLocation extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
     ImageButton b;

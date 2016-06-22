@@ -1,4 +1,4 @@
-package at.fhhgb.catwalker;
+package at.fhhgb.catwalker.activity;
 
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -18,6 +18,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import at.fhhgb.catwalker.R;
 
 public class SightingsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {

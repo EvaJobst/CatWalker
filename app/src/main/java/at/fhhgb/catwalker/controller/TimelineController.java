@@ -1,6 +1,5 @@
 package at.fhhgb.catwalker.controller;
 
-import android.os.SystemClock;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -11,11 +10,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import at.fhhgb.catwalker.TimelineActivity;
+import at.fhhgb.catwalker.activity.TimelineActivity;
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
-import at.fhhgb.catwalker.data.TimelineData;
 import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
