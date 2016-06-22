@@ -5,16 +5,19 @@
     tools:context=".fragment.FragmentInfo">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-        android:text="Fragment Info" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/new_info_title"
         android:layout_gravity="center"
-        android:text="Edit here!"/>
+        android:text="Description here!"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_info_description"
+        android:layout_gravity="top|center"
+        android:text="Description here!"/>
 
 </FrameLayout>
