@@ -72,31 +72,6 @@ public class TimelineActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        switch(id) {
-            case R.id.nav_settings: {
-                Toast.makeText(TimelineActivity.this, "TODO: Move to Navigation Drawer", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(this, SettingsActivity.class);
-                startActivity(i);
-                return true;
-            } //break;
-            default : {Toast.makeText(TimelineActivity.this, "Unknown ActionBar ID selected", Toast.LENGTH_SHORT).show();}
-        }
-
-        return super.onOptionsItemSelected(item);
-
-        //noinspection SimplifiableIfStatement
-        //if (id == R.id.action_settings) {
-        //    return true;
-        //}
-    }
-
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();

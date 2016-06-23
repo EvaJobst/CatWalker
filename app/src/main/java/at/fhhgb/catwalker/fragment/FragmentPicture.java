@@ -2,6 +2,11 @@ package at.fhhgb.catwalker.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.MediaStore;
@@ -12,11 +17,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.activity.NewEntryActivity;
 
 
 public class FragmentPicture extends Fragment {
+    public static ImageView iv;
     public static boolean PICTURE = false;
     public static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -40,27 +48,16 @@ public class FragmentPicture extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, FragmentPicture.REQUEST_IMAGE_CAPTURE);
-                    FragmentPicture.PICTURE = true;
-                }
-
                 PICTURE = true;
             }
         });
 
-        ImageView iv = (ImageView) v.findViewById(R.id.new_picture_image);
+        iv = (ImageView) v.findViewById(R.id.new_picture_image);
+
+        //put bitmapimage in your imageview
+        iv.setImageBitmap(NewEntryActivity.image);
 
         // Inflate the layout for this fragment
         return v;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-
-        }
     }
 }
