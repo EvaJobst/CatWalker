@@ -2,10 +2,8 @@ package at.fhhgb.catwalker.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -16,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.Date;
@@ -102,8 +99,16 @@ public class FragmentPicture extends Fragment {
             o.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(path, o);
 
+            final int REQUIRED_SIZE = 700;
+
+            // Find the correct scale value. It should be the power of 2.
+            int scale = 1;
+            while (o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE)
+                scale *= 2;
+
             // Decode with inSampleSize
             BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
             return BitmapFactory.decodeFile(path, o2);
         } catch (Throwable e) {
             e.printStackTrace();

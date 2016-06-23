@@ -1,12 +1,15 @@
 package at.fhhgb.catwalker.activity;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -80,7 +83,7 @@ public class NewEntryActivity extends AppCompatActivity implements ImageButton.O
             } break;
 
             default : {
-                ft.replace(R.id.new_fragment, info, "fragmentInfo");
+                //ft.replace(R.id.new_fragment, info, "fragmentInfo");
             }
         }
 
