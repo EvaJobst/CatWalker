@@ -9,6 +9,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
@@ -18,15 +19,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Date;
 
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.activity.NewEntryActivity;
 
 
 public class FragmentPicture extends Fragment {
-    public static ImageView iv;
-    public static boolean PICTURE = false;
-    public static final int REQUEST_IMAGE_CAPTURE = 1;
+    public ImageView iv;
+    public Bitmap image;
+    private String selectedImagePath = "";
+    final public int CAPTURE_IMAGE = 2;
+    String imgPath;
 
     public FragmentPicture() {
         // Required empty public constructor
@@ -48,16 +52,63 @@ public class FragmentPicture extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PICTURE = true;
+                final Intent intentCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intentCapture.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
+                startActivityForResult(intentCapture, CAPTURE_IMAGE);
             }
         });
 
         iv = (ImageView) v.findViewById(R.id.new_picture_image);
 
-        //put bitmapimage in your imageview
-        iv.setImageBitmap(NewEntryActivity.image);
+        if(image != null) {
+            iv.setImageBitmap(image);
+        }
 
         // Inflate the layout for this fragment
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_CANCELED) {
+            if (requestCode == CAPTURE_IMAGE) {
+                selectedImagePath = getImagePath();
+                image = decodeFile(selectedImagePath);
+                iv.setImageBitmap(image);
+            }
+
+            else {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+    }
+
+    public Uri setImageUri() {
+        // Store image in dcim
+        File file = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "image" + new Date().getTime() + ".png");
+        Uri imgUri = Uri.fromFile(file);
+        imgPath = file.getAbsolutePath();
+        return imgUri;
+    }
+
+
+    public String getImagePath() {
+        return imgPath;
+    }
+
+    public Bitmap decodeFile(String path) {
+        try {
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, o);
+
+            // Decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            return BitmapFactory.decodeFile(path, o2);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
