@@ -6,9 +6,10 @@
 
 
     <ImageView
+        android:id="@+id/new_picture_image"
+        android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/new_picture_image"
         android:layout_gravity="left|top" />
 
     <android.support.design.widget.FloatingActionButton
