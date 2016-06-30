@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +20,14 @@ import android.widget.Toast;
 
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.controller.TimelineController;
+import at.fhhgb.catwalker.fragment.FragmentAllEntries;
+import at.fhhgb.catwalker.fragment.FragmentMyEntries;
 
 public class TimelineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     TimelineController controller;
+    private FragmentPagerAdapter adapter;
+    private ViewPager viewPager;
 
 
     @Override
@@ -42,6 +50,35 @@ public class TimelineActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
+
+        // Create the adapter that will return a fragment for each section
+        adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            private final Fragment[] mFragments = new Fragment[] {
+                    new FragmentAllEntries(),
+                    new FragmentMyEntries(),
+            };
+            private final String[] mFragmentNames = new String[] {
+                    "All Entries",
+                    "My Entries",
+            };
+            @Override
+            public Fragment getItem(int position) {
+                return mFragments[position];
+            }
+            @Override
+            public int getCount() {
+                return mFragments.length;
+            }
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mFragmentNames[position];
+            }
+        };
+        // Set up the ViewPager with the sections adapter.
+        viewPager = (ViewPager) findViewById(R.id.container);
+        viewPager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         // Navigation Drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

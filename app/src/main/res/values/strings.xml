@@ -37,4 +37,7 @@
     <string name="str_register_title">Register</string>
     <string name="str_register_cat">And Cat</string>
     <string name="str_register_university">Your University</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

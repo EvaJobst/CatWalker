@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".activity.TimelineActivity">
+        tools:context=".activity.TimelineActivity"
+        android:visibility="visible">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -30,7 +31,23 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/content_timeline" />
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_marginTop="54dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/container"
+            android:layout_marginTop="110dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tabs" />
+
+        <include layout="@layout/content_timeline"
+            android:layout_below="@id/tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -49,6 +66,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_timeline"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer"
+        android:visibility="gone" />
 
 </android.support.v4.widget.DrawerLayout>
