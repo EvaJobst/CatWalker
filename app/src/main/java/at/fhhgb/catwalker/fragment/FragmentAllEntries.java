@@ -25,14 +25,14 @@ public class FragmentAllEntries extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_all_entries, container, false);
+        View v = inflater.inflate(R.layout.fragment_my_entries, container, false);
 
-        recyclerView = (RecyclerView)  v.findViewById(R.id.all_entries_view);
+        recyclerView = (RecyclerView)  v.findViewById(R.id.my_entries_view);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(llm);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_entries, container, false);
+        return v;
     }
 
 }
