@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import at.fhhgb.catwalker.EntryAdapter;
+import at.fhhgb.catwalker.PostAdapter;
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.data.Post;
 
@@ -38,7 +38,7 @@ public class FragmentMyPosts extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(llm);
 
-        EntryAdapter adapter = new EntryAdapter(myPosts);
+        PostAdapter adapter = new PostAdapter(myPosts);
         recyclerView.setAdapter(adapter);
 
         // Inflate the layout for this fragment

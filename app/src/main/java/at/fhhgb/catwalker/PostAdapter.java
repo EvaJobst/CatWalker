@@ -14,10 +14,10 @@ import at.fhhgb.catwalker.data.Post;
 /**
  * Created by Eva on 30.06.2016.
  */
-public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.PostViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     public List<Post> posts;
 
-    public EntryAdapter(List<Post> posts){
+    public PostAdapter(List<Post> posts){
         this.posts = posts;
     }
 
