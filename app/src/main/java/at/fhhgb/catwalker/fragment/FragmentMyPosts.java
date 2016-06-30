@@ -8,12 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
+import at.fhhgb.catwalker.EntryAdapter;
 import at.fhhgb.catwalker.R;
+import at.fhhgb.catwalker.data.Post;
 
-public class FragmentAllEntries extends Fragment {
+
+public class FragmentMyPosts extends Fragment {
     RecyclerView recyclerView;
+    List<Post> myPosts;
 
-    public FragmentAllEntries() {
+    public FragmentMyPosts() {
         // Required empty public constructor
     }
 
@@ -25,14 +31,17 @@ public class FragmentAllEntries extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_my_entries, container, false);
 
-        recyclerView = (RecyclerView)  v.findViewById(R.id.my_entries_view);
+        View v = inflater.inflate(R.layout.fragment_all_posts, container, false);
+
+        recyclerView = (RecyclerView)  v.findViewById(R.id.all_entries_view);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(llm);
+
+        EntryAdapter adapter = new EntryAdapter(myPosts);
+        recyclerView.setAdapter(adapter);
 
         // Inflate the layout for this fragment
         return v;
     }
-
 }

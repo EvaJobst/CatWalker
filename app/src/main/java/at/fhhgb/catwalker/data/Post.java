@@ -12,34 +12,33 @@ import java.util.Locale;
  * Created by Lisa on 06.06.2016.
  */
 public class Post {
-    public String title;
-    public String content;
+    private String title;
+    private String content;
     private Date dateTime;
-    public String userId;
-    public String universityId;
+    private String userId;
+    private String universityId;
 
     //Todo: implement remaining
-    public String longitude;
-    public String latitude;
-    public String image;
-    public String catId;
+    private String longitude;
+    private String latitude;
+    private String image;
 
     private static DateFormat dateFormat = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.ENGLISH);
 
     public Post() {
-        this.title = "";
-        this.content = "";
+        this.setTitle("");
+        this.setContent("");
         this.dateTime = new Date();
-        this.userId = "";
-        this.universityId = "";
+        this.setUserId("");
+        this.setUniversityId("");
     }
 
     public Post(String title, String content, String dateTime, String userId, String universityId){
-        this.title = title;
-        this.content = content;
+        this.setTitle(title);
+        this.setContent(content);
         this.setDateTime(dateTime);
-        this.userId = userId;
-        this.universityId = universityId;
+        this.setUserId(userId);
+        this.setUniversityId(universityId);
     }
 
 
@@ -62,14 +61,69 @@ public class Post {
 
     @Override
     public String toString() {
-        return title+" - "+getDateTime()+" ( "+universityId+" )\n\n"+content+"\n";
+        return getTitle() +" - "+getDateTime()+" ( "+ getUniversityId() +" )\n\n"+ getContent() +"\n";
     }
 
     //todo: Better isEqual function
     public boolean isEqual(Post p){
-        if ( this.toString().equals(p.toString()) && userId.equals(p.userId) && universityId.equals(p.universityId))
+        if ( this.toString().equals(p.toString()) && getUserId().equals(p.getUserId()) && getUniversityId().equals(p.getUniversityId()))
             return true;
         return false;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUniversityId() {
+        return universityId;
+    }
+
+    public void setUniversityId(String universityId) {
+        this.universityId = universityId;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

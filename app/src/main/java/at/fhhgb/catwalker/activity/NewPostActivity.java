@@ -4,12 +4,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -19,7 +15,7 @@ import at.fhhgb.catwalker.fragment.FragmentLocation;
 import at.fhhgb.catwalker.fragment.FragmentPicture;
 import at.fhhgb.catwalker.R;
 
-public class NewEntryActivity extends AppCompatActivity implements ImageButton.OnClickListener {
+public class NewPostActivity extends AppCompatActivity implements ImageButton.OnClickListener {
     FragmentPicture picture;
     FragmentInfo info;
     FragmentLocation location;
@@ -29,7 +25,7 @@ public class NewEntryActivity extends AppCompatActivity implements ImageButton.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_entry);
+        setContentView(R.layout.activity_new_post);
 
         info = new FragmentInfo();
         location = new FragmentLocation();
@@ -79,7 +75,7 @@ public class NewEntryActivity extends AppCompatActivity implements ImageButton.O
             } break;
 
             case R.id.new_btn_send : {
-                Toast.makeText(NewEntryActivity.this, "Send", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewPostActivity.this, "Send", Toast.LENGTH_SHORT).show();
             } break;
 
             default : {

@@ -19,7 +19,6 @@ import java.io.File;
 import java.util.Date;
 
 import at.fhhgb.catwalker.R;
-import at.fhhgb.catwalker.activity.NewEntryActivity;
 
 
 public class FragmentPicture extends Fragment {

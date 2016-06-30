@@ -20,8 +20,8 @@ import android.widget.Toast;
 
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.controller.TimelineController;
-import at.fhhgb.catwalker.fragment.FragmentAllEntries;
-import at.fhhgb.catwalker.fragment.FragmentMyEntries;
+import at.fhhgb.catwalker.fragment.FragmentAllPosts;
+import at.fhhgb.catwalker.fragment.FragmentMyPosts;
 
 public class TimelineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,7 +46,7 @@ public class TimelineActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TimelineActivity.this, NewEntryActivity.class);
+                Intent i = new Intent(TimelineActivity.this, NewPostActivity.class);
                 startActivity(i);
             }
         });
@@ -64,8 +64,8 @@ public class TimelineActivity extends AppCompatActivity
         // Create the adapter that will return a fragment for each section
         adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
-                    new FragmentAllEntries(),
-                    new FragmentMyEntries(),
+                    new FragmentAllPosts(),
+                    new FragmentMyPosts(),
             };
             private final String[] mFragmentNames = new String[] {
                     "All Entries",
@@ -115,7 +115,7 @@ public class TimelineActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_new_entry : {
-                Intent i = new Intent(this, NewEntryActivity.class);
+                Intent i = new Intent(this, NewPostActivity.class);
                 startActivity(i);
             } break;
 
