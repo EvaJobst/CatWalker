@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.util.Log;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -85,6 +86,10 @@ public class SettingsController implements PropertyChangeListener{
 
                 String newID = (String) newValue;
 
+                //store preference
+                SharedPreferences.Editor editor = view.getSharedPreferences("CatWalker_Data",Context.MODE_PRIVATE).edit();
+                editor.putString("universityId", newID);
+                editor.commit();
                 //update TimelineChildListener
                 model.removeTimelineChildListener(data.getUniversityId());
                 model.addTimelinePostChangeListener(newID);
@@ -93,10 +98,6 @@ public class SettingsController implements PropertyChangeListener{
                 //update data
                 data.setUniversityId(newID);
 
-                //store preference
-                SharedPreferences.Editor pref = view.getPreferences(Context.MODE_PRIVATE).edit();
-                pref.putString("universityId", data.getUniversityId());
-                pref.apply();
 
 
                 isHandled = true;

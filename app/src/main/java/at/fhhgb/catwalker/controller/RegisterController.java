@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -49,12 +50,12 @@ public class RegisterController implements PropertyChangeListener{
         String userId = registerUser();
         if(userId!= null && universityId != null) {
 
-            SharedPreferences.Editor editor = view.getPreferences(Context.MODE_PRIVATE).edit();
+            SharedPreferences.Editor editor = view.getSharedPreferences("CatWalker_Data",Context.MODE_PRIVATE).edit();
             data.setUserId(userId);
             data.setUniversityId(universityId);
             editor.putString("userId", userId);
             editor.putString("universityId", universityId);
-            editor.commit();
+            editor.apply();
 
             initDependentListeners();
 
@@ -65,9 +66,10 @@ public class RegisterController implements PropertyChangeListener{
 
     //returns true if a UserId was found
     public boolean restorePreferences(){
-        SharedPreferences settings = view.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences settings = view.getSharedPreferences("CatWalker_Data",Context.MODE_PRIVATE);
         String userId = settings.getString("userId", null);
         String universityId = settings.getString("universityId", null);
+
         if(userId !=null && universityId!=null) {
             data.setUserId(userId);
             data.setUniversityId(universityId);
