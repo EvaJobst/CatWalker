@@ -51,6 +51,7 @@ public class SettingsController implements PropertyChangeListener{
         preference.setOnPreferenceClickListener(preferenceClickListener);
 
         universityPreference = preference;
+        universityPreference.setSummary(data.getUniversityId());
         updateUniversityListView();
     }
 
@@ -95,7 +96,7 @@ public class SettingsController implements PropertyChangeListener{
                 //store preference
                 SharedPreferences.Editor pref = view.getPreferences(Context.MODE_PRIVATE).edit();
                 pref.putString("universityId", data.getUniversityId());
-                pref.commit();
+                pref.apply();
 
 
                 isHandled = true;

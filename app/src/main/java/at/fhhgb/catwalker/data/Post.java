@@ -7,11 +7,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.ServiceLoader;
+
+import at.fhhgb.catwalker.firebase.ServiceLocator;
 
 /**
  * Created by Lisa on 06.06.2016.
  */
 public class Post {
+    private String id;
     private String title;
     private String content;
     private Date dateTime;
@@ -64,11 +68,11 @@ public class Post {
         return getTitle() +" - "+getDateTime()+" ( "+ getUniversityId() +" )\n\n"+ getContent() +"\n";
     }
 
-    //todo: Better isEqual function
-    public boolean isEqual(Post p){
-        if ( this.toString().equals(p.toString()) && getUserId().equals(p.getUserId()) && getUniversityId().equals(p.getUniversityId()))
-            return true;
-        return false;
+    public String getId(){
+        return id;
+    }
+    public void setId(String key) {
+        this.id = key;
     }
 
     public String getTitle() {
@@ -87,8 +91,8 @@ public class Post {
         this.content = content;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUser() {
+        return ServiceLocator.getDataModel().getLocalData().getUser(userId);
     }
 
     public void setUserId(String userId) {

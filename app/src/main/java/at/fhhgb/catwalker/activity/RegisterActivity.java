@@ -37,7 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-
     public void navigateToTimeline() {
         intent = new Intent(this, TimelineActivity.class);
         startActivity(intent);

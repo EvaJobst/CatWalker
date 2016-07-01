@@ -16,18 +16,18 @@ import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
-import at.fhhgb.catwalker.fragment.FragmentAllEntries;
+import at.fhhgb.catwalker.fragment.FragmentAllPosts;
 
 /**
  * Created by Lisa on 16.06.2016.
  */
 public class TimelineController implements PropertyChangeListener{
-    FragmentAllEntries view;
+    FragmentAllPosts view;
     DataModel model;
     LocalData data;
     ArrayAdapter<String> listViewAdapter;
 
-    public TimelineController(FragmentAllEntries main){
+    public TimelineController(FragmentAllPosts main){
         view = main;
         model = ServiceLocator.getDataModel();
         data = model.getLocalData();

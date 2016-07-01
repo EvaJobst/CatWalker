@@ -17,7 +17,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:id="@+id/post_username"
+                android:id="@+id/post_title"
                 android:textSize="30sp"
                 android:text="Title" />
 
@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/post_description"
                 android:layout_marginBottom="7dp"
-                android:layout_below="@+id/post_username"
+                android:layout_below="@+id/post_title"
                 android:text="Description"/>
 
             <TextView
