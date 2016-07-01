@@ -40,7 +40,7 @@ public class SettingsController implements PropertyChangeListener{
         preference.setOnPreferenceClickListener(preferenceClickListener);
 
         if(data.getUser()!=null)
-            preferenceChangeListener.onPreferenceChange(preference, data.getUser().name);
+            preferenceChangeListener.onPreferenceChange(preference, data.getUser());
 
         userNamePreference =  (EditTextPreference) preference;
 
@@ -61,7 +61,7 @@ public class SettingsController implements PropertyChangeListener{
 
             if(preference.getKey().equals("settings_username")){
                 if(data.getUser()!=null )
-                    userNamePreference.getEditText().setText(data.getUser().name);
+                    userNamePreference.getEditText().setText(data.getUser());
                 isHandled = true;
             }
 
@@ -129,7 +129,7 @@ public class SettingsController implements PropertyChangeListener{
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()){
-            case "user.name":
+            case "user":
                 String newValue = (String)event.getNewValue();
                 break;
             case "university.add":

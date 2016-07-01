@@ -7,8 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import at.fhhgb.catwalker.R;
+import at.fhhgb.catwalker.controller.TimelineController;
+import at.fhhgb.catwalker.data.TimelineData;
 
 public class FragmentAllEntries extends Fragment {
+
+    TimelineController controller;
+
     public FragmentAllEntries() {
         // Required empty public constructor
     }
@@ -16,6 +21,7 @@ public class FragmentAllEntries extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        controller = new TimelineController(this);
     }
 
     @Override

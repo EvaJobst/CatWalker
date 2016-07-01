@@ -12,6 +12,7 @@ import java.util.Locale;
  * Created by Lisa on 06.06.2016.
  */
 public class Post {
+    private String id;
     public String title;
     public String content;
     private Date dateTime;
@@ -42,7 +43,6 @@ public class Post {
         this.universityId = universityId;
     }
 
-
     public void setDateTime(String DateTime){
         DateFormat format = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.ENGLISH);
         try {
@@ -58,6 +58,14 @@ public class Post {
     }
     public static DateFormat getDateFormat(){
         return dateFormat;
+    }
+
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public String getId(){
+        return id;
     }
 
     @Override
