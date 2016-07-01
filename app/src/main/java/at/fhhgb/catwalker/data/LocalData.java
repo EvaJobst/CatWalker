@@ -13,7 +13,7 @@ public class LocalData {
     //User specific Data
     private String userId;
     private String universityId;
-    private User user;
+    private String user;
 
     //General Data
     private HashMap<String, String> userList;               //key, userName
@@ -53,11 +53,15 @@ public class LocalData {
         return userId;
     }
 
-    public User getUser(){
+    public String getUser(){
         return user;
     }
 
-    public void setUser(User user) {
+    public String getUser(String userId){
+        return userList.get(userId);
+    }
+
+    public void setUser(String user) {
         if(user == null)
             return;
 
@@ -65,20 +69,20 @@ public class LocalData {
             this.user = user;
             return;
         }
-        if(user.name.compareTo(this.user.name)!=0){
-            updateUser(user.name);
+        if(user.compareTo(this.user)!=0){
+            updateUser(user);
         }
     }
 
     public void updateUser(String name){
         String old = "";
         if(user == null)
-            user = new User(name);
+            user = name;
         else{
-            old = user.name;
-            user.name=name;
+            old = user;
+            user=name;
         }
-        propertyChangeSupport.firePropertyChange("user.name", old, name);
+        propertyChangeSupport.firePropertyChange("user", old, name);
     }
 
 
