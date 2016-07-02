@@ -17,11 +17,10 @@ public class LocalData {
 
     //General Data
     private HashMap<String, String> userList;               //key, userName
-    private HashMap<String, String> universityList;         //universityName, Cat
+    private HashMap<String, String> universityList;         //universityName, catName
+    private HashMap<String, Post> allPostsList;             //key, Post
+    private HashMap<String, Post> userPostsList;             //key, Post
 
-
-    //Timeline
-    private TimelineData timelineData;
 
     //PropertyChangeSupport for raising propertyChange Events in case that some data has changed.
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
@@ -29,17 +28,17 @@ public class LocalData {
     public LocalData(){
         userList = new HashMap<>();
         universityList = new HashMap<>();
-        timelineData = new TimelineData();
+        allPostsList = new HashMap<>();
     }
 
     //----------------------------- PropertyChangeListener ------------------------------------//
 
-    //Hooking a PropertyChangeListener in
+    //Hooking a PropertyChangeListener
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    //Removing a PropertyChangeListener in
+    //Removing a PropertyChangeListener
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
@@ -120,31 +119,35 @@ public class LocalData {
 
     //---------------------------------- Timeline --------------------------------------------//
 
-    public TimelineData getTimelineData() {
-        return timelineData;
-    }
-
-    public void addPost(String key, Post p) {
+    public void addPost(String key, Post p, boolean userPost) {
         propertyChangeSupport.firePropertyChange("timeline.add", null, p);
-        if(timelineData!=null)
-            this.timelineData.add(key, p);
+        if(userPost)
+            this.userPostsList.put(key,p);
+        else
+            this.allPostsList.put(key, p);
     }
 
-    public void removePost(String key, Post p) {
-        if(timelineData!=null)
-            this.timelineData.remove(key);
-        propertyChangeSupport.firePropertyChange("timeline.remove", p, null);
+    public void removePost(String key, Post p, boolean userPost) {
+        if(userPost)
+            this.userPostsList.remove(key);
+        else
+            this.allPostsList.remove(key);
+        propertyChangeSupport.firePropertyChange("timeline.remove", p, key);
+        //Todo: remove function for the timeline
     }
 
-    public void resetTimeline(){
-        timelineData = new TimelineData();
+    public void resetTimeline(boolean userPost){
+        if(userPost)
+            userPostsList = new HashMap<>();
+        else
+            allPostsList = new HashMap<>();
         propertyChangeSupport.firePropertyChange("timeline.clear", null, null);
     }
 
     public void updatePost(String key, Post p) {
-        if(timelineData!=null){
-            Post old = this.timelineData.posts.get(key);
-            this.timelineData.add(key, p);
+        if(allPostsList!=null){
+            Post old = this.allPostsList.get(key);
+            this.allPostsList.put(key, p);
             propertyChangeSupport.firePropertyChange("timeline.update", old , p);
         }
     }
