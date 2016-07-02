@@ -28,7 +28,7 @@ public class DataModel {
 
     private FirebaseDatabase database;
     private ValueEventListener userListener;
-    private ChildEventListener userChildListener, timelineChildListener, universityChildListener;
+    private ChildEventListener userChildListener, timelineChildListener, userPostChildListener, universityChildListener;
 
     public LocalData getLocalData() {
         return data;
@@ -135,7 +135,7 @@ public class DataModel {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Post p = dataSnapshot.getValue(Post.class);
                 String key = dataSnapshot.getKey();
-                data.addPost(key, p);
+                data.addPost(key, p, false);
             }
 
             @Override
@@ -149,7 +149,72 @@ public class DataModel {
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Post p = dataSnapshot.getValue(Post.class);
                 String key = dataSnapshot.getKey();
-                data.removePost(key,p);
+                data.removePost(key,p, false);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+            }
+        };
+
+        timelineChildListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Post p = dataSnapshot.getValue(Post.class);
+                String key = dataSnapshot.getKey();
+                data.addPost(key, p, false);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Post p = dataSnapshot.getValue(Post.class);
+                String key = dataSnapshot.getKey();
+                data.updatePost(key, p);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Post p = dataSnapshot.getValue(Post.class);
+                String key = dataSnapshot.getKey();
+                data.removePost(key,p, false);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+            }
+        };
+         userPostChildListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Post p = dataSnapshot.getValue(Post.class);
+                String key = dataSnapshot.getKey();
+                data.addPost(key, p, true);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Post p = dataSnapshot.getValue(Post.class);
+                String key = dataSnapshot.getKey();
+                data.updatePost(key, p);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Post p = dataSnapshot.getValue(Post.class);
+                String key = dataSnapshot.getKey();
+                data.removePost(key,p, false);
             }
 
             @Override
@@ -177,10 +242,10 @@ public class DataModel {
         postByUniversity.addChildEventListener(timelineChildListener);
     }
 
-    public void addMyPostChangeListener(String universityId){
+    public void addUserPostChangeListener(String universityId){
         DatabaseReference postRef = database.getReference(postSection);
-        Query postByUniversity = postRef.orderByChild("universityId").equalTo(universityId);
-        postByUniversity.addChildEventListener(timelineChildListener);
+        Query postByUser = postRef.orderByChild("userId").equalTo(data.getUserId());
+        postByUser.addChildEventListener(userPostChildListener);
     }
 
     public void addUniversityChangeListener() {
