@@ -79,7 +79,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
             } break;
 
             default : {
-                //ft.replace(R.id.new_fragment, info, "fragmentInfo");
+                ft.replace(R.id.new_fragment, info, "fragmentInfo");
             }
         }
 
