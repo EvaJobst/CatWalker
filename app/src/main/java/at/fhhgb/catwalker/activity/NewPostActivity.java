@@ -7,9 +7,12 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import at.fhhgb.catwalker.data.Post;
+import at.fhhgb.catwalker.firebase.ServiceLocator;
 import at.fhhgb.catwalker.fragment.FragmentInfo;
 import at.fhhgb.catwalker.fragment.FragmentLocation;
 import at.fhhgb.catwalker.fragment.FragmentPicture;
@@ -76,6 +79,16 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
 
             case R.id.new_btn_send : {
                 Toast.makeText(NewPostActivity.this, "Send", Toast.LENGTH_SHORT).show();
+                Post post = new Post();
+
+                post.setTitle(((EditText)findViewById(R.id.new_info_title)).getText().toString());
+                post.setContent(((EditText)findViewById(R.id.new_info_description)).getText().toString());
+                //Todo: insert google maps coordinates
+                post.setLatitude(48.315782);
+                post.setLongitude(14.285175);
+
+                //push post to database
+                ServiceLocator.getDataModel().addPost(post);
             } break;
 
             default : {

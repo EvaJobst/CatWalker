@@ -268,10 +268,23 @@ public class DataModel {
 
     //----------------------------------Post Functions---------------------------------------//
 
-    public String addPost(String userId, Post post) {
+    public String addPost(Post post) {
         DatabaseReference dataRef = database.getReference(postSection);
         dataRef = dataRef.push();
-        dataRef.setValue(post);
+        dataRef.child("title").setValue(post.getTitle());
+        dataRef.child("content").setValue(post.getContent());
+        dataRef.child("latitude").setValue(post.getLatitude());
+        dataRef.child("longitude").setValue(post.getLongitude());
+        dataRef.child("dateTime").setValue(post.getDateTime());
+        dataRef.child("userId").setValue(data.getUserId());
+        dataRef.child("universityId").setValue(data.getUniversityId());
+
+        String imagePath = "images/"+dataRef.getKey()+".jpg";
+        dataRef.child("image").setValue(imagePath);
+
+        //Todo: Upload image function
+        //pushImage(imagePath);
+
         return dataRef.getKey();
     }
 
