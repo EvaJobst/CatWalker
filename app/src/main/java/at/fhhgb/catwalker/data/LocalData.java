@@ -19,6 +19,7 @@ public class LocalData {
     private HashMap<String, String> userList;               //key, userName
     private HashMap<String, String> universityList;         //universityName, Cat
 
+
     //Timeline
     private TimelineData timelineData;
 
@@ -53,25 +54,14 @@ public class LocalData {
         return userId;
     }
 
+    //returns current user
     public String getUser(){
-        return user;
-    }
-
-    public String getUser(String userId){
         return userList.get(userId);
     }
 
-    public void setUser(String user) {
-        if(user == null)
-            return;
-
-        if(this.user == null){
-            this.user = user;
-            return;
-        }
-        if(user.compareTo(this.user)!=0){
-            updateUser(user);
-        }
+    //returns any user
+    public String getUser(String userId){
+        return userList.get(userId);
     }
 
     public void updateUser(String name){
@@ -85,6 +75,14 @@ public class LocalData {
         propertyChangeSupport.firePropertyChange("user", old, name);
     }
 
+    public void updateUserList(String key, String value, boolean add) {
+        if(add)
+            userList.put(key, value);
+        else
+            userList.remove(key);
+        //old val = key, new val = name
+        propertyChangeSupport.firePropertyChange("user", key, userList.get(key));
+    }
 
     //--------------------------------- University --------------------------------------------//
 
@@ -150,5 +148,6 @@ public class LocalData {
             propertyChangeSupport.firePropertyChange("timeline.update", old , p);
         }
     }
+
 
 }

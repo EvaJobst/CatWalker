@@ -8,6 +8,15 @@ public class ServiceLocator {
     //private static HashMap<Class, Object> instances = new HashMap<Class, Object>();
     private static final String TAG = "ServiceLocator";
 
+    //PropertyChangedEvenets
+    public static final String user_change = "user.change";
+    public static final String user_add = "user.add";
+    public static final String user_remove = "user.remove";
+
+    public static final String university_add = "university.add";
+    public static final String university_remove = "university.remove";
+    public static final String university_change = "university.change";
+
 
     private static DataModel dataModel = new DataModel();
     public static DataModel getDataModel(){

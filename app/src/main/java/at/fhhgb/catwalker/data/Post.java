@@ -95,6 +95,11 @@ public class Post {
         return ServiceLocator.getDataModel().getLocalData().getUser(userId);
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+
     public void setUserId(String userId) {
         this.userId = userId;
     }

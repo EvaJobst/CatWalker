@@ -31,6 +31,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.ParseException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import at.fhhgb.catwalker.activity.TimelineActivity;
@@ -41,6 +45,26 @@ import at.fhhgb.catwalker.data.Post;
  */
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     public List<Post> posts;
+
+    public List<Post> sortPosts (){
+        Collections.sort(posts, new Comparator<Post>() {
+            @Override
+            public int compare(Post lhs, Post rhs) {
+                try {
+                    Date date1 = Post.getDateFormat().parse( lhs.getDateTime() );
+                    Date date2 = Post.getDateFormat().parse( lhs.getDateTime() );
+
+                        return (int) (date1.getTime()-date2.getTime());
+
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
+        return posts;
+    }
 
     public PostAdapter(List<Post> posts){
         this.posts = posts;

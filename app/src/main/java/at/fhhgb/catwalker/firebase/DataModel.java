@@ -28,7 +28,7 @@ public class DataModel {
 
     private FirebaseDatabase database;
     private ValueEventListener userListener;
-    private ChildEventListener timelineChildListener, universityChildListener;
+    private ChildEventListener userChildListener, timelineChildListener, universityChildListener;
 
     public LocalData getLocalData() {
         return data;
@@ -70,6 +70,35 @@ public class DataModel {
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        };
+
+        //---------------------- UniversitySection ------------------------------//
+        userChildListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                data.updateUserList(dataSnapshot.getKey(), dataSnapshot.child("name").getValue(String.class), true);
+            }
+
+            @Override
+
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                data.updateUserList(dataSnapshot.getKey(), dataSnapshot.child("name").getValue(String.class), true);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                data.updateUserList(dataSnapshot.getKey(), dataSnapshot.child("name").getValue(String.class), false);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         };
 
@@ -138,11 +167,17 @@ public class DataModel {
     //---------------------------------- Add Change Listener ---------------------------------//
 
     public void addUserChangeListener(String userId) {
-        DatabaseReference userRef = getRef(userSection, userId);
-        userRef.addValueEventListener(userListener);
+        DatabaseReference userRef = database.getReference(userSection);
+        userRef.addChildEventListener(userChildListener);
     }
 
     public void addTimelinePostChangeListener(String universityId){
+        DatabaseReference postRef = database.getReference(postSection);
+        Query postByUniversity = postRef.orderByChild("universityId").equalTo(universityId);
+        postByUniversity.addChildEventListener(timelineChildListener);
+    }
+
+    public void addMyPostChangeListener(String universityId){
         DatabaseReference postRef = database.getReference(postSection);
         Query postByUniversity = postRef.orderByChild("universityId").equalTo(universityId);
         postByUniversity.addChildEventListener(timelineChildListener);
@@ -156,8 +191,8 @@ public class DataModel {
     //--------------------------------- Remove Listener ------------------------------------//
 
     public void removeUserListener(String userId) {
-        DatabaseReference dataRef = getRef(userSection,userId);
-        dataRef.removeEventListener(userListener);
+        DatabaseReference dataRef =  database.getReference(userSection);
+        dataRef.removeEventListener(userChildListener);
     }
 
     public void removeUniversityListener(String universityId) {
