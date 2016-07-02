@@ -56,17 +56,23 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
 
     }
 
+    private void updateTimeline(Post newValue, boolean add){
+        if(add)
+            this.allPosts.add(0,newValue);
+        else
+            allPosts.remove(newValue);
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()){
             case "timeline.add":
-                this.allPosts.add((Post)event.getNewValue());
-                recyclerView.getAdapter().notifyDataSetChanged();
+                updateTimeline((Post)event.getNewValue(), true);
                 Log.d("Add Post", ""+((Post)event.getNewValue()));
                 break;
             case "timeline.remove":
-                this.allPosts.remove((Post)event.getOldValue());
-                recyclerView.getAdapter().notifyDataSetChanged();
+                updateTimeline((Post)event.getOldValue(), false);
                 Log.d("Remove Post", ""+((Post)event.getOldValue()));
                 break;
             case "timeline.update":
