@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -88,16 +89,28 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
     }
 
     public void setColor(View v) {
-        View info = findViewById(R.id.new_btn_info);
-        info.setBackgroundColor(0);
+        if(v.getId() != R.id.new_btn_send) {
+            View info = findViewById(R.id.new_btn_info);
+            info.setBackgroundColor(0);
 
-        View location = findViewById(R.id.new_btn_location);
-        location.setBackgroundColor(0);
+            View location = findViewById(R.id.new_btn_location);
+            location.setBackgroundColor(0);
 
-        View picture = findViewById(R.id.new_btn_picture);
-        picture.setBackgroundColor(0);
+            View picture = findViewById(R.id.new_btn_picture);
+            picture.setBackgroundColor(0);
 
-        v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            /*ImageButton b;
+
+            switch(v.getId()) {
+                case R.id.new_btn_info : {} break;
+                case R.id.new_btn_location : {} break;
+                case R.id.new_btn_picture : {
+                    b = (ImageButton) findViewById(R.id.new_btn_picture);
+                    } break;
+            }*/
+
+            v.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
     }
 
     @Override

@@ -24,10 +24,10 @@
 
                 <EditText
                     style="@style/FullWidthEditText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/new_info_title"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorPrimaryDark"
                     android:hint="Title"/>
 
                 <ImageView
@@ -38,7 +38,7 @@
 
                 <EditText
                     style="@style/FullWidthEditText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/new_info_description"
                     android:textColor="@color/common_plus_signin_btn_text_light"
