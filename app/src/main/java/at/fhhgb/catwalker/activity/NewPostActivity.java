@@ -92,7 +92,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
             } break;
 
             default : {
-                //ft.replace(R.id.new_fragment, info, "fragmentInfo");
+                ft.replace(R.id.new_fragment, info, "fragmentInfo");
             }
         }
 
@@ -101,16 +101,18 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
     }
 
     public void setColor(View v) {
-        View info = findViewById(R.id.new_btn_info);
-        info.setBackgroundColor(0);
+        if(v.getId() != R.id.new_btn_send) {
+            View info = findViewById(R.id.new_btn_info);
+            info.setBackgroundColor(0);
 
-        View location = findViewById(R.id.new_btn_location);
-        location.setBackgroundColor(0);
+            View location = findViewById(R.id.new_btn_location);
+            location.setBackgroundColor(0);
 
-        View picture = findViewById(R.id.new_btn_picture);
-        picture.setBackgroundColor(0);
+            View picture = findViewById(R.id.new_btn_picture);
+            picture.setBackgroundColor(0);
 
-        v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            v.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
     }
 
     @Override
