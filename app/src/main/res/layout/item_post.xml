@@ -28,11 +28,14 @@
                 android:text="Description"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="150dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
                 android:id="@+id/post_image"
                 android:layout_below="@id/post_description"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:cropToPadding="false"
+                android:adjustViewBounds="true" />
 
             <com.google.android.gms.maps.MapView
                 android:paddingBottom="5dp"

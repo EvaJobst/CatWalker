@@ -1,21 +1,26 @@
 package at.fhhgb.catwalker.fragment;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 import at.fhhgb.catwalker.R;
@@ -67,10 +72,13 @@ public class FragmentPicture extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_CANCELED) {
             if (requestCode == CAPTURE_IMAGE) {
-                selectedImagePath = getImagePath();
-                image = decodeFile(selectedImagePath);
-                if(image!=null)
+                if (resultCode == Activity.RESULT_OK){
+                    selectedImagePath = getImagePath();
+                    image = decodeFile(selectedImagePath);
+                    image = fixRotation(image);
+
                     iv.setImageBitmap(image);
+                }
             }
 
             else {
@@ -111,8 +119,18 @@ public class FragmentPicture extends Fragment {
             o2.inSampleSize = scale;
             return BitmapFactory.decodeFile(path, o2);
         } catch (Throwable e) {
+            Log.d("Image","not found!");
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Bitmap fixRotation(Bitmap img){
+        if (img.getWidth() > img.getHeight()) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            img = Bitmap.createBitmap(img , 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        }
+        return img;
     }
 }

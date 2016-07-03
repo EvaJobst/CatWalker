@@ -47,8 +47,6 @@ public class DataModel {
     private ValueEventListener userListener;
     private ChildEventListener userChildListener, timelineChildListener, userPostChildListener, universityChildListener;
 
-    private PropertyChangeSupport propertyChangeSupport;
-
     public LocalData getLocalData() {
         return data;
     }
@@ -66,7 +64,6 @@ public class DataModel {
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
         data = new LocalData();
-        propertyChangeSupport = new PropertyChangeSupport(this);
         initListeners();
     }
 
@@ -251,16 +248,6 @@ public class DataModel {
         };
     }
 
-    //Hooking a PropertyChangeListener
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    //Removing a PropertyChangeListener
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
     //---------------------------------- Add Change Listener ---------------------------------//
 
     public void addUserChangeListener(String userId) {
@@ -426,7 +413,7 @@ public class DataModel {
             public void onSuccess(byte[] bytes) {
                 // Data for "images/island.jpg" is returns, use this as needed
                 Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                propertyChangeSupport.firePropertyChange("image.load", fileName, img);
+                data.addImage(fileName, img);
 
                 Log.d("Image","Loading Success");
             }

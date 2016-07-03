@@ -119,14 +119,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postMap.onCreate(Bundle.EMPTY);
             postMap.getMapAsync(this);
             itemView.setOnClickListener(this);
-            ServiceLocator.getDataModel().addPropertyChangeListener(this);
+            ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
         }
 
         @Override
         public void onClick(View itemView) {
             if (postMap.getVisibility() == View.GONE) {
                 postMap.setVisibility(View.VISIBLE);
-                ServiceLocator.getDataModel().loadImage(key);
+                Bitmap img = ServiceLocator.getDataModel().getLocalData().getImage(key);
+                if(img==null)
+                    ServiceLocator.getDataModel().loadImage(key);
+                else
+                    showImage(img);
 
             } else {
                 postMap.setVisibility(View.GONE);
@@ -159,12 +163,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         }
 
+        private void showImage(Bitmap img){
+            postImage.setImageBitmap(img);
+            postImage.setVisibility(View.VISIBLE);
+        }
+
         @Override
         public void propertyChange(PropertyChangeEvent event) {
             //show the image if the oldValue(key) equals the key of the viewholder and an image was loaded
             if (event.getPropertyName().equals("image.load") && key.equals((String) event.getOldValue())) {
-                postImage.setImageBitmap((Bitmap) event.getNewValue());
-                postImage.setVisibility(View.VISIBLE);
+                showImage((Bitmap) event.getNewValue());
             }
         }
     }

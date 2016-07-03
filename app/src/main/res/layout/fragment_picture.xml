@@ -7,10 +7,12 @@
 
     <ImageView
         android:id="@+id/new_picture_image"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="left|top" />
+
+        android:layout_gravity="left|top"
+        android:cropToPadding="false" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/new_picture_fab"

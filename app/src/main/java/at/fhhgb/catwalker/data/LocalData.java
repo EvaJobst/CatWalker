@@ -1,5 +1,7 @@
 package at.fhhgb.catwalker.data;
 
+import android.graphics.Bitmap;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
@@ -19,7 +21,7 @@ public class LocalData {
     private HashMap<String, String> universityList;         //universityName, catName
     private HashMap<String, Post> allPostsList;             //key, Post
     private HashMap<String, Post> myPostsList;             //key, Post
-
+    private HashMap<String, Bitmap> images;                 //key, Image
 
     //PropertyChangeSupport for raising propertyChange Events in case that some data has changed.
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
@@ -29,6 +31,7 @@ public class LocalData {
         universityList = new HashMap<>();
         allPostsList = new HashMap<>();
         myPostsList = new HashMap<>();
+        images = new HashMap<>();
     }
 
     //----------------------------- PropertyChangeListener ------------------------------------//
@@ -166,5 +169,15 @@ public class LocalData {
         }
     }
 
+    //Images
+
+    public void addImage(String key, Bitmap img){
+        images.put(key,img);
+        propertyChangeSupport.firePropertyChange("image.load", key, img);
+    }
+
+    public Bitmap getImage(String key){
+        return images.get(key);
+    }
 
 }
