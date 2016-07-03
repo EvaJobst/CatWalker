@@ -363,8 +363,7 @@ public class DataModel {
         dataRef.child("userId").setValue(data.getUserId());
         dataRef.child("universityId").setValue(data.getUniversityId());
 
-        String imagePath = "images/"+dataRef.getKey()+".jpg";
-        dataRef.child("image").setValue(imagePath);
+        dataRef.child("hasImage").setValue(post.getHasImage());
 
         //Todo: Upload image function
         //pushImage(imagePath);

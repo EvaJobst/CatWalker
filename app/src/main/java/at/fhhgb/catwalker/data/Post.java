@@ -29,8 +29,7 @@ public class Post {
     //Todo: implement remaining
     private double longitude;
     private double latitude;
-    private String image;
-    public Bitmap img;
+    private boolean hasImage;
 
     private static DateFormat dateFormat = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.ENGLISH);
 
@@ -134,11 +133,11 @@ public class Post {
         this.latitude = latitude;
     }
 
-    public String getImage() {
-        return image;
+    public Boolean getHasImage() {
+        return hasImage;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setHasImage(boolean hasImage) {
+        this.hasImage = hasImage;
     }
 }

@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.List;
 
 import at.fhhgb.catwalker.activity.TimelineActivity;
+import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
@@ -75,6 +76,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.postPosition = new LatLng(posts.get(position).getLatitude(), posts.get(position).getLongitude());
         //holder.postPosition = new LatLng(0, 0); // Dummy value
         holder.key = posts.get(position).getId();
+        holder.hasImage = posts.get(position).getHasImage();
     }
 
     @Override
@@ -86,6 +88,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, PropertyChangeListener {
         String key;
+        Boolean hasImage;
         CardView cardView;
         TextView postAuthor;
         TextView postTime;
@@ -107,6 +110,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postImage = (ImageView) itemView.findViewById(R.id.post_image);
             postMap = (MapView) itemView.findViewById(R.id.post_location);
             key = "";
+            hasImage = false;
 
             if (client == null) {
                 client = new GoogleApiClient.Builder(itemView.getContext())
@@ -126,12 +130,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public void onClick(View itemView) {
             if (postMap.getVisibility() == View.GONE) {
                 postMap.setVisibility(View.VISIBLE);
-                Bitmap img = ServiceLocator.getDataModel().getLocalData().getImage(key);
-                if(img==null)
-                    ServiceLocator.getDataModel().loadImage(key);
-                else
-                    showImage(img);
-
+                LocalData data = ServiceLocator.getDataModel().getLocalData();
+                if(hasImage) {
+                    Bitmap img = data.getImage(key);
+                    if (img == null)
+                        ServiceLocator.getDataModel().loadImage(key);
+                    else
+                        showImage(img);
+                }
             } else {
                 postMap.setVisibility(View.GONE);
                 postImage.setVisibility(View.GONE);

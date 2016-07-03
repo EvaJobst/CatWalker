@@ -87,6 +87,8 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
                     post.setTitle(editTitle.getText().toString());
                 if(editContent != null)
                     post.setContent(editContent.getText().toString());
+
+
                 //Todo: insert google maps coordinates
                 post.setLatitude(48.315782);
                 post.setLongitude(14.285175);
@@ -97,8 +99,16 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
                     finish();
                     Toast.makeText(NewPostActivity.this, "Send", Toast.LENGTH_SHORT).show();
                     //push post to database && store the image
-                    String key = ServiceLocator.getDataModel().addPost(post);
-                    ServiceLocator.getDataModel().addImage(picture.image, key);
+
+                    if(picture.image!=null)
+                    {
+                        post.setHasImage(true);
+                        String key = ServiceLocator.getDataModel().addPost(post);
+                        ServiceLocator.getDataModel().addImage(picture.image, key);
+                    }else{
+                        post.setHasImage(false);
+                        ServiceLocator.getDataModel().addPost(post);
+                    }
                 }
 
             } break;
