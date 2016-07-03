@@ -69,7 +69,8 @@ public class FragmentPicture extends Fragment {
             if (requestCode == CAPTURE_IMAGE) {
                 selectedImagePath = getImagePath();
                 image = decodeFile(selectedImagePath);
-                iv.setImageBitmap(image);
+                if(image!=null)
+                    iv.setImageBitmap(image);
             }
 
             else {

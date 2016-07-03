@@ -1,5 +1,8 @@
 package at.fhhgb.catwalker.data;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.text.DateFormat;
@@ -9,6 +12,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.ServiceLoader;
 
+import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
 /**
@@ -26,6 +30,7 @@ public class Post {
     private double longitude;
     private double latitude;
     private String image;
+    public Bitmap img;
 
     private static DateFormat dateFormat = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.ENGLISH);
 
@@ -35,6 +40,7 @@ public class Post {
         this.dateTime = new Date();
         this.setUserId("");
         this.setUniversityId("");
+
     }
 
     public Post(String title, String content, String dateTime, String userId, String universityId){

@@ -78,18 +78,28 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
             } break;
 
             case R.id.new_btn_send : {
-                finish();
-                Toast.makeText(NewPostActivity.this, "Send", Toast.LENGTH_SHORT).show();
                 Post post = new Post();
 
-                post.setTitle(((EditText)findViewById(R.id.new_info_title)).getText().toString());
-                post.setContent(((EditText)findViewById(R.id.new_info_description)).getText().toString());
+                EditText editTitle = (EditText)findViewById(R.id.new_info_title);
+                EditText editContent = (EditText)findViewById(R.id.new_info_description);
+
+                if(editTitle != null)
+                    post.setTitle(editTitle.getText().toString());
+                if(editContent != null)
+                    post.setContent(editContent.getText().toString());
                 //Todo: insert google maps coordinates
                 post.setLatitude(48.315782);
                 post.setLongitude(14.285175);
 
-                //push post to database
-                ServiceLocator.getDataModel().addPost(post);
+                if(post.getTitle().isEmpty() && post.getContent().isEmpty()){
+                    Toast.makeText(NewPostActivity.this, "There's nothing to send here.", Toast.LENGTH_SHORT).show();
+                }else {
+                    finish();
+                    Toast.makeText(NewPostActivity.this, "Send", Toast.LENGTH_SHORT).show();
+                    //push post to database && store the image
+                    String key = ServiceLocator.getDataModel().addPost(post);
+                    ServiceLocator.getDataModel().addImage(picture.image, key);
+                }
 
             } break;
 

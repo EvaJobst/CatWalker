@@ -121,6 +121,7 @@ public class LocalData {
 
     public void addPost(String key, Post p, boolean userPost) {
         String property;
+        p.setId(key);
         if (userPost) {
             this.myPostsList.put(key, p);
             property = "myPosts.add";

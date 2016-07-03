@@ -1,7 +1,14 @@
 package at.fhhgb.catwalker.firebase;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,6 +16,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.ByteArrayOutputStream;
 
 import at.fhhgb.catwalker.data.*;
 
@@ -24,11 +38,16 @@ public class DataModel {
     public final String postSection = "Post";
     public final String universitySection = "University";
 
+    public final String storagePath = "gs://project-1854836955410737173.appspot.com";
+
     private LocalData data;
 
     private FirebaseDatabase database;
+    private FirebaseStorage storage;
     private ValueEventListener userListener;
     private ChildEventListener userChildListener, timelineChildListener, userPostChildListener, universityChildListener;
+
+    private PropertyChangeSupport propertyChangeSupport;
 
     public LocalData getLocalData() {
         return data;
@@ -45,7 +64,9 @@ public class DataModel {
 
     public DataModel() {
         database = FirebaseDatabase.getInstance();
+        storage = FirebaseStorage.getInstance();
         data = new LocalData();
+        propertyChangeSupport = new PropertyChangeSupport(this);
         initListeners();
     }
 
@@ -195,7 +216,8 @@ public class DataModel {
                 Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         };
-         userPostChildListener = new ChildEventListener() {
+
+        userPostChildListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Post p = dataSnapshot.getValue(Post.class);
@@ -227,6 +249,16 @@ public class DataModel {
                 Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         };
+    }
+
+    //Hooking a PropertyChangeListener
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    //Removing a PropertyChangeListener
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
     //---------------------------------- Add Change Listener ---------------------------------//
@@ -359,4 +391,51 @@ public class DataModel {
         getRef(postSection, postId).removeValue();
     }
 
+    //----------------------------------Image Functions---------------------------------------//
+
+    public void addImage(Bitmap img, String fileName){
+        if(img != null) {
+            StorageReference imgRef = storage.getReferenceFromUrl(storagePath).child("image/img" + fileName + ".jpg");
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            img.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = imgRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                }
+            });
+        }
+    }
+
+    public void loadImage(final String fileName){
+        StorageReference imgRef = storage.getReferenceFromUrl(storagePath).child("image/img" + fileName + ".jpg");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                propertyChangeSupport.firePropertyChange("image.load", fileName, img);
+
+                Log.d("Image","Loading Success");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.d("Image","Loading Error");
+            }
+        });
+    }
 }

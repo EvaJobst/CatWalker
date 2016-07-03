@@ -30,7 +30,10 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.storage.FirebaseStorage;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,6 +42,7 @@ import java.util.List;
 
 import at.fhhgb.catwalker.activity.TimelineActivity;
 import at.fhhgb.catwalker.data.Post;
+import at.fhhgb.catwalker.firebase.ServiceLocator;
 
 /**
  * Created by Eva on 30.06.2016.
@@ -46,7 +50,7 @@ import at.fhhgb.catwalker.data.Post;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     public List<Post> posts;
 
-    public PostAdapter(List<Post> posts){
+    public PostAdapter(List<Post> posts) {
         this.posts = posts;
     }
 
@@ -68,18 +72,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.postTime.setText(posts.get(position).getDateTime());
         holder.postTitle.setText(posts.get(position).getTitle());
         holder.postDescription.setText(posts.get(position).getContent());
-        //holder.postPosition = new LatLng(Double.valueOf(posts.get(position).getLatitude()), Double.valueOf(posts.get(position).getLongitude()));
-        holder.postPosition = new LatLng(0, 0); // Dummy value
+        holder.postPosition = new LatLng(posts.get(position).getLatitude(), posts.get(position).getLongitude());
+        //holder.postPosition = new LatLng(0, 0); // Dummy value
+        holder.key = posts.get(position).getId();
     }
 
     @Override
     public int getItemCount() {
-        if(posts==null)
+        if (posts == null)
             return 0;
         return posts.size();
     }
 
-    public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, PropertyChangeListener {
+        String key;
         CardView cardView;
         TextView postAuthor;
         TextView postTime;
@@ -100,8 +106,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postDescription = (TextView) itemView.findViewById(R.id.post_description);
             postImage = (ImageView) itemView.findViewById(R.id.post_image);
             postMap = (MapView) itemView.findViewById(R.id.post_location);
+            key = "";
 
-            if(client == null) {
+            if (client == null) {
                 client = new GoogleApiClient.Builder(itemView.getContext())
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
@@ -112,16 +119,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postMap.onCreate(Bundle.EMPTY);
             postMap.getMapAsync(this);
             itemView.setOnClickListener(this);
+            ServiceLocator.getDataModel().addPropertyChangeListener(this);
         }
 
         @Override
         public void onClick(View itemView) {
-            if(postMap.getVisibility() == View.GONE) {
+            if (postMap.getVisibility() == View.GONE) {
                 postMap.setVisibility(View.VISIBLE);
-                postImage.setVisibility(View.VISIBLE);
-            }
+                ServiceLocator.getDataModel().loadImage(key);
 
-            else {
+            } else {
                 postMap.setVisibility(View.GONE);
                 postImage.setVisibility(View.GONE);
             }
@@ -136,7 +143,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         @Override
         public void onConnected(@Nullable Bundle bundle) {
-            if(ContextCompat.checkSelfPermission(postMap.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(postMap.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(postPosition, 16));
                 map.addMarker(new MarkerOptions().position(postPosition));
             }
@@ -150,6 +157,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+        }
+
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+            //show the image if the oldValue(key) equals the key of the viewholder and an image was loaded
+            if (event.getPropertyName().equals("image.load") && key.equals((String) event.getOldValue())) {
+                postImage.setImageBitmap((Bitmap) event.getNewValue());
+                postImage.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

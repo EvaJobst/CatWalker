@@ -101,7 +101,9 @@ public void onConnected(@Nullable Bundle bundle) {
     if(ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
         mMap.setMyLocationEnabled(true);
         Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(loc.getLatitude(), loc.getLongitude()), 18));
+        //todo: fix null pointer exception
+        if(loc != null)
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(loc.getLatitude(), loc.getLongitude()), 18));
     }
 }
 

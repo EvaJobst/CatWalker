@@ -8,7 +8,7 @@ import java.net.URL;
 /**
  * Created by Lisa on 17.06.2016.
  */
-public class AsyncLoadImage extends AsyncTask<URL,Integer, Image> {
+public class AsyncImageLoader extends AsyncTask<URL, Integer, Image> {
 
     //Todo: Load image from firebase
     @Override
