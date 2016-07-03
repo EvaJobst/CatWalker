@@ -113,7 +113,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
             View picture = findViewById(R.id.new_btn_picture);
             picture.setBackgroundColor(0);
 
-            v.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }
     }
 

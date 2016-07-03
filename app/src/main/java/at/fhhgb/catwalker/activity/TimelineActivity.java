@@ -48,9 +48,6 @@ public class TimelineActivity extends AppCompatActivity
         toggle.syncState();
         drawer.addDrawerListener(toggle);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -108,12 +105,12 @@ public class TimelineActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.toggle) {
-            if(drawer.isDrawerOpen(GravityCompat.START)) {
+            if(drawer.isDrawerOpen(GravityCompat.END)) {
                 drawer.closeDrawer(GravityCompat.START);
             }
 
             else {
-                drawer.openDrawer(GravityCompat.START);
+                drawer.openDrawer(GravityCompat.END);
             }
 
             return true;
