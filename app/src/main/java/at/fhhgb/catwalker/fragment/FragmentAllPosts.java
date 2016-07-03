@@ -26,7 +26,6 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
 
     public FragmentAllPosts() {
         // Required empty public constructor
-
     }
 
     @Override
@@ -39,9 +38,8 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_my_posts, container, false);
 
-        data = ServiceLocator.getDataModel().getLocalData();
-        data.addPropertyChangeListener(this);
-        this.allPosts = data.getTimelineData().orderByDate(true);
+        ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
+        this.allPosts = new ArrayList<>();
 
         recyclerView = (RecyclerView)  v.findViewById(R.id.my_entries_view);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -56,23 +54,24 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
 
     }
 
+    private void updateTimeline(Post newValue, boolean add){
+        if(add)
+            this.allPosts.add(0,newValue);
+        else
+            allPosts.remove(newValue);
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()){
             case "timeline.add":
-                this.allPosts.add((Post)event.getNewValue());
-                recyclerView.getAdapter().notifyDataSetChanged();
+                updateTimeline((Post)event.getNewValue(), true);
                 Log.d("Add Post", ""+((Post)event.getNewValue()));
                 break;
             case "timeline.remove":
-                this.allPosts.remove((Post)event.getOldValue());
-                recyclerView.getAdapter().notifyDataSetChanged();
+                updateTimeline((Post)event.getOldValue(), false);
                 Log.d("Remove Post", ""+((Post)event.getOldValue()));
-                break;
-            case "timeline.update":
-                this.allPosts = data.getTimelineData().orderByDate(true);
-                recyclerView.getAdapter().notifyDataSetChanged();
-                Log.d("Remove Post", ""+((Post)event.getNewValue()));
                 break;
             case "timeline.clear":
                 allPosts.clear();

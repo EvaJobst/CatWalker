@@ -89,11 +89,11 @@ public class SettingsController implements PropertyChangeListener{
                 //store preference
                 SharedPreferences.Editor editor = view.getSharedPreferences("CatWalker_Data",Context.MODE_PRIVATE).edit();
                 editor.putString("universityId", newID);
-                editor.commit();
+                editor.apply();
                 //update TimelineChildListener
                 model.removeTimelineChildListener(data.getUniversityId());
                 model.addTimelinePostChangeListener(newID);
-                data.resetTimeline();
+                data.resetTimeline(false);
 
                 //update data
                 data.setUniversityId(newID);

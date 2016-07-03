@@ -3,7 +3,6 @@ package at.fhhgb.catwalker.data;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Lisa on 08.06.2016.
@@ -17,29 +16,29 @@ public class LocalData {
 
     //General Data
     private HashMap<String, String> userList;               //key, userName
-    private HashMap<String, String> universityList;         //universityName, Cat
+    private HashMap<String, String> universityList;         //universityName, catName
+    private HashMap<String, Post> allPostsList;             //key, Post
+    private HashMap<String, Post> myPostsList;             //key, Post
 
-
-    //Timeline
-    private TimelineData timelineData;
 
     //PropertyChangeSupport for raising propertyChange Events in case that some data has changed.
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    public LocalData(){
+    public LocalData() {
         userList = new HashMap<>();
         universityList = new HashMap<>();
-        timelineData = new TimelineData();
+        allPostsList = new HashMap<>();
+        myPostsList = new HashMap<>();
     }
 
     //----------------------------- PropertyChangeListener ------------------------------------//
 
-    //Hooking a PropertyChangeListener in
+    //Hooking a PropertyChangeListener
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    //Removing a PropertyChangeListener in
+    //Removing a PropertyChangeListener
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
@@ -55,28 +54,28 @@ public class LocalData {
     }
 
     //returns current user
-    public String getUser(){
+    public String getUser() {
         return userList.get(userId);
     }
 
     //returns any user
-    public String getUser(String userId){
+    public String getUser(String userId) {
         return userList.get(userId);
     }
 
-    public void updateUser(String name){
+    public void updateUser(String name) {
         String old = "";
-        if(user == null)
+        if (user == null)
             user = name;
-        else{
+        else {
             old = user;
-            user=name;
+            user = name;
         }
         propertyChangeSupport.firePropertyChange("user", old, name);
     }
 
     public void updateUserList(String key, String value, boolean add) {
-        if(add)
+        if (add)
             userList.put(key, value);
         else
             userList.remove(key);
@@ -100,19 +99,19 @@ public class LocalData {
         getUniversityList().put(universityId, cat);
     }
 
-    public void setUniversityList(HashMap<String,String> universityList) {
+    public void setUniversityList(HashMap<String, String> universityList) {
         this.universityList = universityList;
     }
 
-    public HashMap<String,String> getUniversityList() {
+    public HashMap<String, String> getUniversityList() {
         return universityList;
     }
 
     public void updateUniversityList(String key, String value, boolean add) {
-        if(add){
-            universityList.put(key,value);
+        if (add) {
+            universityList.put(key, value);
             propertyChangeSupport.firePropertyChange("university.add", null, key);
-        }else{
+        } else {
             universityList.remove(key);
             propertyChangeSupport.firePropertyChange("university.remove", key, null);
         }
@@ -120,32 +119,49 @@ public class LocalData {
 
     //---------------------------------- Timeline --------------------------------------------//
 
-    public TimelineData getTimelineData() {
-        return timelineData;
+    public void addPost(String key, Post p, boolean userPost) {
+        String property;
+        if (userPost) {
+            this.myPostsList.put(key, p);
+            property = "myPosts.add";
+        } else {
+            this.allPostsList.put(key, p);
+            property = "timeline.add";
+        }
+
+        propertyChangeSupport.firePropertyChange(property, null, p);
     }
 
-    public void addPost(String key, Post p) {
-        propertyChangeSupport.firePropertyChange("timeline.add", null, p);
-        if(timelineData!=null)
-            this.timelineData.add(key, p);
+    public void removePost(String key, Post p, boolean userPost) {
+        String property;
+        if (userPost) {
+            this.myPostsList.remove(key);
+            property = "myPosts.remove";
+        } else {
+            this.allPostsList.remove(key);
+            property = "timeline.remove";
+        }
+        propertyChangeSupport.firePropertyChange(property, p, key);
+        //Todo: remove function for the timeline
     }
 
-    public void removePost(String key, Post p) {
-        if(timelineData!=null)
-            this.timelineData.remove(key);
-        propertyChangeSupport.firePropertyChange("timeline.remove", p, null);
-    }
-
-    public void resetTimeline(){
-        timelineData = new TimelineData();
-        propertyChangeSupport.firePropertyChange("timeline.clear", null, null);
+    public void resetTimeline(boolean userPost) {
+        String property;
+        if (userPost) {
+            myPostsList = new HashMap<>();
+            property = "myPosts.reset";
+        } else {
+            allPostsList = new HashMap<>();
+            property = "timeline.reset";
+        }
+        propertyChangeSupport.firePropertyChange(property, null, null);
     }
 
     public void updatePost(String key, Post p) {
-        if(timelineData!=null){
-            Post old = this.timelineData.posts.get(key);
-            this.timelineData.add(key, p);
-            propertyChangeSupport.firePropertyChange("timeline.update", old , p);
+        if (allPostsList != null) {
+            Post old = this.allPostsList.get(key);
+            this.allPostsList.put(key, p);
+            propertyChangeSupport.firePropertyChange("timeline.update", old, p);
         }
     }
 

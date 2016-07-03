@@ -78,6 +78,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
             } break;
 
             case R.id.new_btn_send : {
+                finish();
                 Toast.makeText(NewPostActivity.this, "Send", Toast.LENGTH_SHORT).show();
                 Post post = new Post();
 
@@ -89,6 +90,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
 
                 //push post to database
                 ServiceLocator.getDataModel().addPost(post);
+
             } break;
 
             default : {

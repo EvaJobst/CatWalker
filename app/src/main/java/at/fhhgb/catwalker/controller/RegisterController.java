@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -43,6 +42,7 @@ public class RegisterController implements PropertyChangeListener{
     public void initDependentListeners(){
         model.addTimelinePostChangeListener(data.getUniversityId());
         model.addUserChangeListener(data.getUserId());
+        model.addUserPostChangeListener(data.getUserId());
     }
 
     public boolean storePreferences(){
@@ -113,9 +113,9 @@ public class RegisterController implements PropertyChangeListener{
     public void initUniversityList(){
         AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.registerUniverstiyAutoComplete);
 
-        universityList = new ArrayList<String>();
+        universityList = new ArrayList<>();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(view,
                 android.R.layout.simple_dropdown_item_1line, universityList);
         autoCompleteTextView.setAdapter(adapter);
 
