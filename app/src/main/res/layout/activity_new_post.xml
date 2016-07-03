@@ -15,7 +15,6 @@
         android:layout_alignParentTop="true" />
 
     <FrameLayout
-        style="@style/Widget.AppCompat.ActionBar"
         android:id="@+id/new_toolbar_bottom"
         android:layout_width="match_parent"
         android:layout_height="56dp"
