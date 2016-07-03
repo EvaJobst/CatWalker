@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -21,7 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import at.fhhgb.catwalker.R;
 
-public class SightingsActivity extends FragmentActivity implements OnMapReadyCallback,
+public class SightingsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "Google Services Test";
