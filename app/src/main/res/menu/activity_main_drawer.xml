@@ -8,10 +8,7 @@
             android:id="@+id/nav_new_entry"
             android:icon="@drawable/ic_menu_new_entry"
             android:title="@string/str_nav_new_entry" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/str_nav_gallery" />
+
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_menu_map"

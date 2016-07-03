@@ -60,7 +60,7 @@ public class TimelineActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Create the adapter that will return a fragment for each section
-        /*adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+        adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
                     new FragmentAllPosts(),
                     new FragmentMyPosts(),
@@ -86,7 +86,7 @@ public class TimelineActivity extends AppCompatActivity
         viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);*/
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -118,10 +118,6 @@ public class TimelineActivity extends AppCompatActivity
             case R.id.nav_new_entry : {
                 Intent i = new Intent(this, NewPostActivity.class);
                 startActivity(i);
-            } break;
-
-            case R.id.nav_gallery : {
-                Toast.makeText(TimelineActivity.this, "TODO: - Gallery - Activity", Toast.LENGTH_SHORT).show();
             } break;
 
             case R.id.nav_map : {
