@@ -28,8 +28,6 @@ public class TimelineActivity extends AppCompatActivity
     TimelineController controller;
     private FragmentPagerAdapter adapter;
     private ViewPager viewPager;
-    ActionBarDrawerToggle toggle;
-    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +37,6 @@ public class TimelineActivity extends AppCompatActivity
         // Action Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Navigation Drawer
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.str_nav_drawer_open, R.string.str_nav_drawer_close);
-
-        toggle.syncState();
-        drawer.addDrawerListener(toggle);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         // Floating Action Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -61,8 +48,19 @@ public class TimelineActivity extends AppCompatActivity
             }
         });
 
+        // Navigation Drawer
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.str_nav_drawer_open, R.string.str_nav_drawer_close);
+
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         // Create the adapter that will return a fragment for each section
-        adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+        /*adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
                     new FragmentAllPosts(),
                     new FragmentMyPosts(),
@@ -88,11 +86,13 @@ public class TimelineActivity extends AppCompatActivity
         viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);*/
     }
 
     @Override
     public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if(drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
@@ -100,24 +100,6 @@ public class TimelineActivity extends AppCompatActivity
         else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.toggle) {
-            if(drawer.isDrawerOpen(GravityCompat.END)) {
-                drawer.closeDrawer(GravityCompat.START);
-            }
-
-            else {
-                drawer.openDrawer(GravityCompat.END);
-            }
-
-            return true;
-        }
-
-        Toast.makeText(this, "onOptionsItemSelected", Toast.LENGTH_SHORT).show();
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -161,6 +143,7 @@ public class TimelineActivity extends AppCompatActivity
             }
         }
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
