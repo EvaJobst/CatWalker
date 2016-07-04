@@ -77,16 +77,6 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
         mMap = googleMap;
         Log.i(TAG, "Map is ready!");
 
-        LatLng defaultLocation;
-
-        if(mLastLocation == null) {
-            defaultLocation = new LatLng(48.369156, 14.513944);
-        }
-
-        else {
-            defaultLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        }
-
         HashMap posts = ServiceLocator.getDataModel().getLocalData().getAllPostsList();
 
         LatLngBounds.Builder latLngBuilder = new LatLngBounds.Builder();
@@ -103,7 +93,6 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
 
         LatLngBounds bounds = latLngBuilder.build();
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 18));
     }
 
     @Override
@@ -113,7 +102,7 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
 
         }
 
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        //mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

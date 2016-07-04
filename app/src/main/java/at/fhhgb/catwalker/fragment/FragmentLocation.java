@@ -23,13 +23,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
 import at.fhhgb.catwalker.R;
+import at.fhhgb.catwalker.activity.NewPostActivity;
 
 public class FragmentLocation extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
     MapView mView;
     GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
     LocationRequest lr;
-    Location loc;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,10 +110,6 @@ public void onConnected(@Nullable Bundle bundle) {
     }
 }
 
-public Location getLocation() {
-    return loc;
-}
-
 @Override
 public void onConnectionSuspended(int i) {}
 
@@ -122,9 +118,10 @@ public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
 @Override
 public void onLocationChanged(Location location) {
-    loc = location;
+    NewPostActivity.loc = location;
+
     if(mMap.getCameraPosition().zoom < 3) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(loc.getLatitude(), loc.getLongitude()), 18));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
     }
 }
 }

@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
+import android.location.Location;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
     FragmentLocation location;
     FragmentManager mgr = getFragmentManager();
     FragmentTransaction ft;
+    public static Location loc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,17 +92,14 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
                 if(editContent != null)
                     post.setContent(editContent.getText().toString());
 
-
-                //Todo: insert google maps coordinates
-
-                if(location.getLocation() == null) {
-                    post.setLatitude(48.315782);
-                    post.setLongitude(14.285175);
+                if(loc == null) {
+                    post.setLatitude(0);
+                    post.setLongitude(0);
                 }
 
                 else {
-                    post.setLatitude(location.getLocation().getLatitude());
-                    post.setLongitude(location.getLocation().getLongitude());
+                    post.setLatitude(loc.getLatitude());
+                    post.setLongitude(loc.getLongitude());
                 }
 
                 if(post.getTitle().isEmpty() && post.getContent().isEmpty()){
