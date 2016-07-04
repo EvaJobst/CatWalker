@@ -103,14 +103,16 @@ public void onMapReady(GoogleMap googleMap) {
 public void onConnected(@Nullable Bundle bundle) {
     if(ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
         mMap.setMyLocationEnabled(true);
-        lr = new LocationRequest();
+        lr = new LocationRequest().setInterval(1000).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);;
         //Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         //todo: fix null pointer exception
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, lr, this);
     }
 }
 
-
+public Location getLocation() {
+    return loc;
+}
 
 @Override
 public void onConnectionSuspended(int i) {}

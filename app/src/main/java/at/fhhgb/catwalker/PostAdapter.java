@@ -155,23 +155,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             key = "";
             hasImage = false;
 
-            if (client == null) {
-                client = new GoogleApiClient.Builder(itemView.getContext())
-                        .addConnectionCallbacks(this)
-                        .addOnConnectionFailedListener(this)
-                        .addApi(LocationServices.API)
-                        .build();
+            if(postPosition != new LatLng(0, 0)) {
+                if (client == null) {
+                    client = new GoogleApiClient.Builder(itemView.getContext())
+                            .addConnectionCallbacks(this)
+                            .addOnConnectionFailedListener(this)
+                            .addApi(LocationServices.API)
+                            .build();
+                }
+
+                postMap.onCreate(Bundle.EMPTY);
+                postMap.getMapAsync(this);
             }
 
-            postMap.onCreate(Bundle.EMPTY);
-            postMap.getMapAsync(this);
+
             itemView.setOnClickListener(this);
             ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
         }
 
         @Override
         public void onClick(View itemView) {
-            if (postMap.getVisibility() == View.GONE) {
+            Post post = findPostById(key);
+            if (!post.isExpanded()) {
                expand(true);
             } else {
                expand(false);
@@ -209,7 +214,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             postImage.setImageBitmap(img);
             postImage.setVisibility(View.VISIBLE);
-            postMap.setVisibility(View.VISIBLE);
+
+            if(postPosition == new LatLng(0, 0)) {
+                postMap.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override

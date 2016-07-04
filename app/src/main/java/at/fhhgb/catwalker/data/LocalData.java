@@ -149,6 +149,10 @@ public class LocalData {
         //Todo: remove function for the timeline
     }
 
+    public HashMap getAllPostsList() {
+        return allPostsList;
+    }
+
     public void resetTimeline(boolean userPost) {
         String property;
         if (userPost) {

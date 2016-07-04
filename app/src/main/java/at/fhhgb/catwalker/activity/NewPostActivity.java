@@ -92,8 +92,16 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
 
 
                 //Todo: insert google maps coordinates
-                post.setLatitude(48.315782);
-                post.setLongitude(14.285175);
+
+                if(location.getLocation() == null) {
+                    post.setLatitude(48.315782);
+                    post.setLongitude(14.285175);
+                }
+
+                else {
+                    post.setLatitude(location.getLocation().getLatitude());
+                    post.setLongitude(location.getLocation().getLongitude());
+                }
 
                 if(post.getTitle().isEmpty() && post.getContent().isEmpty()){
                     Toast.makeText(NewPostActivity.this, "There's nothing to send here.", Toast.LENGTH_SHORT).show();
