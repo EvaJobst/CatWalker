@@ -30,6 +30,7 @@ public class Post {
     private double longitude;
     private double latitude;
     private boolean hasImage;
+    private boolean isExpanded;
 
     private static DateFormat dateFormat = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.ENGLISH);
 
@@ -39,7 +40,7 @@ public class Post {
         this.dateTime = new Date();
         this.setUserId("");
         this.setUniversityId("");
-
+        this.isExpanded = false;
     }
 
     public Post(String title, String content, String dateTime, String userId, String universityId){
@@ -139,5 +140,13 @@ public class Post {
 
     public void setHasImage(boolean hasImage) {
         this.hasImage = hasImage;
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
     }
 }

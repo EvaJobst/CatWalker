@@ -44,6 +44,7 @@ import at.fhhgb.catwalker.activity.TimelineActivity;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
+import pl.droidsonroids.gif.GifTextView;
 
 /**
  * Created by Eva on 30.06.2016.
@@ -53,6 +54,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     public PostAdapter(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public Post findPostById(String key){
+        for ( Post post : posts ) {
+            if(post.getId() == key)
+                return post;
+        }
+        return null;
     }
 
     @Override
@@ -74,9 +83,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.postTitle.setText(posts.get(position).getTitle());
         holder.postDescription.setText(posts.get(position).getContent());
         holder.postPosition = new LatLng(posts.get(position).getLatitude(), posts.get(position).getLongitude());
-        //holder.postPosition = new LatLng(0, 0); // Dummy value
         holder.key = posts.get(position).getId();
         holder.hasImage = posts.get(position).getHasImage();
+        //expand the post if needed
+        holder.expand(posts.get(position).isExpanded());
     }
 
     @Override
@@ -95,6 +105,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         TextView postTitle;
         TextView postDescription;
         ImageView postImage;
+        GifTextView imagePlaceholder;
         MapView postMap;
         LatLng postPosition;
         GoogleMap map;
@@ -109,6 +120,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postDescription = (TextView) itemView.findViewById(R.id.post_description);
             postImage = (ImageView) itemView.findViewById(R.id.post_image);
             postMap = (MapView) itemView.findViewById(R.id.post_location);
+            imagePlaceholder = (GifTextView) itemView.findViewById(R.id.post_image_placeholder);
             key = "";
             hasImage = false;
 
@@ -129,18 +141,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         @Override
         public void onClick(View itemView) {
             if (postMap.getVisibility() == View.GONE) {
-                postMap.setVisibility(View.VISIBLE);
-                LocalData data = ServiceLocator.getDataModel().getLocalData();
-                if(hasImage) {
-                    Bitmap img = data.getImage(key);
-                    if (img == null)
-                        ServiceLocator.getDataModel().loadImage(key);
-                    else
-                        showImage(img);
-                }
+               expand(true);
             } else {
-                postMap.setVisibility(View.GONE);
-                postImage.setVisibility(View.GONE);
+               expand(false);
             }
         }
 
@@ -170,6 +173,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
 
         private void showImage(Bitmap img){
+            imagePlaceholder.setVisibility(View.GONE);
+            postImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             postImage.setImageBitmap(img);
             postImage.setVisibility(View.VISIBLE);
         }
@@ -179,6 +184,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             //show the image if the oldValue(key) equals the key of the viewholder and an image was loaded
             if (event.getPropertyName().equals("image.load") && key.equals((String) event.getOldValue())) {
                 showImage((Bitmap) event.getNewValue());
+            }
+        }
+
+        public void expand(boolean expand) {
+            Post post = findPostById(key);
+            if (expand) {
+                postMap.setVisibility(View.VISIBLE);
+                LocalData data = ServiceLocator.getDataModel().getLocalData();
+                if(hasImage) {
+                    Bitmap img = data.getImage(key);
+                    if (img == null){
+                        ServiceLocator.getDataModel().loadImage(key);
+                        imagePlaceholder.setVisibility(View.VISIBLE);
+                    }
+                    else
+                        showImage(img);
+                }
+                post.setExpanded(true);
+            } else {
+                postMap.setVisibility(View.GONE);
+                postImage.setVisibility(View.GONE);
+                imagePlaceholder.setVisibility(View.GONE);
+                post.setExpanded(false);
             }
         }
     }

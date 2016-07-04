@@ -169,6 +169,13 @@ public class LocalData {
         }
     }
 
+    public Post getPost(String key){
+        Post p =  allPostsList.get(key);
+        if(p==null)
+            p = myPostsList.get(key);
+        return p;
+    }
+
     //Images
 
     public void addImage(String key, Bitmap img){

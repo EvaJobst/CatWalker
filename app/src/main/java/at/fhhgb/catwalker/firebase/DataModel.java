@@ -148,38 +148,6 @@ public class DataModel {
         };
 
         //------------------------- Timeline ------------------------------//
-        timelineChildListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Post p = dataSnapshot.getValue(Post.class);
-                String key = dataSnapshot.getKey();
-                data.addPost(key, p, false);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Post p = dataSnapshot.getValue(Post.class);
-                String key = dataSnapshot.getKey();
-                data.updatePost(key, p);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Post p = dataSnapshot.getValue(Post.class);
-                String key = dataSnapshot.getKey();
-                data.removePost(key,p, false);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "Failed to read value.", databaseError.toException());
-            }
-        };
 
         timelineChildListener = new ChildEventListener() {
             @Override
@@ -191,16 +159,16 @@ public class DataModel {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Post p = dataSnapshot.getValue(Post.class);
-                String key = dataSnapshot.getKey();
-                data.updatePost(key, p);
+                //Post p = dataSnapshot.getValue(Post.class);
+                //String key = dataSnapshot.getKey();
+                //data.updatePost(key, p);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Post p = dataSnapshot.getValue(Post.class);
-                String key = dataSnapshot.getKey();
-                data.removePost(key,p, false);
+                //Post p = dataSnapshot.getValue(Post.class);
+                //String key = dataSnapshot.getKey();
+                //data.removePost(key,p, false);
             }
 
             @Override
@@ -295,19 +263,6 @@ public class DataModel {
         removeUniversityListener(universityId);
         removeTimelineChildListener(universityId);
     }
-    //----------------------------------------------------------------------------------------//
-    //                             Write to Database Functions                                //
-    //----------------------------------------------------------------------------------------//
-
-    //stores any value in any place in the database
-    public void saveToDatabase(String section, String[] keys, String val) {
-        DatabaseReference dataRef = database.getReference(section);
-        for (String key : keys) {
-            dataRef = dataRef.child(key);
-        }
-        dataRef.setValue(val);
-    }
-
 
     //-----------------------------------User Functions---------------------------------------//
 
@@ -317,10 +272,6 @@ public class DataModel {
         dataRef = dataRef.push();
         dataRef.setValue(user);
         return dataRef.getKey();
-    }
-
-    public void updateUser(String userId, User user) {
-        getRef(userSection, userId).setValue(user);
     }
 
     public void updateUser(String userId, String key, String value) {
@@ -364,9 +315,6 @@ public class DataModel {
         dataRef.child("universityId").setValue(data.getUniversityId());
 
         dataRef.child("hasImage").setValue(post.getHasImage());
-
-        //Todo: Upload image function
-        //pushImage(imagePath);
 
         return dataRef.getKey();
     }

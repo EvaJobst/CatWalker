@@ -60,7 +60,7 @@ public class FragmentPicture extends Fragment {
 
         iv = (ImageView) v.findViewById(R.id.new_picture_image);
 
-        if(image != null) {
+        if (image != null) {
             iv.setImageBitmap(image);
         }
 
@@ -72,16 +72,15 @@ public class FragmentPicture extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_CANCELED) {
             if (requestCode == CAPTURE_IMAGE) {
-                if (resultCode == Activity.RESULT_OK){
+                if (resultCode == Activity.RESULT_OK) {
                     selectedImagePath = getImagePath();
-                    image = decodeFile(selectedImagePath);
-                    image = fixRotation(image);
-
-                    iv.setImageBitmap(image);
+                    if (selectedImagePath!=null) {
+                        image = decodeFile(selectedImagePath);
+                        image = fixRotation(image, selectedImagePath);
+                        iv.setImageBitmap(image);
+                    }
                 }
-            }
-
-            else {
+            } else {
                 super.onActivityResult(requestCode, resultCode, data);
             }
         }
@@ -119,18 +118,47 @@ public class FragmentPicture extends Fragment {
             o2.inSampleSize = scale;
             return BitmapFactory.decodeFile(path, o2);
         } catch (Throwable e) {
-            Log.d("Image","not found!");
+            Log.d("Image", "not found!");
             e.printStackTrace();
         }
         return null;
     }
 
-    public Bitmap fixRotation(Bitmap img){
-        if (img.getWidth() > img.getHeight()) {
-            Matrix matrix = new Matrix();
-            matrix.postRotate(90);
-            img = Bitmap.createBitmap(img , 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+    public Bitmap fixRotation(Bitmap img, String imagePath) {
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(getImagePath());
+        } catch (IOException e) {
+            Log.d("Image", "Can't read Exif data.");
         }
+        if (exif != null) {
+            int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int rotationInDegrees = exifToDegrees(rotation);
+            img = rotate(img, rotationInDegrees);
+
+        } else {
+            if (img.getWidth() > img.getHeight()) {
+                img = rotate(img, 90);
+            }
+        }
+        return img;
+    }
+
+    private int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
+    }
+
+    private Bitmap rotate(Bitmap img, int rotation) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(rotation);
+        img = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
         return img;
     }
 }
