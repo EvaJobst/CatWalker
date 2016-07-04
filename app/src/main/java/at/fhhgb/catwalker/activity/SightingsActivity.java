@@ -19,6 +19,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
@@ -88,12 +89,20 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
 
         HashMap posts = ServiceLocator.getDataModel().getLocalData().getAllPostsList();
 
+        LatLngBounds.Builder latLngBuilder = new LatLngBounds.Builder();
 
-        for(Post post : posts.entrySet()) {
+        for(Object post : posts.values()) {
+            Post p = (Post) post;
+            double lon = ((Post) post).getLongitude();
+            double lat = ((Post) post).getLatitude();
+            LatLng latlng = new LatLng(lat, lon);
 
+            latLngBuilder.include(latlng);
+            mMap.addMarker(new MarkerOptions().position(latlng));
         }
 
-        mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Last Position"));
+        LatLngBounds bounds = latLngBuilder.build();
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 18));
     }
 
