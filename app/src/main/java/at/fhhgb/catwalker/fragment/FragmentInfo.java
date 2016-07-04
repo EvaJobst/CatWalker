@@ -39,7 +39,6 @@ public class FragmentInfo extends Fragment {
         time.setText(currentTime);
 
         author.setText(ServiceLocator.getDataModel().getLocalData().getUser());
-        Log.i("COLOR", String.valueOf(edit.getCurrentHintTextColor()));
         // Inflate the layout for this fragment
         return v;
     }

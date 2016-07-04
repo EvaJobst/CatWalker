@@ -3,6 +3,8 @@ package at.fhhgb.catwalker.activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -124,7 +126,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
 
     public void setColor(View v) {
         if(v.getId() != R.id.new_btn_send) {
-            View info = findViewById(R.id.new_btn_info);
+            ImageButton info = (ImageButton) findViewById(R.id.new_btn_info);
             info.setBackgroundColor(0);
 
             View location = findViewById(R.id.new_btn_location);

@@ -1,12 +1,15 @@
 package at.fhhgb.catwalker;
 
 import android.*;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +19,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -97,6 +103,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, PropertyChangeListener {
+
+        public class BackgroundAsyncTask extends AsyncTask {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                imagePlaceholder.setVisibility(View.VISIBLE);
+                postProgress.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            protected Object doInBackground(Object[] params) {
+                ServiceLocator.getDataModel().loadImage(key);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+            }
+        }
+
         String key;
         Boolean hasImage;
         CardView cardView;
@@ -105,7 +132,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         TextView postTitle;
         TextView postDescription;
         ImageView postImage;
-        GifTextView imagePlaceholder;
+        ProgressBar postProgress;
+        //GifTextView imagePlaceholder;
+        ImageView imagePlaceholder;
         MapView postMap;
         LatLng postPosition;
         GoogleMap map;
@@ -119,8 +148,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postTitle = (TextView) itemView.findViewById(R.id.post_title);
             postDescription = (TextView) itemView.findViewById(R.id.post_description);
             postImage = (ImageView) itemView.findViewById(R.id.post_image);
+            postProgress = (ProgressBar) itemView.findViewById(R.id.post_progressbar);
             postMap = (MapView) itemView.findViewById(R.id.post_location);
-            imagePlaceholder = (GifTextView) itemView.findViewById(R.id.post_image_placeholder);
+            //imagePlaceholder = (GifTextView) itemView.findViewById(R.id.post_image_placeholder);
+            imagePlaceholder = (ImageView) itemView.findViewById(R.id.post_image_placeholder);
             key = "";
             hasImage = false;
 
@@ -174,9 +205,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         private void showImage(Bitmap img){
             imagePlaceholder.setVisibility(View.GONE);
+            postProgress.setVisibility(View.GONE);
             postImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             postImage.setImageBitmap(img);
             postImage.setVisibility(View.VISIBLE);
+            postMap.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -186,21 +219,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 showImage((Bitmap) event.getNewValue());
             }
         }
-
         public void expand(boolean expand) {
             Post post = findPostById(key);
             if (expand) {
-                postMap.setVisibility(View.VISIBLE);
                 LocalData data = ServiceLocator.getDataModel().getLocalData();
                 if(hasImage) {
                     Bitmap img = data.getImage(key);
                     if (img == null){
-                        ServiceLocator.getDataModel().loadImage(key);
-                        imagePlaceholder.setVisibility(View.VISIBLE);
+                        new BackgroundAsyncTask().execute();
                     }
-                    else
+                    else {
                         showImage(img);
+                    }
                 }
+
+                else {
+                    postMap.setVisibility(View.VISIBLE);
+                }
+
                 post.setExpanded(true);
             } else {
                 postMap.setVisibility(View.GONE);

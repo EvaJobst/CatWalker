@@ -27,7 +27,7 @@
                 android:layout_below="@+id/post_title"
                 android:text="Description"/>
 
-            <pl.droidsonroids.gif.GifTextView
+            <!--<pl.droidsonroids.gif.GifTextView
                 android:layout_centerHorizontal="true"
                 android:layout_width="100dp"
                 android:layout_height="60dp"
@@ -35,8 +35,26 @@
                 android:layout_below="@id/post_description"
                 android:cropToPadding="false"
                 android:visibility="gone"
-                android:background="@drawable/icon_loading"
-                />
+                android:background="@drawable/icon_loading"/>-->
+
+            <ProgressBar
+                android:layout_centerHorizontal="true"
+                android:indeterminate="true"
+                android:layout_below="@id/post_description"
+                android:id="@+id/post_progressbar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/post_image_placeholder"
+                android:cropToPadding="false"
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/post_description"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/load_paw"/>
 
             <ImageView
                 android:layout_width="match_parent"

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,6 +28,8 @@ public class FragmentLocation extends Fragment implements OnMapReadyCallback, Go
     MapView mView;
     GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
+    LocationRequest lr;
+    Location loc;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,10 +103,10 @@ public void onMapReady(GoogleMap googleMap) {
 public void onConnected(@Nullable Bundle bundle) {
     if(ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
         mMap.setMyLocationEnabled(true);
-        Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        lr = new LocationRequest();
+        //Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         //todo: fix null pointer exception
-        if(loc != null)
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(loc.getLatitude(), loc.getLongitude()), 18));
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, lr, this);
     }
 }
 
@@ -116,6 +119,10 @@ public void onConnectionSuspended(int i) {}
 public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
 @Override
-public void onLocationChanged(Location location) {}
-
+public void onLocationChanged(Location location) {
+    loc = location;
+    if(mMap.getCameraPosition().zoom < 3) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(loc.getLatitude(), loc.getLongitude()), 18));
+    }
+}
 }

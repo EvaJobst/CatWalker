@@ -65,6 +65,12 @@ public class TimelineActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        /*
+        TODO: Set Username in Navigation Drawer
+        View v = getLayoutInflater().inflate(R.layout.nav_header_timeline, (ViewGroup) findViewById(R.id.header_root));
+        TextView user = (TextView) v.findViewById(R.id.drawer_username);
+        user.setText(ServiceLocator.getDataModel().getLocalData().getUser());*/
+
         // Create the adapter that will return a fragment for each section
         adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
