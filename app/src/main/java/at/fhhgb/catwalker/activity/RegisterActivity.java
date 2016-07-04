@@ -12,11 +12,11 @@ import at.fhhgb.catwalker.controller.RegisterController;
 public class RegisterActivity extends AppCompatActivity {
 
     private Intent intent;
-
+    RegisterController controller;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final RegisterController controller = new RegisterController(this);
+        controller = new RegisterController(this);
         if(controller.restorePreferences()){
             navigateToTimeline();
         }
@@ -38,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void navigateToTimeline() {
+        controller.signIn();
         intent = new Intent(this, TimelineActivity.class);
         startActivity(intent);
     }

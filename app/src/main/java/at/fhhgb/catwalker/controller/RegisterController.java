@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -17,8 +19,9 @@ import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.activity.RegisterActivity;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.User;
+import at.fhhgb.catwalker.firebase.Authentication;
 import at.fhhgb.catwalker.firebase.DataModel;
-import at.fhhgb.catwalker.firebase.ServiceLocator;
+import at.fhhgb.catwalker.firebase.Resources;
 
 /**
  * Created by Lisa on 17.06.2016.
@@ -32,8 +35,8 @@ public class RegisterController implements PropertyChangeListener{
 
     public RegisterController(RegisterActivity view){
         this.view = view;
-        model = ServiceLocator.getDataModel();
-        data = model.getLocalData();
+        model = Resources.getDataModel();
+        data = Resources.getLocalData();
 
         model.addUniversityChangeListener();
         data.addPropertyChangeListener(this);
@@ -169,4 +172,9 @@ public class RegisterController implements PropertyChangeListener{
         }
     }
 
+    public void signIn() {
+        Authentication auth = Resources.getAuth();
+        auth.startListener();
+        auth.signIn(view);
+    }
 }

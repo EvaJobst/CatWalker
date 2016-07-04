@@ -1,8 +1,5 @@
 package at.fhhgb.catwalker.data;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.text.DateFormat;
@@ -10,10 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.ServiceLoader;
 
-import at.fhhgb.catwalker.R;
-import at.fhhgb.catwalker.firebase.ServiceLocator;
+import at.fhhgb.catwalker.firebase.Resources;
 
 /**
  * Created by Lisa on 06.06.2016.
@@ -98,7 +93,7 @@ public class Post {
     }
 
     public String getUser() {
-        return ServiceLocator.getDataModel().getLocalData().getUser(userId);
+        return Resources.getLocalData().getUser(userId);
     }
 
     public String getUserId() {

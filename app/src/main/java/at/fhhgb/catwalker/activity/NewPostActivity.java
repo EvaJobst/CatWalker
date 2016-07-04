@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import at.fhhgb.catwalker.data.Post;
-import at.fhhgb.catwalker.firebase.ServiceLocator;
+import at.fhhgb.catwalker.firebase.Resources;
 import at.fhhgb.catwalker.fragment.FragmentInfo;
 import at.fhhgb.catwalker.fragment.FragmentLocation;
 import at.fhhgb.catwalker.fragment.FragmentPicture;
@@ -103,11 +103,11 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
                     if(picture.image!=null)
                     {
                         post.setHasImage(true);
-                        String key = ServiceLocator.getDataModel().addPost(post);
-                        ServiceLocator.getDataModel().addImage(picture.image, key);
+                        String key = Resources.getDataModel().addPost(post);
+                        Resources.getDataModel().addImage(picture.image, key);
                     }else{
                         post.setHasImage(false);
-                        ServiceLocator.getDataModel().addPost(post);
+                        Resources.getDataModel().addPost(post);
                     }
                 }
 

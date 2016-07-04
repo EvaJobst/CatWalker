@@ -13,7 +13,7 @@ import java.util.Date;
 
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.data.Post;
-import at.fhhgb.catwalker.firebase.ServiceLocator;
+import at.fhhgb.catwalker.firebase.Resources;
 
 
 public class FragmentInfo extends Fragment {
@@ -38,7 +38,7 @@ public class FragmentInfo extends Fragment {
         TextView time = (TextView)v.findViewById(R.id.new_info_date);
         time.setText(currentTime);
 
-        author.setText(ServiceLocator.getDataModel().getLocalData().getUser());
+        author.setText(Resources.getLocalData().getUser());
         Log.i("COLOR", String.valueOf(edit.getCurrentHintTextColor()));
         // Inflate the layout for this fragment
         return v;

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.util.Log;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -26,8 +25,8 @@ public class SettingsController implements PropertyChangeListener{
     CharSequence[] keys, values;
 
     public SettingsController(){
-        model = ServiceLocator.getDataModel();
-        data = model.getLocalData();
+        model = Resources.getDataModel();
+        data = Resources.getLocalData();
         data.addPropertyChangeListener(this);
         model.addUniversityChangeListener();
     }

@@ -1,5 +1,6 @@
 package at.fhhgb.catwalker.firebase;
 
+import android.content.res.*;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -47,23 +48,16 @@ public class DataModel {
     private ValueEventListener userListener;
     private ChildEventListener userChildListener, timelineChildListener, userPostChildListener, universityChildListener;
 
-    public LocalData getLocalData() {
-        return data;
-    }
-    public void setLocalData(LocalData localData) {
-        data = localData;
-    }
-
-
     private DatabaseReference getRef(String section, String id) {
         return database.getReference(section).child(id);
     }
 
 
-    public DataModel() {
+    public DataModel(LocalData data) {
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
-        data = new LocalData();
+        this.data = data;
+        Resources.getAuth().startListener();
         initListeners();
     }
 
@@ -80,7 +74,7 @@ public class DataModel {
 
                 String name = dataSnapshot.child("name").getValue(String.class);
 
-                Log.d(TAG, "Value is: " + name.toString());
+                Log.d(TAG, "Value is: " + name);
                 data.updateUser(name);
             }
 
@@ -285,7 +279,7 @@ public class DataModel {
     //-------------------------------University Functions------------------------------------//
 
     public String addUniversity(String name, String cat) {
-        if(cat=="")
+        if(cat.isEmpty())
             cat = "cat";
         DatabaseReference dataRef = getRef(universitySection,name);
         //dataRef = dataRef.push();

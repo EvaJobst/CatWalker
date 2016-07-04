@@ -17,7 +17,7 @@ import at.fhhgb.catwalker.PostAdapter;
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
-import at.fhhgb.catwalker.firebase.ServiceLocator;
+import at.fhhgb.catwalker.firebase.Resources;
 
 public class FragmentAllPosts extends Fragment implements PropertyChangeListener{
     RecyclerView recyclerView;
@@ -38,7 +38,7 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_my_posts, container, false);
 
-        ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
+        Resources.getLocalData().addPropertyChangeListener(this);
         this.allPosts = new ArrayList<>();
 
         recyclerView = (RecyclerView)  v.findViewById(R.id.my_entries_view);
@@ -59,7 +59,7 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
             this.allPosts.add(0,newValue);
         else
             allPosts.remove(newValue);
-        recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.getAdapter().notifyItemChanged(0);
     }
 
     @Override
@@ -67,16 +67,16 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
         switch (event.getPropertyName()){
             case "timeline.add":
                 updateTimeline((Post)event.getNewValue(), true);
-                Log.d("Add Post", ""+((Post)event.getNewValue()));
+                Log.d("Add Post", ""+event.getNewValue());
                 break;
             case "timeline.remove":
                 updateTimeline((Post)event.getOldValue(), false);
-                Log.d("Remove Post", ""+((Post)event.getOldValue()));
+                Log.d("Remove Post", ""+event.getOldValue());
                 break;
             case "timeline.clear":
                 allPosts.clear();
                 recyclerView.getAdapter().notifyDataSetChanged();
-                Log.d("Clear Posts", ""+((Post)event.getNewValue()));
+                Log.d("Clear Posts", ""+event.getNewValue());
                 break;
         }
     }

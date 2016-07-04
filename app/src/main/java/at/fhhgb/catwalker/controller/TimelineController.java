@@ -2,20 +2,14 @@ package at.fhhgb.catwalker.controller;
 
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import at.fhhgb.catwalker.activity.TimelineActivity;
-import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.DataModel;
-import at.fhhgb.catwalker.firebase.ServiceLocator;
+import at.fhhgb.catwalker.firebase.Resources;
 import at.fhhgb.catwalker.fragment.FragmentAllPosts;
 
 /**
@@ -29,8 +23,8 @@ public class TimelineController implements PropertyChangeListener{
 
     public TimelineController(FragmentAllPosts main){
         view = main;
-        model = ServiceLocator.getDataModel();
-        data = model.getLocalData();
+        model = Resources.getDataModel();
+        data = Resources.getLocalData();
 
         data.addPropertyChangeListener(this);
         initListview();
@@ -74,7 +68,7 @@ public class TimelineController implements PropertyChangeListener{
                 break;
             case "timeline.remove":
                 updateListview((Post)event.getOldValue(), false);
-                Log.d("Remove Post", ""+((Post)event.getOldValue()));
+                Log.d("Remove Post", ""+event.getOldValue());
                 break;
             case "timeline.update":
                 initListview();

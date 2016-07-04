@@ -1,12 +1,7 @@
 package at.fhhgb.catwalker;
 
-import android.*;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,28 +17,20 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.ParseException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
-import at.fhhgb.catwalker.activity.TimelineActivity;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
-import at.fhhgb.catwalker.firebase.ServiceLocator;
+import at.fhhgb.catwalker.firebase.Resources;
 import pl.droidsonroids.gif.GifTextView;
 
 /**
@@ -58,7 +45,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     public Post findPostById(String key){
         for ( Post post : posts ) {
-            if(post.getId() == key)
+            if(post.getId().equals(key))
                 return post;
         }
         return null;
@@ -72,8 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
-        PostViewHolder pvh = new PostViewHolder(v);
-        return pvh;
+        return new PostViewHolder(v);
     }
 
     @Override
@@ -135,7 +121,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postMap.onCreate(Bundle.EMPTY);
             postMap.getMapAsync(this);
             itemView.setOnClickListener(this);
-            ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
+            Resources.getLocalData().addPropertyChangeListener(this);
         }
 
         @Override
@@ -182,7 +168,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         @Override
         public void propertyChange(PropertyChangeEvent event) {
             //show the image if the oldValue(key) equals the key of the viewholder and an image was loaded
-            if (event.getPropertyName().equals("image.load") && key.equals((String) event.getOldValue())) {
+            if (event.getPropertyName().equals("image.load") && key.equals(event.getOldValue())) {
                 showImage((Bitmap) event.getNewValue());
             }
         }
@@ -191,11 +177,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             Post post = findPostById(key);
             if (expand) {
                 postMap.setVisibility(View.VISIBLE);
-                LocalData data = ServiceLocator.getDataModel().getLocalData();
+                LocalData data = Resources.getLocalData();
                 if(hasImage) {
                     Bitmap img = data.getImage(key);
                     if (img == null){
-                        ServiceLocator.getDataModel().loadImage(key);
+                        Resources.getDataModel().loadImage(key);
                         imagePlaceholder.setVisibility(View.VISIBLE);
                     }
                     else
