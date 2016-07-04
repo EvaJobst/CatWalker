@@ -17,18 +17,24 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.controller.TimelineController;
 import at.fhhgb.catwalker.fragment.FragmentAllPosts;
 import at.fhhgb.catwalker.fragment.FragmentMyPosts;
 
+/**
+ *
+ */
 public class TimelineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     TimelineController controller;
     private FragmentPagerAdapter adapter;
     private ViewPager viewPager;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +95,9 @@ public class TimelineActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    /**
+     *
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -102,6 +111,11 @@ public class TimelineActivity extends AppCompatActivity
         }
     }
 
+    /**
+     *  Inflates the main menu
+     * @param menu
+     * @return      always returns true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -109,9 +123,14 @@ public class TimelineActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation view item clicks
         int id = item.getItemId();
 
         switch(id) {

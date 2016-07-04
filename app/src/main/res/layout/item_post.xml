@@ -28,6 +28,7 @@
                 android:text="Description"/>
 
             <pl.droidsonroids.gif.GifTextView
+                android:layout_centerHorizontal="true"
                 android:layout_width="100dp"
                 android:layout_height="60dp"
                 android:id="@+id/post_image_placeholder"
@@ -44,7 +45,8 @@
                 android:layout_below="@id/post_image_placeholder"
                 android:visibility="gone"
                 android:cropToPadding="false"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:paddingBottom="10dp"/>
 
             <com.google.android.gms.maps.MapView
                 android:paddingBottom="5dp"
