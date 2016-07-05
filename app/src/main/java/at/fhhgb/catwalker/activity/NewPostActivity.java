@@ -153,21 +153,23 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("Catwalker","Resume New Post");
+    protected void onStart() {
+        super.onStart();
+        Log.d("Catwalker","Restart NewPost");
         DataModel model = ServiceLocator.getDataModel();
         LocalData data = model.getLocalData();
         data.restorePreferences(this);
+        data.resetTimeline(false);
+        data.resetTimeline(true);
         model.addAllListeners(data.getUserId(), data.getUniversityId());
     }
 
     @Override
-    protected void onPause() {
+    protected void onStop() {
+        Log.d("Catwalker","Stop New Post");
         DataModel model = ServiceLocator.getDataModel();
         LocalData data = model.getLocalData();
         model.removeAllListeners(data.getUserId(), data.getUniversityId());
-        super.onPause();
-
+        super.onStop();
     }
 }
