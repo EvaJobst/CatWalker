@@ -37,7 +37,6 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
 
     public static final String TAG = "Google Services Test";
     GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
     private GoogleMap mMap;
 
     @Override
