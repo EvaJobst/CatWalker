@@ -48,6 +48,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_settings);
             controller.bindUsernameToValue(findPreference("settings_username"));
             controller.bindUniversityListToValue((ListPreference) findPreference("settings_university"));
+            controller.bindCatToValue(findPreference("settings_cat"));
         }
     }
 

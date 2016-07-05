@@ -53,7 +53,7 @@ public class TimelineActivity extends AppCompatActivity
     private ViewPager viewPager;
     private FragmentAllPosts fragmentAllPosts;
     private FragmentMyPosts fragmentMyPosts;
-    private TextView drawerUsername;
+    private TextView drawerUsername, drawerCat, drawerUniversity;
 
     /**
      * @param savedInstanceState
@@ -86,9 +86,9 @@ public class TimelineActivity extends AppCompatActivity
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                TextView drawerUsername = (TextView) drawerView.findViewById(R.id.drawer_username);
-                TextView drawerUniversity = (TextView) drawerView.findViewById(R.id.drawer_university);
-                TextView drawerCat = (TextView) drawerView.findViewById(R.id.drawer_cat);
+                drawerUsername = (TextView) drawerView.findViewById(R.id.drawer_username);
+                drawerUniversity = (TextView) drawerView.findViewById(R.id.drawer_university);
+                drawerCat = (TextView) drawerView.findViewById(R.id.drawer_cat);
                 drawerUsername.setText(data.getUser());
                 String university = data.getUniversityId();
                 drawerUniversity.setText(university);
@@ -257,6 +257,9 @@ public class TimelineActivity extends AppCompatActivity
     public void propertyChange(PropertyChangeEvent event) {
         if(event.getPropertyName()=="user" && event.getOldValue().equals(data.getUserId())){
             drawerUsername.setText((String)event.getNewValue());
+        }else if(event.getPropertyName()=="university.change") {
+            drawerCat.setText((String)event.getNewValue());
+            drawerUniversity.setText((String)event.getNewValue());
         }
     }
 }

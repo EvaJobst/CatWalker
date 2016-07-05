@@ -129,6 +129,7 @@ public class DataModel {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                data.updateUniversityList(dataSnapshot.getKey(), dataSnapshot.getValue(String.class), true);
             }
 
             @Override

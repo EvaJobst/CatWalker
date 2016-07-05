@@ -21,7 +21,7 @@ public class SettingsController implements PropertyChangeListener{
     SettingsActivity view;
     DataModel model;
     LocalData data;
-    EditTextPreference userNamePreference;
+    EditTextPreference userNamePreference, catNamePreference;
     ListPreference universityPreference;
     CharSequence[] keys, values;
 
@@ -47,6 +47,16 @@ public class SettingsController implements PropertyChangeListener{
 
     }
 
+    public void bindCatToValue(Preference preference) {
+        preference.setOnPreferenceChangeListener(preferenceChangeListener);
+        preference.setOnPreferenceClickListener(preferenceClickListener);
+
+        if(data.getUniversityList()!=null)
+            preferenceChangeListener.onPreferenceChange(preference, data.getUniversityList().get(data.getUniversityId()));
+        catNamePreference =  (EditTextPreference) preference;
+
+    }
+
     public void bindUniversityListToValue(ListPreference preference) {
         preference.setOnPreferenceChangeListener(preferenceChangeListener);
         preference.setOnPreferenceClickListener(preferenceClickListener);
@@ -66,8 +76,12 @@ public class SettingsController implements PropertyChangeListener{
                     userNamePreference.getEditText().setText(data.getUser());
                 isHandled = true;
             }
-
             else if (preference.getKey().equals("settings_university")){
+                isHandled = true;
+            }
+            else if (preference.getKey().equals("settings_cat")){
+                if(data.getUniversityList()!=null )
+                    catNamePreference.getEditText().setText(data.getUniversityList().get(data.getUniversityId()));
                 isHandled = true;
             }
 
@@ -99,6 +113,10 @@ public class SettingsController implements PropertyChangeListener{
                 data.setUniversityId(newID);
 
 
+
+                isHandled = true;
+            }else if (preference.getKey().equals("settings_cat")){
+                model.updateUniversity(data.getUniversityId(), (String)newValue);
 
                 isHandled = true;
             }
