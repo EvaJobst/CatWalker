@@ -37,12 +37,11 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
     @Override
     public void onResume() {
         super.onResume();
-        initPostAdapter();
+        //initPostAdapter();
     }
 
     public void initPostAdapter() {
         if (adapter.posts.size() == 0) {
-
             LocalData data = ServiceLocator.getDataModel().getLocalData();
             List<Post> allPosts = data.orderPostsByDate(data.getAllPostsList());
             for (Post p : allPosts){
@@ -79,6 +78,7 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
 
         recyclerView.getAdapter().notifyItemChanged(0);
     }
+
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {

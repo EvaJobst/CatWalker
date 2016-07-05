@@ -2,7 +2,6 @@ package at.fhhgb.catwalker.firebase;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -20,8 +19,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.ByteArrayOutputStream;
 
 import at.fhhgb.catwalker.data.*;
@@ -62,6 +59,7 @@ public class DataModel {
 
     public DataModel() {
         database = FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
         storage = FirebaseStorage.getInstance();
         data = new LocalData();
         initListeners();
@@ -219,50 +217,67 @@ public class DataModel {
 
     //---------------------------------- Add Change Listener ---------------------------------//
 
-    public void addUserChangeListener(String userId) {
+    public void addUserChangeListener() {
         DatabaseReference userRef = database.getReference(userSection);
+        userRef.keepSynced(true);
         userRef.addChildEventListener(userChildListener);
     }
 
     public void addTimelinePostChangeListener(String universityId){
         DatabaseReference postRef = database.getReference(postSection);
+        postRef.keepSynced(true);
         Query postByUniversity = postRef.orderByChild("universityId").equalTo(universityId);
         postByUniversity.addChildEventListener(timelineChildListener);
     }
 
-    public void addUserPostChangeListener(String universityId){
+    public void addMyPostChangeListener(String universityId){
         DatabaseReference postRef = database.getReference(postSection);
         Query postByUser = postRef.orderByChild("userId").equalTo(data.getUserId());
+        postByUser.keepSynced(true);
         postByUser.addChildEventListener(userPostChildListener);
     }
 
     public void addUniversityChangeListener() {
         DatabaseReference universityRef = database.getReference(universitySection);
+        universityRef.keepSynced(true);
         universityRef.addChildEventListener(universityChildListener);
+    }
+
+    public void addAllListeners(String userId, String universityId){
+        addUserChangeListener();
+        addUniversityChangeListener();
+        addTimelinePostChangeListener(universityId);
+        addMyPostChangeListener(userId);
     }
 
     //--------------------------------- Remove Listener ------------------------------------//
 
-    public void removeUserListener(String userId) {
+    private void removeUserListener() {
         DatabaseReference dataRef =  database.getReference(userSection);
         dataRef.removeEventListener(userChildListener);
     }
 
-    public void removeUniversityListener(String universityId) {
+    private void removeUniversityListener(String universityId) {
         DatabaseReference dataRef = getRef(userSection,universityId);
         dataRef.removeEventListener(universityChildListener);
     }
-
     public void removeTimelineChildListener(String universityId) {
         DatabaseReference postRef = database.getReference(postSection);
         Query postByUniversity = postRef.orderByChild("universityId").equalTo(universityId);
         postByUniversity.removeEventListener(timelineChildListener);
     }
+    private void removeMyPostsChildListener(String userId) {
+        DatabaseReference postRef = database.getReference(postSection);
+        Query postByUniversity = postRef.orderByChild("userId").equalTo(userId);
+        postByUniversity.removeEventListener(timelineChildListener);
+    }
 
     public void removeAllListeners(String userId, String universityId){
-        removeUserListener(userId);
+        removeUserListener();
         removeUniversityListener(universityId);
         removeTimelineChildListener(universityId);
+        removeMyPostsChildListener(userId);
+
     }
 
     //-----------------------------------User Functions---------------------------------------//

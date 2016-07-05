@@ -3,18 +3,19 @@ package at.fhhgb.catwalker.activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
 import android.location.Location;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
+import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 import at.fhhgb.catwalker.fragment.FragmentInfo;
 import at.fhhgb.catwalker.fragment.FragmentLocation;
@@ -149,5 +150,24 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         picture.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("Catwalker","Resume New Post");
+        DataModel model = ServiceLocator.getDataModel();
+        LocalData data = model.getLocalData();
+        data.restorePreferences(this);
+        model.addAllListeners(data.getUserId(), data.getUniversityId());
+    }
+
+    @Override
+    protected void onPause() {
+        DataModel model = ServiceLocator.getDataModel();
+        LocalData data = model.getLocalData();
+        model.removeAllListeners(data.getUserId(), data.getUniversityId());
+        super.onPause();
+
     }
 }

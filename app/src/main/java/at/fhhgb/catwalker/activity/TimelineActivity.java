@@ -1,7 +1,6 @@
 package at.fhhgb.catwalker.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,19 +25,10 @@ import android.widget.Toast;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.StringTokenizer;
 
 import at.fhhgb.catwalker.R;
-import at.fhhgb.catwalker.controller.TimelineController;
 import at.fhhgb.catwalker.data.LocalData;
-import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 import at.fhhgb.catwalker.fragment.FragmentAllPosts;
@@ -160,12 +151,6 @@ public class TimelineActivity extends AppCompatActivity
         data.addPropertyChangeListener(this);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        adapter.saveState();
-    }
-
     public static void applyFontForToolbarTitle(Activity context){
         Toolbar toolbar = (Toolbar) context.findViewById(R.id.toolbar);
         for(int i = 0; i < toolbar.getChildCount(); i++){
@@ -253,15 +238,37 @@ public class TimelineActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("Catwalker","Restart Timeline");
+        DataModel model = ServiceLocator.getDataModel();
+        LocalData data = model.getLocalData();
+        data.restorePreferences(this);
+        data.resetTimeline(false);
+        data.resetTimeline(true);
+        model.addAllListeners(data.getUserId(), data.getUniversityId());
+    }
 
+    @Override
+    protected void onStop() {
+        Log.d("Catwalker","Stop Timeline");
+        DataModel model = ServiceLocator.getDataModel();
+        LocalData data = model.getLocalData();
+        model.removeAllListeners(data.getUserId(), data.getUniversityId());
+        super.onStop();
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         if(event.getPropertyName()=="user" && event.getOldValue().equals(data.getUserId())){
-            drawerUsername.setText((String)event.getNewValue());
+            if(drawerUsername!=null)
+                drawerUsername.setText((String)event.getNewValue());
         }else if(event.getPropertyName()=="university.change") {
-            drawerCat.setText((String)event.getNewValue());
-            drawerUniversity.setText((String)event.getNewValue());
+            if(drawerCat!=null)
+                drawerCat.setText((String)event.getNewValue());
+            if(drawerUniversity!=null)
+                drawerUniversity.setText((String)event.getNewValue());
         }
     }
 }

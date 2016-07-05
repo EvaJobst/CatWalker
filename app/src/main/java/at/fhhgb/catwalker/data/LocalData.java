@@ -1,5 +1,8 @@
 package at.fhhgb.catwalker.data;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
 import java.beans.PropertyChangeListener;
@@ -38,6 +41,19 @@ public class LocalData {
         allPostsList = new HashMap<>();
         myPostsList = new HashMap<>();
         images = new HashMap<>();
+    }
+
+    public boolean restorePreferences(Activity view){
+        SharedPreferences settings = view.getSharedPreferences("CatWalker_Data", Context.MODE_PRIVATE);
+        String userId = settings.getString("userId", null);
+        String universityId = settings.getString("universityId", null);
+
+        if(userId !=null && universityId!=null) {
+            setUserId(userId);
+            setUniversityId(universityId);
+            return true;
+        }
+        return false;
     }
 
     //----------------------------- PropertyChangeListener ------------------------------------//

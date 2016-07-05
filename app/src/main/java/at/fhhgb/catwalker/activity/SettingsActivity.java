@@ -15,12 +15,16 @@ import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 import at.fhhgb.catwalker.AppCompatPreferenceActivity;
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.controller.SettingsController;
+import at.fhhgb.catwalker.data.LocalData;
+import at.fhhgb.catwalker.firebase.DataModel;
+import at.fhhgb.catwalker.firebase.ServiceLocator;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

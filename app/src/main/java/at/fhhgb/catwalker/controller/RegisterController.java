@@ -35,14 +35,14 @@ public class RegisterController implements PropertyChangeListener{
         model = ServiceLocator.getDataModel();
         data = model.getLocalData();
 
-        model.addUniversityChangeListener();
+        //model.addUniversityChangeListener();
         data.addPropertyChangeListener(this);
     }
 
     public void initDependentListeners(){
         model.addTimelinePostChangeListener(data.getUniversityId());
-        model.addUserChangeListener(data.getUserId());
-        model.addUserPostChangeListener(data.getUserId());
+        model.addUserChangeListener();
+        model.addMyPostChangeListener(data.getUserId());
     }
 
     public boolean storePreferences(){
@@ -57,7 +57,7 @@ public class RegisterController implements PropertyChangeListener{
             editor.putString("universityId", universityId);
             editor.apply();
 
-            initDependentListeners();
+            //initDependentListeners();
 
             return true;
         }
@@ -66,16 +66,8 @@ public class RegisterController implements PropertyChangeListener{
 
     //returns true if a UserId was found
     public boolean restorePreferences(){
-        SharedPreferences settings = view.getSharedPreferences("CatWalker_Data",Context.MODE_PRIVATE);
-        String userId = settings.getString("userId", null);
-        String universityId = settings.getString("universityId", null);
-
-        if(userId !=null && universityId!=null) {
-            data.setUserId(userId);
-            data.setUniversityId(universityId);
-
-            initDependentListeners();
-
+        if(data.restorePreferences(view)){
+            //initDependentListeners();
             return true;
         }
         return false;
