@@ -85,10 +85,12 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
             Post p = (Post) post;
             double lon = ((Post) post).getLongitude();
             double lat = ((Post) post).getLatitude();
-            LatLng latlng = new LatLng(lat, lon);
+            if(lon != 0 && lat!=0) {
+                LatLng latlng = new LatLng(lat, lon);
 
-            latLngBuilder.include(latlng);
-            mMap.addMarker(new MarkerOptions().position(latlng));
+                latLngBuilder.include(latlng);
+                mMap.addMarker(new MarkerOptions().position(latlng));
+            }
         }
 
         LatLngBounds bounds = latLngBuilder.build();

@@ -87,8 +87,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(PostViewHolder holder, int position) {
         holder.postAuthor.setText(posts.get(position).getUser());
         holder.postTime.setText(posts.get(position).getDateTime());
-        holder.postTitle.setText(posts.get(position).getTitle());
-        holder.postDescription.setText(posts.get(position).getContent());
+        holder.showTitle( posts.get(position).getTitle());
+        holder.showContent( posts.get(position).getContent());
         holder.postPosition = new LatLng(posts.get(position).getLatitude(), posts.get(position).getLongitude());
         holder.key = posts.get(position).getId();
         holder.hasImage = posts.get(position).getHasImage();
@@ -104,6 +104,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, PropertyChangeListener {
+
+        public void showTitle(String title) {
+            if(title.isEmpty())
+                postTitle.setVisibility(View.GONE);
+            else{
+                postTitle.setText(title);
+                postTitle.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public void showContent(String content) {
+            if(content.isEmpty())
+                postDescription.setVisibility(View.GONE);
+            else{
+                postDescription.setText(content);
+                postDescription.setVisibility(View.VISIBLE);
+            }
+        }
 
         public class BackgroundAsyncTask extends AsyncTask {
             @Override
