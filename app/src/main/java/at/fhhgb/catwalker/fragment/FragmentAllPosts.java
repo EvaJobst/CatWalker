@@ -42,6 +42,7 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
 
     public void initPostAdapter() {
         if (adapter.posts.size() == 0) {
+
             LocalData data = ServiceLocator.getDataModel().getLocalData();
             List<Post> allPosts = data.orderPostsByDate(data.getAllPostsList());
             for (Post p : allPosts){
@@ -82,6 +83,10 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()) {
+            case "timeline.reset":
+                adapter.posts.clear();
+                adapter.notifyDataSetChanged();
+                break;
             case "timeline.add":
                 updateTimeline((Post) event.getNewValue(), true);
                 Log.d("Add Post", "" + ((Post) event.getNewValue()));

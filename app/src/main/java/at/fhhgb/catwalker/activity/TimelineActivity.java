@@ -253,6 +253,8 @@ public class TimelineActivity extends AppCompatActivity
         return true;
     }
 
+
+
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         if(event.getPropertyName()=="user" && event.getOldValue().equals(data.getUserId())){
