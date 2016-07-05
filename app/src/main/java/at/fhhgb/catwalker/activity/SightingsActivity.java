@@ -25,7 +25,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.HashMap;
 
 import at.fhhgb.catwalker.R;
+import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
+import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
 public class SightingsActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -81,19 +83,20 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
 
         LatLngBounds.Builder latLngBuilder = new LatLngBounds.Builder();
 
+        boolean hasPoints = false;
         for(Object post : posts.values()) {
             Post p = (Post) post;
             double lon = ((Post) post).getLongitude();
             double lat = ((Post) post).getLatitude();
             if(lon != 0 && lat!=0) {
                 LatLng latlng = new LatLng(lat, lon);
-
+                hasPoints = true;
                 latLngBuilder.include(latlng);
                 mMap.addMarker(new MarkerOptions().position(latlng));
             }
         }
 
-        if(latLngBuilder != null) {
+        if(latLngBuilder != null && hasPoints) {
             LatLngBounds bounds = latLngBuilder.build();
             mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
         }
@@ -121,6 +124,26 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("Catwalker","Resume Sightings");
+        DataModel model = ServiceLocator.getDataModel();
+        LocalData data = model.getLocalData();
+        data.restorePreferences(this);
+        model.addAllListeners(data.getUserId(), data.getUniversityId());
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d("Catwalker","Pause Sightings");
+        DataModel model = ServiceLocator.getDataModel();
+        LocalData data = model.getLocalData();
+        model.removeAllListeners(data.getUserId(), data.getUniversityId());
+        super.onPause();
 
     }
 }
