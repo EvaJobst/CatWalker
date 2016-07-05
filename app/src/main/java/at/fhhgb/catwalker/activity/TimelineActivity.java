@@ -17,8 +17,20 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.controller.TimelineController;
+import at.fhhgb.catwalker.data.LocalData;
+import at.fhhgb.catwalker.data.Post;
+import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.fragment.FragmentAllPosts;
 import at.fhhgb.catwalker.fragment.FragmentMyPosts;
 
@@ -27,12 +39,14 @@ import at.fhhgb.catwalker.fragment.FragmentMyPosts;
  */
 public class TimelineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    TimelineController controller;
+    LocalData data;
+    DataModel dataModel;
     private FragmentPagerAdapter adapter;
     private ViewPager viewPager;
+    private FragmentAllPosts fragmentAllPosts;
+    private FragmentMyPosts fragmentMyPosts;
 
     /**
-     *
      * @param savedInstanceState
      */
     @Override
@@ -73,22 +87,25 @@ public class TimelineActivity extends AppCompatActivity
 
         // Create the adapter that will return a fragment for each section
         adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            private final Fragment[] mFragments = new Fragment[] {
+            private final Fragment[] mFragments = new Fragment[]{
                     new FragmentAllPosts(),
                     new FragmentMyPosts(),
             };
-            private final String[] mFragmentNames = new String[] {
+            private final String[] mFragmentNames = new String[]{
                     "All Entries",
                     "My Entries",
             };
+
             @Override
             public Fragment getItem(int position) {
                 return mFragments[position];
             }
+
             @Override
             public int getCount() {
                 return mFragments.length;
             }
+
             @Override
             public CharSequence getPageTitle(int position) {
                 return mFragmentNames[position];
@@ -101,6 +118,12 @@ public class TimelineActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        adapter.saveState();
+    }
+
     /**
      *
      */
@@ -108,19 +131,18 @@ public class TimelineActivity extends AppCompatActivity
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        if(drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-
-        else {
+        } else {
             super.onBackPressed();
         }
     }
 
     /**
-     *  Inflates the main menu
+     * Inflates the main menu
+     *
      * @param menu
-     * @return      always returns true
+     * @return always returns true
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,7 +152,6 @@ public class TimelineActivity extends AppCompatActivity
     }
 
     /**
-     *
      * @param item
      * @return
      */
@@ -139,27 +160,31 @@ public class TimelineActivity extends AppCompatActivity
         // Handle navigation view item clicks
         int id = item.getItemId();
 
-        switch(id) {
-            case R.id.nav_new_entry : {
+        switch (id) {
+            case R.id.nav_new_entry: {
                 Intent i = new Intent(this, NewPostActivity.class);
                 startActivity(i);
-            } break;
+            }
+            break;
 
-            case R.id.nav_map : {
+            case R.id.nav_map: {
                 Intent i = new Intent(this, SightingsActivity.class);
                 startActivity(i);
-            } break;
+            }
+            break;
 
-            case R.id.nav_settings : {
+            case R.id.nav_settings: {
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
-            } break;
+            }
+            break;
 
-            case R.id.nav_help : {
+            case R.id.nav_help: {
                 Toast.makeText(TimelineActivity.this, "TODO: - Help - Activity", Toast.LENGTH_SHORT).show();
-            } break;
+            }
+            break;
 
-            default : {
+            default: {
                 Toast.makeText(TimelineActivity.this, "Unknown Drawer ID selected", Toast.LENGTH_SHORT).show();
             }
         }

@@ -13,16 +13,17 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import at.fhhgb.catwalker.PostAdapter;
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
-public class FragmentAllPosts extends Fragment implements PropertyChangeListener{
+public class FragmentAllPosts extends Fragment implements PropertyChangeListener {
     RecyclerView recyclerView;
-    LocalData data;
     List<Post> allPosts;
+    PostAdapter adapter;
 
     public FragmentAllPosts() {
         // Required empty public constructor
@@ -34,6 +35,22 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initPostAdapter();
+    }
+
+    public void initPostAdapter() {
+        if (adapter.posts.size() == 0) {
+            LocalData data = ServiceLocator.getDataModel().getLocalData();
+            List<Post> allPosts = data.orderPostsByDate(data.getAllPostsList());
+            for (Post p : allPosts){
+                updateTimeline(p, true);
+            }
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_my_posts, container, false);
@@ -41,42 +58,42 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
         ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
         this.allPosts = new ArrayList<>();
 
-        recyclerView = (RecyclerView)  v.findViewById(R.id.my_entries_view);
+        recyclerView = (RecyclerView) v.findViewById(R.id.my_entries_view);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(llm);
 
-        PostAdapter adapter = new PostAdapter(allPosts);
+        adapter = new PostAdapter(allPosts);
         recyclerView.setAdapter(adapter);
 
 
         // Inflate the layout for this fragment
         return v;
-
     }
 
-    private void updateTimeline(Post newValue, boolean add){
-        if(add)
-            this.allPosts.add(0,newValue);
+    private void updateTimeline(Post newValue, boolean add) {
+        if (add)
+            this.allPosts.add(0, newValue);
         else
             allPosts.remove(newValue);
-        recyclerView.getAdapter().notifyDataSetChanged();
+
+        recyclerView.getAdapter().notifyItemChanged(0);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-        switch (event.getPropertyName()){
+        switch (event.getPropertyName()) {
             case "timeline.add":
-                updateTimeline((Post)event.getNewValue(), true);
-                Log.d("Add Post", ""+((Post)event.getNewValue()));
+                updateTimeline((Post) event.getNewValue(), true);
+                Log.d("Add Post", "" + ((Post) event.getNewValue()));
                 break;
             case "timeline.remove":
-                updateTimeline((Post)event.getOldValue(), false);
-                Log.d("Remove Post", ""+((Post)event.getOldValue()));
+                updateTimeline((Post) event.getOldValue(), false);
+                Log.d("Remove Post", "" + ((Post) event.getOldValue()));
                 break;
             case "timeline.clear":
                 allPosts.clear();
                 recyclerView.getAdapter().notifyDataSetChanged();
-                Log.d("Clear Posts", ""+((Post)event.getNewValue()));
+                Log.d("Clear Posts", "" + ((Post) event.getNewValue()));
                 break;
         }
     }

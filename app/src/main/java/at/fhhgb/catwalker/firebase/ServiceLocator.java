@@ -19,9 +19,12 @@ public class ServiceLocator {
 
 
     private static DataModel dataModel = new DataModel();
+    private static Authentication auth = new Authentication();
+
     public static DataModel getDataModel(){
         return dataModel;
     }
+    public static Authentication getAuth() {return  auth;}
 
 
 /*

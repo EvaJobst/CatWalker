@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.FragmentAllPosts">
+    tools:context=".fragment.FragmentAllPosts"
+    android:background="@drawable/background_repeat">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/all_entries_view"
@@ -12,6 +13,7 @@
         android:clipToPadding="true"
         android:padding="5dp"
         android:scrollbars="vertical"
-        tools:listitem="@layout/item_post" />
+        tools:listitem="@layout/item_post"
+       />
 
 </FrameLayout>

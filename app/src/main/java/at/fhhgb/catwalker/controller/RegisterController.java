@@ -169,4 +169,7 @@ public class RegisterController implements PropertyChangeListener{
         }
     }
 
+    public void signIn() {
+        ServiceLocator.getAuth().signIn(view);
+    }
 }

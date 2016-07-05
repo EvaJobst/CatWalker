@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,19 +156,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             key = "";
             hasImage = false;
 
-            if(postPosition != new LatLng(0, 0)) {
-                if (client == null) {
-                    client = new GoogleApiClient.Builder(itemView.getContext())
-                            .addConnectionCallbacks(this)
-                            .addOnConnectionFailedListener(this)
-                            .addApi(LocationServices.API)
-                            .build();
-                }
-
-                postMap.onCreate(Bundle.EMPTY);
-                postMap.getMapAsync(this);
-            }
-
 
             itemView.setOnClickListener(this);
             ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
@@ -192,10 +180,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         @Override
         public void onConnected(@Nullable Bundle bundle) {
-            if (ContextCompat.checkSelfPermission(postMap.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(postPosition, 16));
                 map.addMarker(new MarkerOptions().position(postPosition));
-            }
         }
 
         @Override
@@ -214,8 +200,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             postImage.setImageBitmap(img);
             postImage.setVisibility(View.VISIBLE);
+        }
 
-            if(postPosition == new LatLng(0, 0)) {
+        private void showMap(){
+            //Log.d("Position","Post:" + postTitle.getText() + " Lat = "+postPosition.latitude +", Long = " + postPosition.longitude);
+            if(postPosition.latitude != 0 && postPosition.longitude!=0) {
+                Log.d("Position","Post:" + postTitle.getText() + " Lat = "+postPosition.latitude +", Long = " + postPosition.longitude);
+
+                if (client == null) {
+                    client = new GoogleApiClient.Builder(itemView.getContext())
+                            .addConnectionCallbacks(this)
+                            .addOnConnectionFailedListener(this)
+                            .addApi(LocationServices.API)
+                            .build();
+                }
+
+                postMap.onCreate(Bundle.EMPTY);
+                postMap.getMapAsync(this);
+
                 postMap.setVisibility(View.VISIBLE);
             }
         }
@@ -240,10 +242,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         showImage(img);
                     }
                 }
-
-                else {
-                    postMap.setVisibility(View.VISIBLE);
-                }
+                showMap();
 
                 post.setExpanded(true);
             } else {

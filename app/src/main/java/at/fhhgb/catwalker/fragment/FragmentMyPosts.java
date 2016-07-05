@@ -16,6 +16,7 @@ import java.util.List;
 
 import at.fhhgb.catwalker.PostAdapter;
 import at.fhhgb.catwalker.R;
+import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
@@ -23,6 +24,7 @@ import at.fhhgb.catwalker.firebase.ServiceLocator;
 public class FragmentMyPosts extends Fragment implements PropertyChangeListener {
     RecyclerView recyclerView;
     List<Post> myPosts;
+    PostAdapter adapter;
 
     public FragmentMyPosts() {
         // Required empty public constructor
@@ -45,7 +47,7 @@ public class FragmentMyPosts extends Fragment implements PropertyChangeListener 
 
         ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
         myPosts = new ArrayList<>();
-        PostAdapter adapter = new PostAdapter(myPosts);
+        adapter = new PostAdapter(myPosts);
         recyclerView.setAdapter(adapter);
 
         // Inflate the layout for this fragment
@@ -53,13 +55,33 @@ public class FragmentMyPosts extends Fragment implements PropertyChangeListener 
     }
 
     private void updateTimeline(Post newValue, boolean add){
+
         if(add)
             this.myPosts.add(0,newValue);
         else
             myPosts.remove(newValue);
-        recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.getAdapter().notifyItemChanged(0);
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initPostAdapter();
+
+    }
+
+    public void initPostAdapter(){
+        if (adapter.posts.size() == 0) {
+            Log.d("MyPosts", "Refresh data");
+            LocalData data = ServiceLocator.getDataModel().getLocalData();
+            List<Post> myPosts = data.orderPostsByDate(data.getMyPostsList());
+            for (Post p : myPosts){
+                updateTimeline(p, true);
+            }
+        }
+    }
+    
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()){

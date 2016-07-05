@@ -17,6 +17,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final RegisterController controller = new RegisterController(this);
+        controller.signIn();
         if(controller.restorePreferences()){
             navigateToTimeline();
         }

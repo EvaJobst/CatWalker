@@ -4,7 +4,13 @@ import android.graphics.Bitmap;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Lisa on 08.06.2016.
@@ -191,4 +197,30 @@ public class LocalData {
         return images.get(key);
     }
 
+    public HashMap<String,Post> getMyPostsList() {
+        return myPostsList;
+    }
+
+    public List<Post> orderPostsByDate(HashMap<String, Post> posts) {
+        List<Post> list = null;
+        if (posts != null) {
+            list = new ArrayList<>(posts.values());
+            Collections.sort(list, new Comparator<Post>() {
+                @Override
+                public int compare(Post lhs, Post rhs) {
+                    try {
+                        Date date1 = Post.getDateFormat().parse(lhs.getDateTime());
+                        Date date2 = Post.getDateFormat().parse(rhs.getDateTime());
+
+                        return (int) (date1.getTime() - date2.getTime());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        return 0;
+
+                    }
+                }
+            });
+        }
+        return list;
+    }
 }
