@@ -239,11 +239,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         public boolean isExpandable() {
             Post post = findPostById(key);
-            Bitmap img = ServiceLocator.getDataModel().getLocalData().getImage(key);
             Double lat = post.getLatitude();
             Double lon = post.getLongitude();
 
-            if(img == null && lat == 0 && lon == 0) {
+            if(!post.getHasImage() && lat == 0 && lon == 0) {
                 postExpand.setVisibility(View.GONE);
                 return false;
             }
