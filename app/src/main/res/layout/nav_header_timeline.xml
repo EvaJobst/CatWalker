@@ -1,23 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/header_root"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom"
     android:orientation="vertical"
+    tools:context=".activity.TimelineActivity"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    <ImageView
+        android:id="@+id/drawer_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_repeat" />
+
+    <TextView
+        android:id="@+id/drawer_university"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingBottom="10dp"
+        android:textSize="16dp"
+        android:text="University"
+        android:textColor="@color/colorDarkGrey"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+    <TextView
+        android:id="@+id/drawer_cat"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="16dp"
+        android:paddingBottom="10dp"
+        android:textSize="16dp"
+        android:text="Cat"
+        android:textColor="@color/colorDarkGrey"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
     <TextView
         android:id="@+id/drawer_username"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
+        android:layout_above="@id/drawer_university"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:paddingLeft="16dp"
+        android:paddingBottom="10dp"
+        android:textSize="24dp"
+        android:text="User"
+        android:textColor="@color/cardview_dark_background"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
     <ImageView
+        android:id="@+id/drawer_divider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background_repeat"/>
+        android:layout_alignParentBottom="true"
+        android:layout_height="5dp"
+        android:background="@color/colorAccent" />
+
 </RelativeLayout>

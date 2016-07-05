@@ -5,9 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.controller.RegisterController;
+import at.fhhgb.catwalker.firebase.ServiceLocator;
 
 public class RegisterActivity extends AppCompatActivity {
 
