@@ -85,6 +85,10 @@ public class FragmentMyPosts extends Fragment implements PropertyChangeListener 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()){
+            case "myPosts.reset":
+                adapter.posts.clear();
+                adapter.notifyDataSetChanged();
+                break;
             case "myPosts.add":
                 updateTimeline((Post)event.getNewValue(), true);
                 Log.d("Add Post", ""+((Post)event.getNewValue()));

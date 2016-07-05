@@ -1,6 +1,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
    <PreferenceCategory
-      android:title = "@string/str_settings_group_general" />
+      android:title = "@string/str_settings_group_general"
+       />
 
    <EditTextPreference
        android:capitalize="words"

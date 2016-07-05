@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.FragmentAllPosts"
-    android:background="@drawable/background_repeat">
+    android:background="@drawable/background_repeat_trans">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/all_entries_view"

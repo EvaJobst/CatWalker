@@ -109,6 +109,7 @@ public class SettingsController implements PropertyChangeListener{
                 model.addTimelinePostChangeListener(newID);
                 data.resetTimeline(false);
 
+
                 //update data
                 data.setUniversityId(newID);
 
