@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:id="@+id/post_title"
-                android:textSize="18sp"
+                android:textSize="20dp"
                 android:layout_marginBottom="7dp"
                 android:text="Title"
                 android:textColor="@color/colorAccent"/>

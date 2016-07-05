@@ -1,6 +1,9 @@
 package at.fhhgb.catwalker.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -63,6 +66,7 @@ public class TimelineActivity extends AppCompatActivity
         // Action Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        applyFontForToolbarTitle(this);
 
         // Floating Action Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -160,6 +164,23 @@ public class TimelineActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         adapter.saveState();
+    }
+
+    public static void applyFontForToolbarTitle(Activity context){
+        Toolbar toolbar = (Toolbar) context.findViewById(R.id.toolbar);
+        for(int i = 0; i < toolbar.getChildCount(); i++){
+            View view = toolbar.getChildAt(i);
+            if(view instanceof TextView){
+                TextView tv = (TextView) view;
+                Typeface titleFont = Typeface.
+                        createFromAsset(context.getAssets(), "fonts/Champagne_Limousines-Thick.ttf");
+                if(tv.getText().equals(toolbar.getTitle())){
+                    tv.setTypeface(titleFont);
+                    tv.setTextSize(25);
+                    break;
+                }
+            }
+        }
     }
 
     /**

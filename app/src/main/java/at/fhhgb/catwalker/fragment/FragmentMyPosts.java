@@ -47,7 +47,7 @@ public class FragmentMyPosts extends Fragment implements PropertyChangeListener 
 
         ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
         myPosts = new ArrayList<>();
-        adapter = new PostAdapter(myPosts);
+        adapter = new PostAdapter(myPosts, getActivity());
         recyclerView.setAdapter(adapter);
 
         // Inflate the layout for this fragment

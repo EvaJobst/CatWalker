@@ -62,7 +62,7 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(llm);
 
-        adapter = new PostAdapter(allPosts);
+        adapter = new PostAdapter(allPosts, getActivity());
         recyclerView.setAdapter(adapter);
 
 

@@ -5,9 +5,11 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -59,9 +61,13 @@ import pl.droidsonroids.gif.GifTextView;
  */
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     public List<Post> posts;
+    Context context;
+    Typeface custom_font;
 
-    public PostAdapter(List<Post> posts) {
+    public PostAdapter(List<Post> posts, Context context) {
         this.posts = posts;
+        this.context = context;
+        custom_font = Typeface.createFromAsset(context.getApplicationContext().getAssets(),  "fonts/Champagne_Limousines-Thick.ttf");
     }
 
     public Post findPostById(String key){
@@ -114,6 +120,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             else{
                 postTitle.setText(title);
                 postTitle.setVisibility(View.VISIBLE);
+                postTitle.setTypeface(custom_font);
             }
         }
 
