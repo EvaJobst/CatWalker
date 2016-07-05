@@ -2,6 +2,8 @@ package at.fhhgb.catwalker.fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import java.util.Date;
 
 import at.fhhgb.catwalker.R;
+import at.fhhgb.catwalker.activity.NewPostActivity;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
@@ -32,6 +35,44 @@ public class FragmentInfo extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_info, container, false);
         updateFields(v);
+
+        EditText title = (EditText) v.findViewById(R.id.new_info_title);
+        title.setText(NewPostActivity.title);
+        title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                NewPostActivity.title = s.toString();
+            }
+        });
+
+        EditText content = (EditText) v.findViewById(R.id.new_info_description);
+        content.setText(NewPostActivity.content);
+        content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                NewPostActivity.content = s.toString();
+            }
+        });
         // Inflate the layout for this fragment
         return v;
     }
@@ -45,7 +86,18 @@ public class FragmentInfo extends Fragment {
 
         author.setText(ServiceLocator.getDataModel().getLocalData().getUser());
     }
-
+/*
+    @Override
+    public void onPause() {
+        super.onPause();
+        EditText title = (EditText) getView().findViewById(R.id.new_info_title);
+        EditText content = (EditText) getView().findViewById(R.id.new_info_description);
+        if(title!=null)
+            NewPostActivity.title = title.getText().toString();
+        if(content!=null)
+            NewPostActivity.content = content.getText().toString();
+    }
+*/
     @Override
     public void onResume() {
         super.onResume();

@@ -29,6 +29,8 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
     FragmentManager mgr = getFragmentManager();
     FragmentTransaction ft;
     public static Location loc;
+    public static String title = "";
+    public static String content = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,14 +87,6 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
             case R.id.new_btn_send : {
                 Post post = new Post();
 
-                EditText editTitle = (EditText)findViewById(R.id.new_info_title);
-                EditText editContent = (EditText)findViewById(R.id.new_info_description);
-
-                if(editTitle != null)
-                    post.setTitle(editTitle.getText().toString());
-                if(editContent != null)
-                    post.setContent(editContent.getText().toString());
-
                 if(loc == null) {
                     post.setLatitude(0);
                     post.setLongitude(0);
@@ -103,9 +97,11 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
                     post.setLongitude(loc.getLongitude());
                 }
 
-                if(post.getTitle().isEmpty() && post.getContent().isEmpty()){
+                if(title.isEmpty() && content.isEmpty()){
                     Toast.makeText(NewPostActivity.this, "There's nothing to send here.", Toast.LENGTH_SHORT).show();
                 }else {
+                    post.setTitle(title);
+                    post.setContent(content);
                     finish();
                     Toast.makeText(NewPostActivity.this, "Send", Toast.LENGTH_SHORT).show();
                     //push post to database && store the image

@@ -130,8 +130,6 @@ public class SettingsController implements PropertyChangeListener{
         model.updateUser(data.getUserId(), model.userNameSection , name);
     }
 
-    //Todo: UniversitySettings & CatSettings
-
     private void updateUniversityListView(){
         keys = data.getUniversityList().keySet().toArray(new String[0]);
         //values = data.getUniversityList().values().toArray(new String[0]);

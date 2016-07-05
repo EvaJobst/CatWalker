@@ -103,6 +103,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return isXLargeTablet(this);
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("Catwalker","Restart Settings");
+        DataModel model = ServiceLocator.getDataModel();
+        LocalData data = model.getLocalData();
+        data.restorePreferences(this);
+        data.resetTimeline(false);
+        data.resetTimeline(true);
+        model.addAllListeners(data.getUserId(), data.getUniversityId());
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("Catwalker","Stop Settings");
+        DataModel model = ServiceLocator.getDataModel();
+        LocalData data = model.getLocalData();
+        model.removeAllListeners(data.getUserId(), data.getUniversityId());
+        super.onStop();
+    }
+
+
     /**
      * This method stops fragment injection in malicious applications.
      * Make sure to deny any unknown fragments here.
