@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -92,7 +93,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.postPosition = new LatLng(posts.get(position).getLatitude(), posts.get(position).getLongitude());
         holder.key = posts.get(position).getId();
         holder.hasImage = posts.get(position).getHasImage();
+
         //expand the post if needed
+        holder.isExpandable = holder.isExpandable();
         holder.expand(posts.get(position).isExpanded());
     }
 
@@ -123,26 +126,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         }
 
-        public class BackgroundAsyncTask extends AsyncTask {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                imagePlaceholder.setVisibility(View.VISIBLE);
-                postProgress.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            protected Object doInBackground(Object[] params) {
-                ServiceLocator.getDataModel().loadImage(key);
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-            }
-        }
-
         String key;
         Boolean hasImage;
         CardView cardView;
@@ -159,6 +142,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         GoogleMap map;
         public GoogleApiClient client;
 
+        public boolean isExpandable;
+        ImageView postExpand;
+
         public PostViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.cardView);
@@ -174,18 +160,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             key = "";
             hasImage = false;
 
-
+            postExpand = (ImageView) itemView.findViewById(R.id.post_expand);
             itemView.setOnClickListener(this);
+
             ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
         }
 
         @Override
         public void onClick(View itemView) {
             Post post = findPostById(key);
-            if (!post.isExpanded()) {
-               expand(true);
-            } else {
-               expand(false);
+
+            if(isExpandable) {
+                if (!post.isExpanded()) {
+                    expand(true);
+                } else {
+                    expand(false);
+                }
             }
         }
 
@@ -240,6 +230,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         }
 
+        public boolean isExpandable() {
+            Post post = findPostById(key);
+            Bitmap img = ServiceLocator.getDataModel().getLocalData().getImage(key);
+            Double lat = post.getLatitude();
+            Double lon = post.getLongitude();
+
+            if(img == null && lat == 0 && lon == 0) {
+                postExpand.setVisibility(View.GONE);
+                return false;
+            }
+
+            else {
+                postExpand.setVisibility(View.VISIBLE);
+                return true;
+            }
+        }
+
         @Override
         public void propertyChange(PropertyChangeEvent event) {
             //show the image if the oldValue(key) equals the key of the viewholder and an image was loaded
@@ -255,21 +262,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     Bitmap img = data.getImage(key);
                     if (img == null){
                         ServiceLocator.getDataModel().loadImage(key);
-                        //new BackgroundAsyncTask().execute();
                         imagePlaceholder.setVisibility(View.VISIBLE);
                     }
                     else {
                         showImage(img);
                     }
                 }
-                showMap();
 
+                showMap();
+                postExpand.setImageResource(R.drawable.ic_cardview_collapse);
                 post.setExpanded(true);
             } else {
                 postMap.setVisibility(View.GONE);
                 postImage.setVisibility(View.GONE);
                 imagePlaceholder.setVisibility(View.GONE);
                 post.setExpanded(false);
+                postExpand.setImageResource(R.drawable.ic_cardview_expand);
             }
         }
     }
