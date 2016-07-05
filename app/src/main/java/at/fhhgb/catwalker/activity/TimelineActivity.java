@@ -16,6 +16,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +37,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import at.fhhgb.catwalker.R;
+import at.fhhgb.catwalker.TypefaceSpan;
 import at.fhhgb.catwalker.controller.TimelineController;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
@@ -66,7 +69,13 @@ public class TimelineActivity extends AppCompatActivity
         // Action Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        applyFontForToolbarTitle(this);
+
+        // Custom Font for Title
+        SpannableString s = new SpannableString(getSupportActionBar().getTitle());
+        s.setSpan(new TypefaceSpan(this, "Champagne_Limousines-Thick.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        getSupportActionBar().setTitle(s);
 
         // Floating Action Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -118,9 +127,6 @@ public class TimelineActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        /*
-        TODO: Set Username in Navigation Drawer
-*/
         View v = getLayoutInflater().inflate(R.layout.nav_header_timeline, (ViewGroup) findViewById(R.id.header_root));
         drawerUsername = (TextView) v.findViewById(R.id.drawer_username);
 
@@ -235,11 +241,6 @@ public class TimelineActivity extends AppCompatActivity
             case R.id.nav_settings: {
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
-            }
-            break;
-
-            case R.id.nav_help: {
-                Toast.makeText(TimelineActivity.this, "TODO: - Help - Activity", Toast.LENGTH_SHORT).show();
             }
             break;
 

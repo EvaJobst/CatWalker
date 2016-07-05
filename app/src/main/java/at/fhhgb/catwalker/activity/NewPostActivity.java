@@ -9,11 +9,14 @@ import android.location.Location;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import at.fhhgb.catwalker.TypefaceSpan;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 import at.fhhgb.catwalker.fragment.FragmentInfo;
@@ -33,6 +36,13 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
+
+        // Custom Font for Title
+        SpannableString s = new SpannableString(getSupportActionBar().getTitle());
+        s.setSpan(new TypefaceSpan(this, "Champagne_Limousines-Thick.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        getSupportActionBar().setTitle(s);
 
         info = new FragmentInfo();
         location = new FragmentLocation();
