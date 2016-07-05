@@ -152,8 +152,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         TextView postDescription;
         ImageView postImage;
         ProgressBar postProgress;
-        //GifTextView imagePlaceholder;
-        ImageView imagePlaceholder;
+        GifTextView imagePlaceholder;
+        //ImageView imagePlaceholder;
         MapView postMap;
         LatLng postPosition;
         GoogleMap map;
@@ -167,10 +167,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postTitle = (TextView) itemView.findViewById(R.id.post_title);
             postDescription = (TextView) itemView.findViewById(R.id.post_description);
             postImage = (ImageView) itemView.findViewById(R.id.post_image);
-            postProgress = (ProgressBar) itemView.findViewById(R.id.post_progressbar);
+            //postProgress = (ProgressBar) itemView.findViewById(R.id.post_progressbar);
             postMap = (MapView) itemView.findViewById(R.id.post_location);
-            //imagePlaceholder = (GifTextView) itemView.findViewById(R.id.post_image_placeholder);
-            imagePlaceholder = (ImageView) itemView.findViewById(R.id.post_image_placeholder);
+            imagePlaceholder = (GifTextView) itemView.findViewById(R.id.post_image_placeholder);
+            //imagePlaceholder = (ImageView) itemView.findViewById(R.id.post_image_placeholder);
             key = "";
             hasImage = false;
 
@@ -214,7 +214,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         private void showImage(Bitmap img){
             imagePlaceholder.setVisibility(View.GONE);
-            postProgress.setVisibility(View.GONE);
+            //postProgress.setVisibility(View.GONE);
             postImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             postImage.setImageBitmap(img);
             postImage.setVisibility(View.VISIBLE);
@@ -254,7 +254,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 if(hasImage) {
                     Bitmap img = data.getImage(key);
                     if (img == null){
-                        new BackgroundAsyncTask().execute();
+                        ServiceLocator.getDataModel().loadImage(key);
+                        //new BackgroundAsyncTask().execute();
+                        imagePlaceholder.setVisibility(View.VISIBLE);
                     }
                     else {
                         showImage(img);
