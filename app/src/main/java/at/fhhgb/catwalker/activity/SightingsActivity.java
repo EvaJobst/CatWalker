@@ -1,5 +1,6 @@
 package at.fhhgb.catwalker.activity;
 
+import android.app.ActionBar;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -9,6 +10,9 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -35,13 +39,19 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
 
     public static final String TAG = "Google Services Test";
     GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sightings);
+
+        SpannableString s = new SpannableString(getSupportActionBar().getTitle());
+        s.setSpan(new TypefaceSpan("fonts/Champagne_Limousines-Thick.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // Update the action bar title with the TypefaceSpan instance
+        getSupportActionBar().setTitle(s);
 
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
