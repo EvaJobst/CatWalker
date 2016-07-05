@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.activity.NewPostActivity;
+import at.fhhgb.catwalker.activity.TimelineActivity;
 
 public class FragmentLocation extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
     MapView mView;

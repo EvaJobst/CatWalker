@@ -93,9 +93,9 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
 
-        if(latLngBuilder == null) {
+        if(latLngBuilder != null) {
             LatLngBounds bounds = latLngBuilder.build();
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
         }
     }
 
