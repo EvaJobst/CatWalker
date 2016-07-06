@@ -8,11 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.TypefaceSpan;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.HashMap;
 
 import at.fhhgb.catwalker.R;
+import at.fhhgb.catwalker.TypefaceSpan;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.DataModel;
@@ -46,11 +47,11 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sightings);
 
+        // Custom Font for Title
         SpannableString s = new SpannableString(getSupportActionBar().getTitle());
-        s.setSpan(new TypefaceSpan("fonts/Champagne_Limousines-Thick.ttf"), 0, s.length(),
+        s.setSpan(new TypefaceSpan(this, "Champagne_Limousines-Thick.ttf"), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        // Update the action bar title with the TypefaceSpan instance
         getSupportActionBar().setTitle(s);
 
         // Create an instance of GoogleAPIClient.

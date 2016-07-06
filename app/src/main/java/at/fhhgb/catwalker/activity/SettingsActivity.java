@@ -14,6 +14,8 @@ import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.RingtonePreference;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ import android.support.v4.app.NavUtils;
 
 import at.fhhgb.catwalker.AppCompatPreferenceActivity;
 import at.fhhgb.catwalker.R;
+import at.fhhgb.catwalker.TypefaceSpan;
 import at.fhhgb.catwalker.controller.SettingsController;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.firebase.DataModel;
@@ -47,6 +50,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
             controller.setView((SettingsActivity) this.getActivity());
 
             addPreferencesFromResource(R.xml.pref_settings);
@@ -81,6 +85,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        // Custom Font for Title
+        SpannableString s = new SpannableString(actionBar.getTitle());
+        s.setSpan(new TypefaceSpan(this, "Champagne_Limousines-Thick.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        actionBar.setTitle(s);
     }
 
     @Override

@@ -17,11 +17,12 @@ public class TypefaceSpan extends MetricAffectingSpan {
 
     private Typeface mTypeface;
 
-     public TypefaceSpan(Context context, String typefaceName) {
+    public TypefaceSpan(Context context, String typefaceName) {
         mTypeface = sTypefaceCache.get(typefaceName);
 
         if (mTypeface == null) {
-            mTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/Champagne_Limousines-Thick.ttf");
+            mTypeface = Typeface.createFromAsset(context.getApplicationContext()
+                    .getAssets(), String.format("fonts/%s", typefaceName));
 
             // Cache the loaded Typeface
             sTypefaceCache.put(typefaceName, mTypeface);

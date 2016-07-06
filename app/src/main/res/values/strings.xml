@@ -22,7 +22,7 @@
     <string name="str_settings_ringtone">Ringtone</string>
     <string name="str_settings_silent">Silent</string>
     <string name="str_settings_vibrate">Vibrate</string>
-    <string name="title_activity_sightings">SightingsActivity</string>
+    <string name="title_activity_sightings">Sightings</string>
     <string name="str_settings_old_name">Old Name</string>
     <string name="str_settings_new_name">New Name</string>
     <string name="action_settings">Settings</string>
