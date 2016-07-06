@@ -70,6 +70,10 @@ public class DataModel {
     //----------------------------------------------------------------------------------------//
 
     //----------------------------- Listener Initialization ----------------------------------//
+
+    /**
+     * This function does not attach the listeners to database references it only initializes their functionality.
+     */
     public void initListeners(){
         //--------------------------- User -------------------------------//
         userListener = new ValueEventListener() {
@@ -217,12 +221,19 @@ public class DataModel {
 
     //---------------------------------- Add Change Listener ---------------------------------//
 
+    /**
+     * This function adds a userChangeListener to the user database reference.
+     */
     public void addUserChangeListener() {
         DatabaseReference userRef = database.getReference(userSection);
         userRef.keepSynced(true);
         userRef.addChildEventListener(userChildListener);
     }
 
+    /**
+     * This function adds a timelineChildListener to a database query where all posts with the given universityId.
+     * @param universityId specifies the university
+     */
     public void addTimelinePostChangeListener(String universityId){
         DatabaseReference postRef = database.getReference(postSection);
         postRef.keepSynced(true);
@@ -230,24 +241,39 @@ public class DataModel {
         postByUniversity.addChildEventListener(timelineChildListener);
     }
 
-    public void addMyPostChangeListener(String universityId){
+    /**
+     * This function adds a addMyPostChangeListener to a database query where all posts are selected that were created by the current userId.
+     */
+    public void addMyPostChangeListener(){
         DatabaseReference postRef = database.getReference(postSection);
         Query postByUser = postRef.orderByChild("userId").equalTo(data.getUserId());
         postByUser.keepSynced(true);
         postByUser.addChildEventListener(userPostChildListener);
     }
 
+    /**
+     * This function adds the universityChildListener to the university database reference.
+     */
     public void addUniversityChangeListener() {
         DatabaseReference universityRef = database.getReference(universitySection);
         universityRef.keepSynced(true);
         universityRef.addChildEventListener(universityChildListener);
     }
 
-    public void addAllListeners(String userId, String universityId){
+    /**
+     * This function attaches all listeners to the database.
+     * This includes the following:
+     *   - {@link #addUniversityChangeListener()}
+     *   - {@link #addTimelinePostChangeListener(String)}
+     *   - {@link #addUserChangeListener()}
+     *   - {@link #addMyPostChangeListener()}
+     * @param universityId defines the university for the timeline
+     */
+    public void addAllListeners(String universityId){
         addUserChangeListener();
         addUniversityChangeListener();
         addTimelinePostChangeListener(universityId);
-        addMyPostChangeListener(userId);
+        addMyPostChangeListener();
     }
 
     //--------------------------------- Remove Listener ------------------------------------//
@@ -272,6 +298,15 @@ public class DataModel {
         postByUniversity.removeEventListener(timelineChildListener);
     }
 
+    /**
+     * This function removes all listeners frome the database.
+     * This includes the following:
+     *   - {@link #removeUniversityListener(String)}
+     *   - {@link #removeTimelineChildListener(String)}
+     *   - {@link #removeUserListener()}
+     *   - {@link #removeMyPostsChildListener(String)}
+     * @param universityId defines the university for the timeline
+     */
     public void removeAllListeners(String userId, String universityId){
         removeUserListener();
         removeUniversityListener(universityId);
@@ -282,7 +317,11 @@ public class DataModel {
 
     //-----------------------------------User Functions---------------------------------------//
 
-    //returns the key of the newly inserted user
+    /**
+     * Creates a new User.
+     * @param user the new user
+     * @return Returns the key of the newly created user.
+     */
     public String addUser(User user) {
         DatabaseReference dataRef = database.getReference(userSection);
         dataRef = dataRef.push();
@@ -290,6 +329,12 @@ public class DataModel {
         return dataRef.getKey();
     }
 
+    /**
+     * Updates one of the fields of the user.
+     * @param userId the user that will be updated
+     * @param key the actual field within the user that will be changed
+     * @param value the new value
+     */
     public void updateUser(String userId, String key, String value) {
         getRef(userSection, userId).child(key).setValue(value);
     }
@@ -300,6 +345,12 @@ public class DataModel {
 
     //-------------------------------University Functions------------------------------------//
 
+    /**
+     * Creates a new University
+     * @param name The university name
+     * @param cat The cat name
+     * @return returns the key
+     */
     public String addUniversity(String name, String cat) {
         if(cat=="")
             cat = "cat";
@@ -309,6 +360,11 @@ public class DataModel {
         return dataRef.getKey();
     }
 
+    /**
+     * Updates the university information
+     * @param universityId the university that will be edited
+     * @param cat   the new cat name
+     */
     public void updateUniversity(String universityId, String cat) {
         getRef(universitySection, universityId).setValue(cat);
     }
@@ -319,6 +375,11 @@ public class DataModel {
 
     //----------------------------------Post Functions---------------------------------------//
 
+    /**
+     * Creates a new post.
+     * @param post the post which will be added to the database
+     * @return the key of the new post
+     */
     public String addPost(Post post) {
         DatabaseReference dataRef = database.getReference(postSection);
         dataRef = dataRef.push();
@@ -343,6 +404,11 @@ public class DataModel {
 
     //----------------------------------Image Functions---------------------------------------//
 
+    /**
+     * Stores an image in the image folder of the firebase storage.
+     * @param img the new image
+     * @param fileName the filename
+     */
     public void addImage(Bitmap img, String fileName){
         if(img != null) {
             StorageReference imgRef = storage.getReferenceFromUrl(storagePath).child("image/img" + fileName + ".jpg");
@@ -367,6 +433,10 @@ public class DataModel {
         }
     }
 
+    /**
+     * Loads an image from the firebase storage.
+     * @param fileName the key of the post where the image belongs to
+     */
     public void loadImage(final String fileName){
         StorageReference imgRef = storage.getReferenceFromUrl(storagePath).child("image/img" + fileName + ".jpg");
 

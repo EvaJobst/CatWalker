@@ -187,7 +187,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
         data.restorePreferences(this);
         data.resetTimeline(false);
         data.resetTimeline(true);
-        model.addAllListeners(data.getUserId(), data.getUniversityId());
+        model.addAllListeners(data.getUniversityId());
     }
 
     @Override

@@ -14,13 +14,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Created by Lisa on 04.07.2016.
+ * Handles the anonymous firebase authentication.
  */
 public class Authentication {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener authListener;
     private boolean isLoggedIn = false;
 
+    /**
+     * Initializes the Authentication state listener.
+     */
     public Authentication() {
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -43,6 +46,10 @@ public class Authentication {
         return isLoggedIn;
     }
 
+    /**
+     * Tries to sign in the anonymous user.
+     * @param view the activity in which a toast will be created if the authentication fails.
+     */
     public void signIn(final Activity view){
         auth.signInAnonymously()
                 .addOnCompleteListener(view, new OnCompleteListener<AuthResult>() {

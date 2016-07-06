@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Lisa on 08.06.2016.
- * Contains the locally stored Data.
+ * Contains the locally stored Data and provides getter and setter to interact with it.
+ * Furthermore it throws PropertyChange events whenever data is changed.
  */
 public class LocalData {
     //User specific Data
@@ -25,14 +25,30 @@ public class LocalData {
     private String universityId;
     private String user;
 
-    //General Data
+    /**
+     * Hashmap that stores all key, user pairs
+     */
     private HashMap<String, String> userList;               //key, userName
+    /**
+     * Hashmap that stores all universityName, cat pairs
+     */
     private HashMap<String, String> universityList;         //universityName, catName
+    /**
+     * Hashmap that stores all key, university post pairs
+     */
     private HashMap<String, Post> allPostsList;             //key, Post
+    /**
+     * Hashmap that stores all key, user post pairs
+     */
     private HashMap<String, Post> myPostsList;             //key, Post
+    /**
+     * Hashmap that stores all post key, image pairs
+     */
     private HashMap<String, Bitmap> images;                 //key, Image
 
-    //PropertyChangeSupport for raising propertyChange Events in case that some data has changed.
+    /**
+     *     PropertyChangeSupport for raising propertyChange Events in case that some data has changed.
+     */
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     public LocalData() {
@@ -43,6 +59,11 @@ public class LocalData {
         images = new HashMap<>();
     }
 
+    /**
+     * Restores the Shared Preferences (userId, universityId)
+     * @param view a view from which the SharedPreferences are acessed.
+     * @return Returns true if it could restore the data.
+     */
     public boolean restorePreferences(Activity view){
         SharedPreferences settings = view.getSharedPreferences("CatWalker_Data", Context.MODE_PRIVATE);
         String userId = settings.getString("userId", null);
@@ -58,12 +79,16 @@ public class LocalData {
 
     //----------------------------- PropertyChangeListener ------------------------------------//
 
-    //Hooking a PropertyChangeListener
+    /**
+     *     Hooking in a PropertyChangeListener
+     */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    //Removing a PropertyChangeListener
+    /**
+     * Removing a PropertyChangeListener
+     */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
@@ -78,12 +103,17 @@ public class LocalData {
         return userId;
     }
 
-    //returns current user
+    /**
+     * @return Returns the current user.
+     */
     public String getUser() {
         return userList.get(userId);
     }
 
-    //returns any user
+    /**
+     * @param userId the userId for which the data will be fetched
+     * @return returns the user data
+     */
     public String getUser(String userId) {
         return userList.get(userId);
     }
@@ -119,15 +149,6 @@ public class LocalData {
         this.universityId = universityId;
     }
 
-    public void setUniversityCat(String cat) {
-        propertyChangeSupport.firePropertyChange("university.cat", getUniversityList().get(universityId), cat);
-        getUniversityList().put(universityId, cat);
-    }
-
-    public void setUniversityList(HashMap<String, String> universityList) {
-        this.universityList = universityList;
-    }
-
     public HashMap<String, String> getUniversityList() {
         return universityList;
     }
@@ -144,6 +165,10 @@ public class LocalData {
 
     //---------------------------------- Timeline --------------------------------------------//
 
+    /**
+     * Adds an element from the timeline.
+     * @param userPost Specifies whether the {@link #myPostsList}(true) or the {@link #allPostsList}(false) will be changed.
+     */
     public void addPost(String key, Post p, boolean userPost) {
         String property;
         p.setId(key);
@@ -157,7 +182,10 @@ public class LocalData {
 
         propertyChangeSupport.firePropertyChange(property, null, p);
     }
-
+    /**
+     * Removes an element from the timeline.
+     * @param userPost Specifies whether the {@link #myPostsList}(true) or the {@link #allPostsList}(false) will be changed.
+     */
     public void removePost(String key, Post p, boolean userPost) {
         String property;
         if (userPost) {
@@ -175,6 +203,10 @@ public class LocalData {
         return allPostsList;
     }
 
+    /**
+     * Resets the timeline to it's initial state.
+     * @param userPost Specifies whether the {@link #myPostsList}(true) or the {@link #allPostsList}(false) will be changed.
+     */
     public void resetTimeline(boolean userPost) {
         String property;
         if (userPost) {
@@ -204,11 +236,19 @@ public class LocalData {
 
     //Images
 
+    /**
+     * Adds an image to {@link #images} and throws a PropertyChange event for it.
+     * @param key the post id to which the image belongs
+     * @param img the actual image
+     */
     public void addImage(String key, Bitmap img){
         images.put(key,img);
         propertyChangeSupport.firePropertyChange("image.load", key, img);
     }
-
+    /**
+     * @param key the post id to which the image belongs
+     * @return an image from the {@link #images}
+     */
     public Bitmap getImage(String key){
         return images.get(key);
     }
@@ -217,6 +257,10 @@ public class LocalData {
         return myPostsList;
     }
 
+    /**
+     * @param posts the HashMap that shall be soterd and converted to a list
+     * @return Returns a list whith all posts orderd by Date
+     */
     public List<Post> orderPostsByDate(HashMap<String, Post> posts) {
         List<Post> list = null;
         if (posts != null) {

@@ -205,7 +205,7 @@ public class TimelineActivity extends AppCompatActivity
         data.restorePreferences(this);
         data.resetTimeline(false);
         data.resetTimeline(true);
-        model.addAllListeners(data.getUserId(), data.getUniversityId());
+        model.addAllListeners(data.getUniversityId());
     }
 
     @Override

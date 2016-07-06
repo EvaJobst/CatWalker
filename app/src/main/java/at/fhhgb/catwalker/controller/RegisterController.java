@@ -22,15 +22,27 @@ import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
 /**
- * Created by Lisa on 17.06.2016.
+ * This class contains the business logic for a RegistrationActivity.
  */
 public class RegisterController implements PropertyChangeListener{
 
-    RegisterActivity view;
     DataModel model;
     LocalData data;
+    /**
+     * Stores a List with all university names for the autocomplete Textview.
+     */
     List<String> universityList;
+    /**
+     * Contains a reference to the activity that is updated by this controller.
+     */
+    RegisterActivity view;
 
+
+    /**
+     * Initializes the controller and starts the required database listeners.
+     * Furthermore it registers this controller as a PropertyChangeListener for the LocalData instance.
+     * @param view The activity that will be managed by this controller.
+     */
     public RegisterController(RegisterActivity view){
         this.view = view;
         model = ServiceLocator.getDataModel();
@@ -41,11 +53,19 @@ public class RegisterController implements PropertyChangeListener{
         data.addPropertyChangeListener(this);
     }
 
+    /**
+     * Initializes all listeners that are dependent on user data (UserId and UniversityId)
+     */
     public void initDependentListeners(){
         model.addTimelinePostChangeListener(data.getUniversityId());
-        model.addMyPostChangeListener(data.getUserId());
+        model.addMyPostChangeListener();
     }
 
+    /**
+     * Calls {@link #registerUniversity()} and {@link #registerUser()} ()} to push the userdata to firebase.
+     * Stores the new userdata as SharedPreferences if the previouse function calls were successful.
+     * @return returns true if the user could be created and false if it wasn't.
+     */
     public boolean storePreferences(){
         String universityId = registerUniversity();
         String userId = registerUser();
@@ -65,7 +85,10 @@ public class RegisterController implements PropertyChangeListener{
         return false;
     }
 
-    //returns true if a UserId was found
+    /**
+     * This function attempts to restore previously saved user data from the Shared Preferences
+     * @return Returns true if user data was found.
+     */
     public boolean restorePreferences(){
         if(data.restorePreferences(view)){
             initDependentListeners();
@@ -74,6 +97,10 @@ public class RegisterController implements PropertyChangeListener{
         return false;
     }
 
+    /**
+     * Attempts to store the University in Firebase.
+     * @return Returns the Name of the university. If the input was invalid it returns null.
+     */
     private String registerUniversity() {
         String universityId = null;
         EditText universityName = (AutoCompleteTextView) view.findViewById(R.id.registerUniverstiyAutoComplete);
@@ -86,13 +113,10 @@ public class RegisterController implements PropertyChangeListener{
         return universityId;
     }
 
-    private boolean isInputValid(){
-        EditText userName = (EditText) view.findViewById(R.id.registerNameText);
-        AutoCompleteTextView universityName = (AutoCompleteTextView) view.findViewById(R.id.registerUniverstiyAutoComplete);
-        EditText universityCat = (EditText) view.findViewById(R.id.registerCat);
-        return !universityName.getText().toString().equals("") && !userName.getText().toString().equals("") && !universityCat.toString().equals("");
-    }
-
+    /**
+     * Attempts to store the User in Firebase.
+     * @return Returns the key where the user is stored. If the input was invalid it returns null.
+     */
     private String registerUser() {
         String userId = null;
         EditText userName = (EditText) view.findViewById(R.id.registerNameText);
@@ -103,6 +127,21 @@ public class RegisterController implements PropertyChangeListener{
         return userId;
     }
 
+    /**
+     * Checks whether all fields are correctly filled.
+     * @return True if the input is correct, otherwise false.
+     */
+    private boolean isInputValid(){
+        EditText userName = (EditText) view.findViewById(R.id.registerNameText);
+        AutoCompleteTextView universityName = (AutoCompleteTextView) view.findViewById(R.id.registerUniverstiyAutoComplete);
+        EditText universityCat = (EditText) view.findViewById(R.id.registerCat);
+        return !universityName.getText().toString().equals("") && !userName.getText().toString().equals("") && !universityCat.toString().equals("");
+    }
+
+    /**
+     * Initializes the AutoCompleteTextView with a new ArrayAdapter. The data is taken from {@link #universityList}.
+     * It also adds a TextChangedListener with updates the cat name if an already existing university is entered.
+     */
     public void initUniversityList(){
         AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.registerUniverstiyAutoComplete);
 
@@ -129,6 +168,11 @@ public class RegisterController implements PropertyChangeListener{
         });
     }
 
+    /**
+     * This function updates {@link #universityList} whenever new data arrives.
+     * @param key University name
+     * @param add Adds the university to the list if true, otherwise removes it.
+     */
     public void updateUniversityList(String key, boolean add){
         AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.registerUniverstiyAutoComplete);
         if(add)
@@ -138,6 +182,10 @@ public class RegisterController implements PropertyChangeListener{
         Log.d("register","university.add: "+key);
     }
 
+    /**
+     * Updates the cat name in the activity if the university name was valid.
+     * @param university The university for which the cat will be searched.
+     */
     private void updateUniversityCat(String university) {
         EditText universityCat = (EditText) view.findViewById(R.id.registerCat);
         if(data.getUniversityList().containsKey(university)){
@@ -145,6 +193,10 @@ public class RegisterController implements PropertyChangeListener{
         }
     }
 
+    /**
+     * The PropertyChangeEventListener which reacts on university and cat specific changes with specific calls of {@link #updateUniversityList(String, boolean)} or  {@link #updateUniversityCat(String)}} .
+     * @param event
+     */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch(event.getPropertyName()){
@@ -163,6 +215,9 @@ public class RegisterController implements PropertyChangeListener{
         }
     }
 
+    /**
+     * Starts the Firebase Authentication process.
+     */
     public void signIn() {
         ServiceLocator.getAuth().signIn(view);
     }

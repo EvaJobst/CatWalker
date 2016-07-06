@@ -132,7 +132,7 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
         DataModel model = ServiceLocator.getDataModel();
         LocalData data = model.getLocalData();
         data.restorePreferences(this);
-        model.addAllListeners(data.getUserId(), data.getUniversityId());
+        model.addAllListeners(data.getUniversityId());
     }
 
     @Override

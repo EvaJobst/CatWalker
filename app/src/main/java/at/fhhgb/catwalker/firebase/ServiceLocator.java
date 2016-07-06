@@ -1,7 +1,7 @@
 package at.fhhgb.catwalker.firebase;
 
 /**
- * Created by Lisa on 14.06.2016.
+ * Stores static refernces to instances of the DataModel and the Authentication class so that all classes can use the same instances.
  */
 public class ServiceLocator {
     //stores instances
@@ -26,46 +26,4 @@ public class ServiceLocator {
     }
     public static Authentication getAuth() {return  auth;}
 
-
-/*
-    //register parameterless class, only creates a new instance if there is none until now
-    public static <T> boolean register(Class T)
-    {
-        if(!instances.containsKey(T)){
-            try {
-                instances.put(T, T.newInstance());
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-                return false;
-            }
-        }
-        return true;
-    }
-
-    //register class with parameters
-    public static <T> boolean register(Class T, Object[] params)
-    {
-        if(!instances.containsKey(T)){
-            Object[] classes = new Object[params.length];
-            for (int i=0; i<params.length ;i++) {
-                classes[i] = params[i].getClass();
-            }
-            try {
-                Constructor<T> constructor = T.getConstructor((Class<?>[]) classes);
-
-                T instance = constructor.newInstance(params);
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static <T> T getInstance(Class T){
-        if(instances.containsKey(T))
-            return (T)instances.get(T);
-        return null;
-    }
-    */
 }
