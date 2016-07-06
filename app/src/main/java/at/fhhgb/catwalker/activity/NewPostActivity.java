@@ -11,7 +11,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -31,9 +30,9 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
     FragmentLocation location;
     FragmentManager mgr = getFragmentManager();
     FragmentTransaction ft;
-    public static Location loc;
-    public static String title = "";
-    public static String content = "";
+    public static Location loc;         // saves longitude and latitude values for positioning
+    public static String title = "";    // saves title of post
+    public static String content = "";  // saves description/content of post
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +43,19 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
         SpannableString s = new SpannableString(getSupportActionBar().getTitle());
         s.setSpan(new TypefaceSpan(this, "Champagne_Limousines-Thick.ttf"), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
         getSupportActionBar().setTitle(s);
 
+        // Fragments
         info = new FragmentInfo();
         location = new FragmentLocation();
         picture = new FragmentPicture();
 
+        // Bottom Bar Buttons
         ImageButton b;
         b = (ImageButton) findViewById(R.id.new_btn_info);
         b.setOnClickListener(this);
 
-        setFragment(b);
+        setFragment(b); // sets Info-Fragment as default Fragment
 
         b = (ImageButton) findViewById(R.id.new_btn_location);
         b.setOnClickListener(this);
@@ -72,6 +72,10 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
         setFragment(v);
     }
 
+    /**
+     * 
+     * @param v
+     */
     public void setFragment(View v) {
         ft = mgr.beginTransaction();
 
@@ -112,6 +116,8 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
                 }else {
                     post.setTitle(title);
                     post.setContent(content);
+                    title ="";
+                    content="";
                     finish();
                     Toast.makeText(NewPostActivity.this, "Send", Toast.LENGTH_SHORT).show();
                     //push post to database && store the image

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -35,13 +36,13 @@ public class RegisterController implements PropertyChangeListener{
         model = ServiceLocator.getDataModel();
         data = model.getLocalData();
 
-        //model.addUniversityChangeListener();
+        model.addUniversityChangeListener();
+        model.addUserChangeListener();
         data.addPropertyChangeListener(this);
     }
 
     public void initDependentListeners(){
         model.addTimelinePostChangeListener(data.getUniversityId());
-        model.addUserChangeListener();
         model.addMyPostChangeListener(data.getUserId());
     }
 
@@ -57,7 +58,7 @@ public class RegisterController implements PropertyChangeListener{
             editor.putString("universityId", universityId);
             editor.apply();
 
-            //initDependentListeners();
+            initDependentListeners();
 
             return true;
         }
@@ -67,7 +68,7 @@ public class RegisterController implements PropertyChangeListener{
     //returns true if a UserId was found
     public boolean restorePreferences(){
         if(data.restorePreferences(view)){
-            //initDependentListeners();
+            initDependentListeners();
             return true;
         }
         return false;
@@ -134,6 +135,7 @@ public class RegisterController implements PropertyChangeListener{
             universityList.add(key);
         else
             universityList.remove(key);
+        Log.d("register","university.add: "+key);
     }
 
     private void updateUniversityCat(String university) {

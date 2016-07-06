@@ -1,6 +1,6 @@
 package at.fhhgb.catwalker.activity;
 
-import android.app.ActionBar;
+
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;

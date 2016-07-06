@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.TypefaceSpan;
 import at.fhhgb.catwalker.controller.RegisterController;
+import at.fhhgb.catwalker.data.LocalData;
+import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -49,6 +52,15 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("Catwalker","Stop Register");
+        DataModel model = ServiceLocator.getDataModel();
+        LocalData data = model.getLocalData();
+        model.removeAllListeners(data.getUserId(), data.getUniversityId());
+        super.onStop();
     }
 
     public void navigateToTimeline() {
