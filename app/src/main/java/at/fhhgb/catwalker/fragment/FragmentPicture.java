@@ -1,7 +1,6 @@
 package at.fhhgb.catwalker.fragment;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -68,6 +67,12 @@ public class FragmentPicture extends Fragment {
         return v;
     }
 
+    /**
+     * Invoked after a picture has been taken
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_CANCELED) {
@@ -76,7 +81,7 @@ public class FragmentPicture extends Fragment {
                     selectedImagePath = getImagePath();
                     if (selectedImagePath!=null) {
                         image = decodeFile(selectedImagePath);
-                        image = fixRotation(image, selectedImagePath);
+                        image = fixRotation(image);
                         iv.setImageBitmap(image);
                     }
                 }
@@ -86,19 +91,26 @@ public class FragmentPicture extends Fragment {
         }
     }
 
+    /**
+     * Store image in dcim and sets path in imgPath variable
+     * @return
+     */
     public Uri setImageUri() {
-        // Store image in dcim
         File file = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "image" + new Date().getTime() + ".png");
         Uri imgUri = Uri.fromFile(file);
         imgPath = file.getAbsolutePath();
         return imgUri;
     }
 
-
     public String getImagePath() {
         return imgPath;
     }
 
+    /**
+     * Decodes file and scales image
+     * @param path
+     * @return
+     */
     public Bitmap decodeFile(String path) {
         try {
             // Decode image size
@@ -124,7 +136,12 @@ public class FragmentPicture extends Fragment {
         return null;
     }
 
-    public Bitmap fixRotation(Bitmap img, String imagePath) {
+    /**
+     * Checks if picture was taken in portrait or landscape modus and rotates it
+     * @param img
+     * @return
+     */
+    public Bitmap fixRotation(Bitmap img) {
         ExifInterface exif = null;
         try {
             exif = new ExifInterface(getImagePath());
@@ -144,6 +161,11 @@ public class FragmentPicture extends Fragment {
         return img;
     }
 
+    /**
+     * Returns how many degrees picture needs to be rotated
+     * @param exifOrientation
+     * @return
+     */
     private int exifToDegrees(int exifOrientation) {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
             return 90;
@@ -155,6 +177,12 @@ public class FragmentPicture extends Fragment {
         return 0;
     }
 
+    /**
+     * Rotates image
+     * @param img
+     * @param rotation
+     * @return
+     */
     private Bitmap rotate(Bitmap img, int rotation) {
         Matrix matrix = new Matrix();
         matrix.postRotate(rotation);

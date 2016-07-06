@@ -1,64 +1,39 @@
 package at.fhhgb.catwalker;
 
-import android.*;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.ParseException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
-import at.fhhgb.catwalker.activity.TimelineActivity;
 import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 import pl.droidsonroids.gif.GifTextView;
 
-/**
- * Created by Eva on 30.06.2016.
- */
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     public List<Post> posts;
     Context context;
@@ -112,8 +87,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return posts.size();
     }
 
+    /**
+     * Inner class; necessary to hold the data of a post
+     */
     public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, PropertyChangeListener {
-
         public void showTitle(String title) {
             if(title.isEmpty())
                 postTitle.setVisibility(View.GONE);
@@ -133,7 +110,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         }
 
-        String key;
+        String key; // Key of the post
         Boolean hasImage;
         CardView cardView;
         TextView postAuthor;
@@ -141,14 +118,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         TextView postTitle;
         TextView postDescription;
         ImageView postImage;
-        ProgressBar postProgress;
         GifTextView imagePlaceholder;
-        //ImageView imagePlaceholder;
         MapView postMap;
         LatLng postPosition;
         GoogleMap map;
         public GoogleApiClient client;
-
         public boolean isExpandable;
         ImageView postExpand;
 
@@ -173,6 +147,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
         }
 
+        /**
+         * Expands/Collapses the view
+         * @param itemView
+         */
         @Override
         public void onClick(View itemView) {
             Post post = findPostById(key);
@@ -190,9 +168,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
             client.connect();
-
         }
 
+        /**
+         * Called when APIClient has successfully connected
+         * @param bundle
+         */
         @Override
         public void onConnected(@Nullable Bundle bundle) {
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(postPosition, 16));
@@ -200,25 +181,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
 
         @Override
-        public void onConnectionSuspended(int i) {
-
-        }
+        public void onConnectionSuspended(int i) {}
 
         @Override
-        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-        }
+        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
         private void showImage(Bitmap img){
             imagePlaceholder.setVisibility(View.GONE);
-            //postProgress.setVisibility(View.GONE);
             postImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             postImage.setImageBitmap(img);
             postImage.setVisibility(View.VISIBLE);
         }
 
         private void showMap(){
-            //Log.d("Position","Post:" + postTitle.getText() + " Lat = "+postPosition.latitude +", Long = " + postPosition.longitude);
             if(postPosition.latitude != 0 && postPosition.longitude!=0) {
                 Log.d("Position","Post:" + postTitle.getText() + " Lat = "+postPosition.latitude +", Long = " + postPosition.longitude);
 
@@ -232,7 +207,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
                 postMap.onCreate(Bundle.EMPTY);
                 postMap.getMapAsync(this);
-
                 postMap.setVisibility(View.VISIBLE);
             }
         }
@@ -253,13 +227,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         }
 
+        /**
+         * Show the image if the oldValue(key) equals the key of the viewholder and an image was loaded
+         * @param event
+         */
         @Override
         public void propertyChange(PropertyChangeEvent event) {
-            //show the image if the oldValue(key) equals the key of the viewholder and an image was loaded
             if (event.getPropertyName().equals("image.load") && key.equals((String) event.getOldValue())) {
                 showImage((Bitmap) event.getNewValue());
             }
         }
+
+        /**
+         * Expands/Collapses a post
+         * @param expand
+         */
         public void expand(boolean expand) {
             Post post = findPostById(key);
             if (expand) {

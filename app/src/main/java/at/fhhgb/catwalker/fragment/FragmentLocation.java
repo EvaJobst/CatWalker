@@ -99,7 +99,9 @@ public void onMapReady(GoogleMap googleMap) {
 }
 
     /**
-     * Checks
+     * Called when Google APIClient successfully connected </p>
+     * - Checks for Permission </p>
+     * - Requests location and checks for Location change -> if yes onLocationChanged is called
      * @param bundle
      */
     @Override

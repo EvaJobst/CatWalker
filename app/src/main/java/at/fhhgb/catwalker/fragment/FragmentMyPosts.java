@@ -41,6 +41,7 @@ public class FragmentMyPosts extends Fragment implements PropertyChangeListener 
 
         View v = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
+        // Recycler View
         recyclerView = (RecyclerView)  v.findViewById(R.id.all_entries_view);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(llm);
@@ -54,8 +55,12 @@ public class FragmentMyPosts extends Fragment implements PropertyChangeListener 
         return v;
     }
 
+    /**
+     * Updates Timeline and adds element
+     * @param newValue
+     * @param add
+     */
     private void updateTimeline(Post newValue, boolean add){
-
         if(add)
             this.myPosts.add(0,newValue);
         else
@@ -81,7 +86,11 @@ public class FragmentMyPosts extends Fragment implements PropertyChangeListener 
             }
         }
     }
-    
+
+    /**
+     * Invoked when a post has changed
+     * @param event
+     */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()){
