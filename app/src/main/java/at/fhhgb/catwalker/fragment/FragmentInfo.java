@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import java.util.Date;
 
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.activity.NewPostActivity;
-import at.fhhgb.catwalker.data.LocalData;
 import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
@@ -40,14 +38,10 @@ public class FragmentInfo extends Fragment {
         title.setText(NewPostActivity.title);
         title.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -59,14 +53,10 @@ public class FragmentInfo extends Fragment {
         content.setText(NewPostActivity.content);
         content.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -77,6 +67,10 @@ public class FragmentInfo extends Fragment {
         return v;
     }
 
+    /**
+     * Shows Author and current Time
+     * @param view
+     */
     public void updateFields(View view){
         TextView author = (TextView)view.findViewById(R.id.new_info_author);
 
@@ -86,18 +80,7 @@ public class FragmentInfo extends Fragment {
 
         author.setText(ServiceLocator.getDataModel().getLocalData().getUser());
     }
-/*
-    @Override
-    public void onPause() {
-        super.onPause();
-        EditText title = (EditText) getView().findViewById(R.id.new_info_title);
-        EditText content = (EditText) getView().findViewById(R.id.new_info_description);
-        if(title!=null)
-            NewPostActivity.title = title.getText().toString();
-        if(content!=null)
-            NewPostActivity.content = content.getText().toString();
-    }
-*/
+
     @Override
     public void onResume() {
         super.onResume();

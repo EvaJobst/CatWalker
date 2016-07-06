@@ -2,15 +2,11 @@ package at.fhhgb.catwalker.activity;
 
 
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
@@ -39,7 +35,7 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "Google Services Test";
-    GoogleApiClient mGoogleApiClient;
+    GoogleApiClient mGoogleApiClient;   // interface to the google API
     private GoogleMap mMap;
 
     @Override
@@ -77,10 +73,9 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * Manipulates the map once available. </p>
+     * This callback is triggered when the map is ready to be used. </p>
+     * This is where we can add markers or lines, add listeners or move the camera. </>
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -96,7 +91,6 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
 
         boolean hasPoints = false;
         for(Object post : posts.values()) {
-            Post p = (Post) post;
             double lon = ((Post) post).getLongitude();
             double lat = ((Post) post).getLatitude();
             if(lon != 0 && lat!=0) {
@@ -107,6 +101,7 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
 
+        // Displays the marker in the bounds of the screen
         if(latLngBuilder != null && hasPoints) {
             LatLngBounds bounds = latLngBuilder.build();
             mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
@@ -115,12 +110,8 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-
-        }
-
-        //mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        // Checks for Permission
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {}
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -129,14 +120,10 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
-    }
+    public void onConnectionSuspended(int i) {}
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
     @Override
     protected void onResume() {
@@ -155,6 +142,5 @@ public class SightingsActivity extends AppCompatActivity implements OnMapReadyCa
         LocalData data = model.getLocalData();
         model.removeAllListeners(data.getUserId(), data.getUniversityId());
         super.onPause();
-
     }
 }

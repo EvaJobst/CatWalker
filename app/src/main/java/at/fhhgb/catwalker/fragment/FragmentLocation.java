@@ -24,7 +24,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.activity.NewPostActivity;
-import at.fhhgb.catwalker.activity.TimelineActivity;
 
 public class FragmentLocation extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
     MapView mView;
@@ -99,14 +98,15 @@ public void onMapReady(GoogleMap googleMap) {
     mGoogleApiClient.connect();
 }
 
-
-@Override
+    /**
+     * Checks
+     * @param bundle
+     */
+    @Override
 public void onConnected(@Nullable Bundle bundle) {
     if(ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
         mMap.setMyLocationEnabled(true);
         lr = new LocationRequest().setInterval(1000).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);;
-        //Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        //todo: fix null pointer exception
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, lr, this);
     }
 }
@@ -117,7 +117,12 @@ public void onConnectionSuspended(int i) {}
 @Override
 public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
-@Override
+    /**
+     * Invoked when the location has changed and stores longitude + latitude values </p>
+     * Moves camera if it hasn't zoomed in yet
+     * @param location
+     */
+    @Override
 public void onLocationChanged(Location location) {
     NewPostActivity.loc = location;
 

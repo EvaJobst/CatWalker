@@ -37,17 +37,6 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
     @Override
     public void onResume() {
         super.onResume();
-        //initPostAdapter();
-    }
-
-    public void initPostAdapter() {
-        if (adapter.posts.size() == 0) {
-            LocalData data = ServiceLocator.getDataModel().getLocalData();
-            List<Post> allPosts = data.orderPostsByDate(data.getAllPostsList());
-            for (Post p : allPosts){
-                updateTimeline(p, true);
-            }
-        }
     }
 
     @Override
@@ -58,6 +47,7 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
         ServiceLocator.getDataModel().getLocalData().addPropertyChangeListener(this);
         this.allPosts = new ArrayList<>();
 
+        // Recycler View
         recyclerView = (RecyclerView) v.findViewById(R.id.my_entries_view);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(llm);
@@ -65,11 +55,15 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
         adapter = new PostAdapter(allPosts, getActivity());
         recyclerView.setAdapter(adapter);
 
-
         // Inflate the layout for this fragment
         return v;
     }
 
+    /**
+     * Updates the timeline and adds an element
+     * @param newValue
+     * @param add
+     */
     private void updateTimeline(Post newValue, boolean add) {
         if (add)
             this.allPosts.add(0, newValue);
@@ -80,6 +74,10 @@ public class FragmentAllPosts extends Fragment implements PropertyChangeListener
     }
 
 
+    /**
+     * Invoked when a post has changed
+     * @param event
+     */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()) {

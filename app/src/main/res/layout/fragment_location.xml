@@ -11,7 +11,6 @@
         android:id="@+id/new_mapView" />
 
     <RelativeLayout
-        android:id="@+id/new_textBar"
         android:layout_width="match_parent"
         android:layout_height="95dp"
         android:layout_gravity="left|bottom"
@@ -48,7 +47,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Room"
-            android:id="@+id/location_txt_room"
             android:layout_below="@+id/location_txt_floor"
             android:layout_alignLeft="@+id/location_txt_floor"
             android:layout_alignStart="@+id/location_txt_floor" />

@@ -8,7 +8,6 @@ import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.TypefaceSpan;
@@ -18,7 +17,6 @@ import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 
 public class RegisterActivity extends AppCompatActivity {
-
     private Intent intent;
 
     @Override
@@ -32,16 +30,22 @@ public class RegisterActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(s);
 
+        // Contains logic for registration
         final RegisterController controller = new RegisterController(this);
         controller.signIn();
+
+        // If user data is available, automatically opens TimelineActivity
         if(controller.restorePreferences()){
             navigateToTimeline();
         }
 
+        // If user data is not available --> opens layout and properly starts Activity
         setContentView(R.layout.activity_register);
 
+        // Contains University List and helps with Autocomplete
         controller.initUniversityList();
 
+        // Saves data to database
         Button register  = (Button) findViewById(R.id.registerUser);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +55,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override
@@ -63,6 +66,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onStop();
     }
 
+     /**
+     * Opens TimelineActivity
+     */
     public void navigateToTimeline() {
         intent = new Intent(this, TimelineActivity.class);
         startActivity(intent);

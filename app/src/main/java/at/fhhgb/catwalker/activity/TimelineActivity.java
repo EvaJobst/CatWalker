@@ -1,8 +1,6 @@
 package at.fhhgb.catwalker.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,47 +13,33 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.HashMap;
-import java.util.List;
-import java.util.StringTokenizer;
 
 import at.fhhgb.catwalker.R;
 import at.fhhgb.catwalker.TypefaceSpan;
-import at.fhhgb.catwalker.controller.TimelineController;
 import at.fhhgb.catwalker.data.LocalData;
-import at.fhhgb.catwalker.data.Post;
 import at.fhhgb.catwalker.firebase.DataModel;
 import at.fhhgb.catwalker.firebase.ServiceLocator;
 import at.fhhgb.catwalker.fragment.FragmentAllPosts;
 import at.fhhgb.catwalker.fragment.FragmentMyPosts;
 
-/**
- *
- */
 public class TimelineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PropertyChangeListener {
     LocalData data;
     private FragmentPagerAdapter adapter;
     private ViewPager viewPager;
-    private FragmentAllPosts fragmentAllPosts;
-    private FragmentMyPosts fragmentMyPosts;
     private TextView drawerUsername, drawerCat, drawerUniversity;
 
-    /**
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +72,7 @@ public class TimelineActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.str_nav_drawer_open, R.string.str_nav_drawer_close);
 
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            // Sets up Navigation Header and its TextView-contents
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 drawerUsername = (TextView) drawerView.findViewById(R.id.drawer_username);
@@ -100,30 +85,20 @@ public class TimelineActivity extends AppCompatActivity
             }
 
             @Override
-            public void onDrawerOpened(View drawerView) {
-
-            }
+            public void onDrawerOpened(View drawerView) {}
 
             @Override
-            public void onDrawerClosed(View drawerView) {
-
-            }
+            public void onDrawerClosed(View drawerView) {}
 
             @Override
-            public void onDrawerStateChanged(int newState) {
-
-            }
+            public void onDrawerStateChanged(int newState) {}
         });
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        View v = getLayoutInflater().inflate(R.layout.nav_header_timeline, (ViewGroup) findViewById(R.id.header_root));
-        drawerUsername = (TextView) v.findViewById(R.id.drawer_username);
 
         // Create the adapter that will return a fragment for each section
         adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -151,6 +126,7 @@ public class TimelineActivity extends AppCompatActivity
                 return mFragmentNames[position];
             }
         };
+
         // Set up the ViewPager with the sections adapter.
         viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(adapter);
@@ -161,25 +137,8 @@ public class TimelineActivity extends AppCompatActivity
         data.addPropertyChangeListener(this);
     }
 
-    public static void applyFontForToolbarTitle(Activity context){
-        Toolbar toolbar = (Toolbar) context.findViewById(R.id.toolbar);
-        for(int i = 0; i < toolbar.getChildCount(); i++){
-            View view = toolbar.getChildAt(i);
-            if(view instanceof TextView){
-                TextView tv = (TextView) view;
-                Typeface titleFont = Typeface.
-                        createFromAsset(context.getAssets(), "fonts/Champagne_Limousines-Thick.ttf");
-                if(tv.getText().equals(toolbar.getTitle())){
-                    tv.setTypeface(titleFont);
-                    tv.setTextSize(25);
-                    break;
-                }
-            }
-        }
-    }
-
     /**
-     *
+     * Closes Navigation Drawer on Back-Button pressed
      */
     @Override
     public void onBackPressed() {
@@ -193,25 +152,19 @@ public class TimelineActivity extends AppCompatActivity
     }
 
     /**
-     * Inflates the main menu
-     *
-     * @param menu
-     * @return always returns true
+     * Inflates the main menu; this adds items to the action bar if it is present.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     /**
-     * @param item
-     * @return
+     * Handle navigation view item clicks
      */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks
         int id = item.getItemId();
 
         switch (id) {
@@ -264,6 +217,10 @@ public class TimelineActivity extends AppCompatActivity
         super.onStop();
     }
 
+    /**
+     * Handles changes in the username, university name and cat name
+     * @param event
+     */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         if(event.getPropertyName()=="user" && event.getOldValue().equals(data.getUserId())){

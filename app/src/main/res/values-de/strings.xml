@@ -2,14 +2,7 @@
 <resources>
     <string name="str_nav_settings">Einstellungen</string>
     <string name="str_settings_group_general">Allgemein</string>
-    <string name="str_settings_group_notifications">Benachrichtigungen</string>
-    <string name="str_settings_push">Push Nachrichten</string>
-    <string name="str_settings_silent">Lautlos</string>
-    <string name="str_settings_ringtone">Klingelton</string>
-    <string name="str_settings_vibrate">Vibration</string>
     <string name="str_nav_sightings">Sichtungen</string>
     <string name="title_activity_sightings">Sichtungen</string>
     <string name="str_nav_new_entry">Neuer Eintrag</string>
-    <string name="str_nav_help">Hilfe</string>
-    <string name="str_nav_gallery">Galerie</string>
 </resources>

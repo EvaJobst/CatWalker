@@ -73,8 +73,11 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
     }
 
     /**
-     * 
-     * @param v
+     * Deals with Bottom Bar Icon-Clicks: </p>
+     * - Performs Fragment-Transaction </p>
+     * - Opens Camera application when no picture is available, if one is set it opens the Picture-Fragment </p>
+     * - Sends post and saves values to database
+     * @param v View that reacted to click-event
      */
     public void setFragment(View v) {
         ft = mgr.beginTransaction();
@@ -90,6 +93,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
 
             case R.id.new_btn_picture : {
                 if(picture.image == null) {
+                    // Opens local camera application
                     final Intent intentCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     intentCapture.putExtra(MediaStore.EXTRA_OUTPUT, picture.setImageUri());
                     startActivityForResult(intentCapture, picture.CAPTURE_IMAGE);
@@ -111,6 +115,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
                     post.setLongitude(loc.getLongitude());
                 }
 
+                // Control structure since title or description is required
                 if(title.isEmpty() && content.isEmpty()){
                     Toast.makeText(NewPostActivity.this, "There's nothing to send here.", Toast.LENGTH_SHORT).show();
                 }else {
@@ -118,7 +123,7 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
                     post.setContent(content);
                     title ="";
                     content="";
-                    finish();
+                    finish(); // closes Activity
                     Toast.makeText(NewPostActivity.this, "Send", Toast.LENGTH_SHORT).show();
                     //push post to database && store the image
 
@@ -141,9 +146,14 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
         }
 
         ft.commit();
-        setColor(v);
+        setColor(v); // changes background color of icon
     }
 
+    /**
+     * Changes colour of all icons to default colour </p>
+     * Sets background colour of View v to orange
+     * @param v View that reacted to click-event
+     */
     public void setColor(View v) {
         if(v.getId() != R.id.new_btn_send) {
             ImageButton info = (ImageButton) findViewById(R.id.new_btn_info);
@@ -159,6 +169,10 @@ public class NewPostActivity extends AppCompatActivity implements ImageButton.On
         }
     }
 
+    /**
+     * Calls onActivityResult from Fragment Picture </p>
+     * Method is needed for Camera application
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         picture.onActivityResult(requestCode, resultCode, data);
